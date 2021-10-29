@@ -1,0 +1,30 @@
+type Project @entity {
+  id: ID!
+
+  owner: String!
+  metadata: String! # IPFS hash
+  currentDeployment: Deployment
+  currentVersion: String # IPFS hash
+
+  deployments: [Deployment]!
+}
+
+type Deployment @entity {
+  id: ID! # deploymentId, IPFS hash to deployment
+
+  version: String! # IPFS hash to version info
+
+  indexers: [Indexer]!
+}
+
+type Indexer @entity {
+  id: ID! # indexer adderss + deployment id
+
+  indexer: String! # address of indexer
+  deployment: Deployment!
+
+  blockHeight: BigInt!
+  mmrRoot: String
+  timestamp: Date
+  status: String! # 'indexing' | 'ready' | 'terminated'
+}

@@ -1,0 +1,32 @@
+{
+  "name": "subquery-query-registry-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -b",
+    "prepack": "rm -rf dist && npm build",
+    "test": "jest",
+    "codegen": "./node_modules/.bin/subql codegen"
+  },
+  "homepage": "https://github.com/subquery/subql-starter",
+  "repository": "github:subquery/subql-starter",
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "author": "Subquery",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@polkadot/api": "^5.7.1",
+    "@subql/cli": "latest",
+    "@subql/types": "../subql/packages/types",
+    "@types/bs58": "^4.0.1",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@subql/contract-processors": "../subql/packages/contract-processors",
+    "bs58": "^4.0.1"
+  }
+}
