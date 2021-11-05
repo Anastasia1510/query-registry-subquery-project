@@ -253,689 +253,689 @@ export type UpdateQueryEvent = TypedEvent<
   }
 >;
 
-export class QueryRegistry extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
-
-  listeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
-  off<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  on<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  once<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): this;
-
-  listeners(eventName?: string): Array<Listener>;
-  off(eventName: string, listener: Listener): this;
-  on(eventName: string, listener: Listener): this;
-  once(eventName: string, listener: Listener): this;
-  removeListener(eventName: string, listener: Listener): this;
-  removeAllListeners(eventName?: string): this;
-
-  queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
-    event: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
-
-  interface: QueryRegistryInterface;
-
-  functions: {
-    createQueryProject(
-      metadata: BytesLike,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    deploymentStatusByIndexer(
-      arg0: BytesLike,
-      arg1: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
-        indexer: string;
-        deploymentId: string;
-        blockheight: BigNumber;
-        hash: BigNumber;
-        mmrRoot: string;
-        timestamp: BigNumber;
-        status: number;
-      }
-    >;
-
-    isOffline(
-      deploymentId: BytesLike,
-      indexer: string,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    nextQueryId(overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    numberOfIndexingDeployments(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    owner(overrides?: CallOverrides): Promise<[string]>;
-
-    queryInfoCountByOwner(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    queryInfoIdsByOwner(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    queryInfos(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, string, string, string, string] & {
-        queryId: BigNumber;
-        owner: string;
-        latestVersion: string;
-        latestDeploymentId: string;
-        metadata: string;
-      }
-    >;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    reportIndexingStatus(
-      deploymentId: BytesLike,
-      _blockheight: BigNumberish,
-      _mmrRoot: BytesLike,
-      _timestamp: BigNumberish,
-      status: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setSettings(
-      _settings: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    settings(overrides?: CallOverrides): Promise<[string]>;
-
-    startIndexing(
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    stopIndexing(
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    unregisterQuery(
-      _queryId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    updateQueryProject(
-      queryId: BigNumberish,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      metadata: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-  };
-
-  createQueryProject(
-    metadata: BytesLike,
-    version: BytesLike,
-    deploymentId: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  deploymentStatusByIndexer(
-    arg0: BytesLike,
-    arg1: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
-      indexer: string;
-      deploymentId: string;
-      blockheight: BigNumber;
-      hash: BigNumber;
-      mmrRoot: string;
-      timestamp: BigNumber;
-      status: number;
-    }
-  >;
-
-  isOffline(
-    deploymentId: BytesLike,
-    indexer: string,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  nextQueryId(overrides?: CallOverrides): Promise<BigNumber>;
-
-  numberOfIndexingDeployments(
-    arg0: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  owner(overrides?: CallOverrides): Promise<string>;
-
-  queryInfoCountByOwner(
-    user: string,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  queryInfoIdsByOwner(
-    arg0: string,
-    arg1: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  queryInfos(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [BigNumber, string, string, string, string] & {
-      queryId: BigNumber;
-      owner: string;
-      latestVersion: string;
-      latestDeploymentId: string;
-      metadata: string;
-    }
-  >;
-
-  renounceOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  reportIndexingStatus(
-    deploymentId: BytesLike,
-    _blockheight: BigNumberish,
-    _mmrRoot: BytesLike,
-    _timestamp: BigNumberish,
-    status: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setSettings(
-    _settings: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  settings(overrides?: CallOverrides): Promise<string>;
-
-  startIndexing(
-    deploymentId: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  stopIndexing(
-    deploymentId: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  transferOwnership(
-    newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  unregisterQuery(
-    _queryId: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  updateQueryProject(
-    queryId: BigNumberish,
-    version: BytesLike,
-    deploymentId: BytesLike,
-    metadata: BytesLike,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  callStatic: {
-    createQueryProject(
-      metadata: BytesLike,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    deploymentStatusByIndexer(
-      arg0: BytesLike,
-      arg1: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
-        indexer: string;
-        deploymentId: string;
-        blockheight: BigNumber;
-        hash: BigNumber;
-        mmrRoot: string;
-        timestamp: BigNumber;
-        status: number;
-      }
-    >;
-
-    isOffline(
-      deploymentId: BytesLike,
-      indexer: string,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    nextQueryId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    numberOfIndexingDeployments(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    owner(overrides?: CallOverrides): Promise<string>;
-
-    queryInfoCountByOwner(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    queryInfoIdsByOwner(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    queryInfos(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [BigNumber, string, string, string, string] & {
-        queryId: BigNumber;
-        owner: string;
-        latestVersion: string;
-        latestDeploymentId: string;
-        metadata: string;
-      }
-    >;
-
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
-
-    reportIndexingStatus(
-      deploymentId: BytesLike,
-      _blockheight: BigNumberish,
-      _mmrRoot: BytesLike,
-      _timestamp: BigNumberish,
-      status: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setSettings(_settings: string, overrides?: CallOverrides): Promise<void>;
-
-    settings(overrides?: CallOverrides): Promise<string>;
-
-    startIndexing(
-      deploymentId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    stopIndexing(
-      deploymentId: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    unregisterQuery(
-      _queryId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    updateQueryProject(
-      queryId: BigNumberish,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      metadata: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
-
-  filters: {
-    "CreateQuery(uint256,address,bytes32)"(
-      queryId?: null,
-      creator?: null,
-      metadata?: null
-    ): TypedEventFilter<
-      [BigNumber, string, string],
-      { queryId: BigNumber; creator: string; metadata: string }
-    >;
-
-    CreateQuery(
-      queryId?: null,
-      creator?: null,
-      metadata?: null
-    ): TypedEventFilter<
-      [BigNumber, string, string],
-      { queryId: BigNumber; creator: string; metadata: string }
-    >;
-
-    "OwnershipTransferred(address,address)"(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): TypedEventFilter<
-      [string, string],
-      { previousOwner: string; newOwner: string }
-    >;
-
-    OwnershipTransferred(
-      previousOwner?: string | null,
-      newOwner?: string | null
-    ): TypedEventFilter<
-      [string, string],
-      { previousOwner: string; newOwner: string }
-    >;
-
-    "StartIndexing(address,bytes32)"(
-      indexer?: null,
-      deploymentId?: null
-    ): TypedEventFilter<
-      [string, string],
-      { indexer: string; deploymentId: string }
-    >;
-
-    StartIndexing(
-      indexer?: null,
-      deploymentId?: null
-    ): TypedEventFilter<
-      [string, string],
-      { indexer: string; deploymentId: string }
-    >;
-
-    "StopIndexing(address,bytes32)"(
-      indexer?: null,
-      deploymentId?: null
-    ): TypedEventFilter<
-      [string, string],
-      { indexer: string; deploymentId: string }
-    >;
-
-    StopIndexing(
-      indexer?: null,
-      deploymentId?: null
-    ): TypedEventFilter<
-      [string, string],
-      { indexer: string; deploymentId: string }
-    >;
-
-    "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256,uint8)"(
-      indexer?: null,
-      deploymentId?: null,
-      blockheight?: null,
-      mmrRoot?: null,
-      timestamp?: null,
-      status?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber, string, BigNumber, number],
-      {
-        indexer: string;
-        deploymentId: string;
-        blockheight: BigNumber;
-        mmrRoot: string;
-        timestamp: BigNumber;
-        status: number;
-      }
-    >;
-
-    UpdateDeploymentStatus(
-      indexer?: null,
-      deploymentId?: null,
-      blockheight?: null,
-      mmrRoot?: null,
-      timestamp?: null,
-      status?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber, string, BigNumber, number],
-      {
-        indexer: string;
-        deploymentId: string;
-        blockheight: BigNumber;
-        mmrRoot: string;
-        timestamp: BigNumber;
-        status: number;
-      }
-    >;
-
-    "UpdateQuery(uint256,bytes32,address,bytes32)"(
-      queryId?: null,
-      version?: null,
-      owner?: null,
-      metadata?: null
-    ): TypedEventFilter<
-      [BigNumber, string, string, string],
-      { queryId: BigNumber; version: string; owner: string; metadata: string }
-    >;
-
-    UpdateQuery(
-      queryId?: null,
-      version?: null,
-      owner?: null,
-      metadata?: null
-    ): TypedEventFilter<
-      [BigNumber, string, string, string],
-      { queryId: BigNumber; version: string; owner: string; metadata: string }
-    >;
-  };
-
-  estimateGas: {
-    createQueryProject(
-      metadata: BytesLike,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    deploymentStatusByIndexer(
-      arg0: BytesLike,
-      arg1: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    isOffline(
-      deploymentId: BytesLike,
-      indexer: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    nextQueryId(overrides?: CallOverrides): Promise<BigNumber>;
-
-    numberOfIndexingDeployments(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
-
-    queryInfoCountByOwner(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    queryInfoIdsByOwner(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    queryInfos(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    reportIndexingStatus(
-      deploymentId: BytesLike,
-      _blockheight: BigNumberish,
-      _mmrRoot: BytesLike,
-      _timestamp: BigNumberish,
-      status: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setSettings(
-      _settings: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    settings(overrides?: CallOverrides): Promise<BigNumber>;
-
-    startIndexing(
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    stopIndexing(
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    unregisterQuery(
-      _queryId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    updateQueryProject(
-      queryId: BigNumberish,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      metadata: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-  };
-
-  populateTransaction: {
-    createQueryProject(
-      metadata: BytesLike,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    deploymentStatusByIndexer(
-      arg0: BytesLike,
-      arg1: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    isOffline(
-      deploymentId: BytesLike,
-      indexer: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    nextQueryId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    numberOfIndexingDeployments(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    queryInfoCountByOwner(
-      user: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    queryInfoIdsByOwner(
-      arg0: string,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    queryInfos(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    reportIndexingStatus(
-      deploymentId: BytesLike,
-      _blockheight: BigNumberish,
-      _mmrRoot: BytesLike,
-      _timestamp: BigNumberish,
-      status: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setSettings(
-      _settings: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    settings(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    startIndexing(
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    stopIndexing(
-      deploymentId: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    transferOwnership(
-      newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    unregisterQuery(
-      _queryId: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    updateQueryProject(
-      queryId: BigNumberish,
-      version: BytesLike,
-      deploymentId: BytesLike,
-      metadata: BytesLike,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-  };
-}
+// export class QueryRegistry extends BaseContract {
+//   connect(signerOrProvider: Signer | Provider | string): this;
+//   attach(addressOrName: string): this;
+//   deployed(): Promise<this>;
+
+//   listeners<EventArgsArray extends Array<any>, EventArgsObject>(
+//     eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
+//   ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
+//   off<EventArgsArray extends Array<any>, EventArgsObject>(
+//     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+//     listener: TypedListener<EventArgsArray, EventArgsObject>
+//   ): this;
+//   on<EventArgsArray extends Array<any>, EventArgsObject>(
+//     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+//     listener: TypedListener<EventArgsArray, EventArgsObject>
+//   ): this;
+//   once<EventArgsArray extends Array<any>, EventArgsObject>(
+//     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+//     listener: TypedListener<EventArgsArray, EventArgsObject>
+//   ): this;
+//   removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
+//     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+//     listener: TypedListener<EventArgsArray, EventArgsObject>
+//   ): this;
+//   removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
+//     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
+//   ): this;
+
+//   listeners(eventName?: string): Array<Listener>;
+//   off(eventName: string, listener: Listener): this;
+//   on(eventName: string, listener: Listener): this;
+//   once(eventName: string, listener: Listener): this;
+//   removeListener(eventName: string, listener: Listener): this;
+//   removeAllListeners(eventName?: string): this;
+
+//   queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
+//     event: TypedEventFilter<EventArgsArray, EventArgsObject>,
+//     fromBlockOrBlockhash?: string | number | undefined,
+//     toBlock?: string | number | undefined
+//   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
+
+//   interface: QueryRegistryInterface;
+
+//   functions: {
+//     createQueryProject(
+//       metadata: BytesLike,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     deploymentStatusByIndexer(
+//       arg0: BytesLike,
+//       arg1: string,
+//       overrides?: CallOverrides
+//     ): Promise<
+//       [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
+//         indexer: string;
+//         deploymentId: string;
+//         blockheight: BigNumber;
+//         hash: BigNumber;
+//         mmrRoot: string;
+//         timestamp: BigNumber;
+//         status: number;
+//       }
+//     >;
+
+//     isOffline(
+//       deploymentId: BytesLike,
+//       indexer: string,
+//       overrides?: CallOverrides
+//     ): Promise<[boolean]>;
+
+//     nextQueryId(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+//     numberOfIndexingDeployments(
+//       arg0: string,
+//       overrides?: CallOverrides
+//     ): Promise<[BigNumber]>;
+
+//     owner(overrides?: CallOverrides): Promise<[string]>;
+
+//     queryInfoCountByOwner(
+//       user: string,
+//       overrides?: CallOverrides
+//     ): Promise<[BigNumber]>;
+
+//     queryInfoIdsByOwner(
+//       arg0: string,
+//       arg1: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<[BigNumber]>;
+
+//     queryInfos(
+//       arg0: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<
+//       [BigNumber, string, string, string, string] & {
+//         queryId: BigNumber;
+//         owner: string;
+//         latestVersion: string;
+//         latestDeploymentId: string;
+//         metadata: string;
+//       }
+//     >;
+
+//     renounceOwnership(
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     reportIndexingStatus(
+//       deploymentId: BytesLike,
+//       _blockheight: BigNumberish,
+//       _mmrRoot: BytesLike,
+//       _timestamp: BigNumberish,
+//       status: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     setSettings(
+//       _settings: string,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     settings(overrides?: CallOverrides): Promise<[string]>;
+
+//     startIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     stopIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     transferOwnership(
+//       newOwner: string,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     unregisterQuery(
+//       _queryId: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     updateQueryProject(
+//       queryId: BigNumberish,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       metadata: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+//   };
+
+//   createQueryProject(
+//     metadata: BytesLike,
+//     version: BytesLike,
+//     deploymentId: BytesLike,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   deploymentStatusByIndexer(
+//     arg0: BytesLike,
+//     arg1: string,
+//     overrides?: CallOverrides
+//   ): Promise<
+//     [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
+//       indexer: string;
+//       deploymentId: string;
+//       blockheight: BigNumber;
+//       hash: BigNumber;
+//       mmrRoot: string;
+//       timestamp: BigNumber;
+//       status: number;
+//     }
+//   >;
+
+//   isOffline(
+//     deploymentId: BytesLike,
+//     indexer: string,
+//     overrides?: CallOverrides
+//   ): Promise<boolean>;
+
+//   nextQueryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+//   numberOfIndexingDeployments(
+//     arg0: string,
+//     overrides?: CallOverrides
+//   ): Promise<BigNumber>;
+
+//   owner(overrides?: CallOverrides): Promise<string>;
+
+//   queryInfoCountByOwner(
+//     user: string,
+//     overrides?: CallOverrides
+//   ): Promise<BigNumber>;
+
+//   queryInfoIdsByOwner(
+//     arg0: string,
+//     arg1: BigNumberish,
+//     overrides?: CallOverrides
+//   ): Promise<BigNumber>;
+
+//   queryInfos(
+//     arg0: BigNumberish,
+//     overrides?: CallOverrides
+//   ): Promise<
+//     [BigNumber, string, string, string, string] & {
+//       queryId: BigNumber;
+//       owner: string;
+//       latestVersion: string;
+//       latestDeploymentId: string;
+//       metadata: string;
+//     }
+//   >;
+
+//   renounceOwnership(
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   reportIndexingStatus(
+//     deploymentId: BytesLike,
+//     _blockheight: BigNumberish,
+//     _mmrRoot: BytesLike,
+//     _timestamp: BigNumberish,
+//     status: BigNumberish,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   setSettings(
+//     _settings: string,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   settings(overrides?: CallOverrides): Promise<string>;
+
+//   startIndexing(
+//     deploymentId: BytesLike,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   stopIndexing(
+//     deploymentId: BytesLike,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   transferOwnership(
+//     newOwner: string,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   unregisterQuery(
+//     _queryId: BigNumberish,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   updateQueryProject(
+//     queryId: BigNumberish,
+//     version: BytesLike,
+//     deploymentId: BytesLike,
+//     metadata: BytesLike,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   callStatic: {
+//     createQueryProject(
+//       metadata: BytesLike,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     deploymentStatusByIndexer(
+//       arg0: BytesLike,
+//       arg1: string,
+//       overrides?: CallOverrides
+//     ): Promise<
+//       [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
+//         indexer: string;
+//         deploymentId: string;
+//         blockheight: BigNumber;
+//         hash: BigNumber;
+//         mmrRoot: string;
+//         timestamp: BigNumber;
+//         status: number;
+//       }
+//     >;
+
+//     isOffline(
+//       deploymentId: BytesLike,
+//       indexer: string,
+//       overrides?: CallOverrides
+//     ): Promise<boolean>;
+
+//     nextQueryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+//     numberOfIndexingDeployments(
+//       arg0: string,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     owner(overrides?: CallOverrides): Promise<string>;
+
+//     queryInfoCountByOwner(
+//       user: string,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     queryInfoIdsByOwner(
+//       arg0: string,
+//       arg1: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     queryInfos(
+//       arg0: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<
+//       [BigNumber, string, string, string, string] & {
+//         queryId: BigNumber;
+//         owner: string;
+//         latestVersion: string;
+//         latestDeploymentId: string;
+//         metadata: string;
+//       }
+//     >;
+
+//     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+//     reportIndexingStatus(
+//       deploymentId: BytesLike,
+//       _blockheight: BigNumberish,
+//       _mmrRoot: BytesLike,
+//       _timestamp: BigNumberish,
+//       status: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     setSettings(_settings: string, overrides?: CallOverrides): Promise<void>;
+
+//     settings(overrides?: CallOverrides): Promise<string>;
+
+//     startIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     stopIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     transferOwnership(
+//       newOwner: string,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     unregisterQuery(
+//       _queryId: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     updateQueryProject(
+//       queryId: BigNumberish,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       metadata: BytesLike,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+//   };
+
+//   filters: {
+//     "CreateQuery(uint256,address,bytes32)"(
+//       queryId?: null,
+//       creator?: null,
+//       metadata?: null
+//     ): TypedEventFilter<
+//       [BigNumber, string, string],
+//       { queryId: BigNumber; creator: string; metadata: string }
+//     >;
+
+//     CreateQuery(
+//       queryId?: null,
+//       creator?: null,
+//       metadata?: null
+//     ): TypedEventFilter<
+//       [BigNumber, string, string],
+//       { queryId: BigNumber; creator: string; metadata: string }
+//     >;
+
+//     "OwnershipTransferred(address,address)"(
+//       previousOwner?: string | null,
+//       newOwner?: string | null
+//     ): TypedEventFilter<
+//       [string, string],
+//       { previousOwner: string; newOwner: string }
+//     >;
+
+//     OwnershipTransferred(
+//       previousOwner?: string | null,
+//       newOwner?: string | null
+//     ): TypedEventFilter<
+//       [string, string],
+//       { previousOwner: string; newOwner: string }
+//     >;
+
+//     "StartIndexing(address,bytes32)"(
+//       indexer?: null,
+//       deploymentId?: null
+//     ): TypedEventFilter<
+//       [string, string],
+//       { indexer: string; deploymentId: string }
+//     >;
+
+//     StartIndexing(
+//       indexer?: null,
+//       deploymentId?: null
+//     ): TypedEventFilter<
+//       [string, string],
+//       { indexer: string; deploymentId: string }
+//     >;
+
+//     "StopIndexing(address,bytes32)"(
+//       indexer?: null,
+//       deploymentId?: null
+//     ): TypedEventFilter<
+//       [string, string],
+//       { indexer: string; deploymentId: string }
+//     >;
+
+//     StopIndexing(
+//       indexer?: null,
+//       deploymentId?: null
+//     ): TypedEventFilter<
+//       [string, string],
+//       { indexer: string; deploymentId: string }
+//     >;
+
+//     "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256,uint8)"(
+//       indexer?: null,
+//       deploymentId?: null,
+//       blockheight?: null,
+//       mmrRoot?: null,
+//       timestamp?: null,
+//       status?: null
+//     ): TypedEventFilter<
+//       [string, string, BigNumber, string, BigNumber, number],
+//       {
+//         indexer: string;
+//         deploymentId: string;
+//         blockheight: BigNumber;
+//         mmrRoot: string;
+//         timestamp: BigNumber;
+//         status: number;
+//       }
+//     >;
+
+//     UpdateDeploymentStatus(
+//       indexer?: null,
+//       deploymentId?: null,
+//       blockheight?: null,
+//       mmrRoot?: null,
+//       timestamp?: null,
+//       status?: null
+//     ): TypedEventFilter<
+//       [string, string, BigNumber, string, BigNumber, number],
+//       {
+//         indexer: string;
+//         deploymentId: string;
+//         blockheight: BigNumber;
+//         mmrRoot: string;
+//         timestamp: BigNumber;
+//         status: number;
+//       }
+//     >;
+
+//     "UpdateQuery(uint256,bytes32,address,bytes32)"(
+//       queryId?: null,
+//       version?: null,
+//       owner?: null,
+//       metadata?: null
+//     ): TypedEventFilter<
+//       [BigNumber, string, string, string],
+//       { queryId: BigNumber; version: string; owner: string; metadata: string }
+//     >;
+
+//     UpdateQuery(
+//       queryId?: null,
+//       version?: null,
+//       owner?: null,
+//       metadata?: null
+//     ): TypedEventFilter<
+//       [BigNumber, string, string, string],
+//       { queryId: BigNumber; version: string; owner: string; metadata: string }
+//     >;
+//   };
+
+//   estimateGas: {
+//     createQueryProject(
+//       metadata: BytesLike,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     deploymentStatusByIndexer(
+//       arg0: BytesLike,
+//       arg1: string,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     isOffline(
+//       deploymentId: BytesLike,
+//       indexer: string,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     nextQueryId(overrides?: CallOverrides): Promise<BigNumber>;
+
+//     numberOfIndexingDeployments(
+//       arg0: string,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+//     queryInfoCountByOwner(
+//       user: string,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     queryInfoIdsByOwner(
+//       arg0: string,
+//       arg1: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     queryInfos(
+//       arg0: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<BigNumber>;
+
+//     renounceOwnership(
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     reportIndexingStatus(
+//       deploymentId: BytesLike,
+//       _blockheight: BigNumberish,
+//       _mmrRoot: BytesLike,
+//       _timestamp: BigNumberish,
+//       status: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     setSettings(
+//       _settings: string,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     settings(overrides?: CallOverrides): Promise<BigNumber>;
+
+//     startIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     stopIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     transferOwnership(
+//       newOwner: string,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     unregisterQuery(
+//       _queryId: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     updateQueryProject(
+//       queryId: BigNumberish,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       metadata: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+//   };
+
+//   populateTransaction: {
+//     createQueryProject(
+//       metadata: BytesLike,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     deploymentStatusByIndexer(
+//       arg0: BytesLike,
+//       arg1: string,
+//       overrides?: CallOverrides
+//     ): Promise<PopulatedTransaction>;
+
+//     isOffline(
+//       deploymentId: BytesLike,
+//       indexer: string,
+//       overrides?: CallOverrides
+//     ): Promise<PopulatedTransaction>;
+
+//     nextQueryId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+//     numberOfIndexingDeployments(
+//       arg0: string,
+//       overrides?: CallOverrides
+//     ): Promise<PopulatedTransaction>;
+
+//     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+//     queryInfoCountByOwner(
+//       user: string,
+//       overrides?: CallOverrides
+//     ): Promise<PopulatedTransaction>;
+
+//     queryInfoIdsByOwner(
+//       arg0: string,
+//       arg1: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<PopulatedTransaction>;
+
+//     queryInfos(
+//       arg0: BigNumberish,
+//       overrides?: CallOverrides
+//     ): Promise<PopulatedTransaction>;
+
+//     renounceOwnership(
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     reportIndexingStatus(
+//       deploymentId: BytesLike,
+//       _blockheight: BigNumberish,
+//       _mmrRoot: BytesLike,
+//       _timestamp: BigNumberish,
+//       status: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     setSettings(
+//       _settings: string,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     settings(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+//     startIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     stopIndexing(
+//       deploymentId: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     transferOwnership(
+//       newOwner: string,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     unregisterQuery(
+//       _queryId: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     updateQueryProject(
+//       queryId: BigNumberish,
+//       version: BytesLike,
+//       deploymentId: BytesLike,
+//       metadata: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+//   };
+// }

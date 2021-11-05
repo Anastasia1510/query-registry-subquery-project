@@ -6,8 +6,8 @@ repository: ''
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x401a1f9dca3da46f5c4091016c8a2f26dcea05865116b286f60f668207d1474b' # Moonriver
-  endpoint: wss://moonriver.api.onfinality.io/public-ws
+  genesisHash: '0x956876d5b80e47e523a6629b3c3ac3e42f2850ad12e236d87a0aaac87c9f6bc9' # Moonriver
+  endpoint: ws://127.0.0.1:9944
 
   chaintypes:
     file: "./types.yaml"
@@ -16,7 +16,9 @@ dataSources:
     startBlock: 1
     processor:
       file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
-    abi: queryRegistry
+      options:
+        abi: queryRegistry
+        address: '0xeAB4eEBa1FF8504c124D031F6844AD98d07C318f'
     assets:
       queryRegistry:
         file: ./queryRegistry.abi.json
@@ -26,29 +28,26 @@ dataSources:
         - handler: handleNewQuery
           kind: substrate/MoonbeamEvent
           filter:
-            address: '0x0000000000' #TODO
             topics:
               - CreateQuery(uint256 queryId, address creator, bytes32 metadata)
+            # function:
+            #   - createQueryProject(bytes32 metadata, bytes32 version, bytes32 deploymentId)
         - handler: handleUpdateQuery
           kind: substrate/MoonbeamCall
           filter:
-            to: '0x0000000000' #TODO
             function: updateQueryProject(uint256 queryId, bytes32 version, bytes32 deploymentId, bytes32 metadata)
         - handler: handleStartIndexing
           kind: substrate/MoonbeamEvent
           filter:
-            address: '0x0000000000' #TODO
             topics:
               - StartIndexing(address indexer, bytes32 deploymentId)
         - handler: handleIndexingUpdate
           kind: substrate/MoonbeamEvent
           filter:
-            address: '0x0000000000' #TODO
             topics:
               - UpdateDeploymentStatus(address indexer, bytes32 deploymentId, uint256 blockheight, bytes32 mmrRoot, uint256 timestamp, IndexingServiceStatus status)
         - handler: handleStopIndexing
           kind: substrate/MoonbeamEvent
           filter:
-            address: '0x0000000000' #TODO
             topics:
               - StopIndexing(address indexer, bytes32 deploymentId)

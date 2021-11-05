@@ -53,7 +53,7 @@ export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args
 }
 
 export async function handleUpdateQuery(call: MoonbeamCall<UpdateQueryCall>): Promise<void> {
-    // TODO need to check that the tx was successful
+    if (!call.success) return;
 
     const deploymentId = bytesToIpfsCid(call.args.deploymentId);
     const version = bytesToIpfsCid(call.args.version);
@@ -64,7 +64,7 @@ export async function handleUpdateQuery(call: MoonbeamCall<UpdateQueryCall>): Pr
         deployment = Deployment.create({
             id: deploymentId,
             version,
-            indexersId: [],
+            // indexersId: [],
         });
 
         deployment.save();
@@ -91,9 +91,9 @@ export async function handleStartIndexing(event: MoonbeamEvent<StartIndexingEven
     });
     await indexer.save();
 
-    const deployment = await Deployment.get(deploymentId);
-    deployment.indexersId.push(indexer.id);
-    await deployment.save();
+    // const deployment = await Deployment.get(deploymentId);
+    // deployment.indexersId.push(indexer.id);
+    // await deployment.save();
 }
 
 export async function handleIndexingUpdate(event: MoonbeamEvent<UpdateDeploymentStatusEvent['args']>): Promise<void> {

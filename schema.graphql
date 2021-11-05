@@ -6,15 +6,13 @@ type Project @entity {
   currentDeployment: Deployment
   currentVersion: String # IPFS hash
 
-  deployments: [Deployment]!
+  deployments: [Deployment]# @derivedFrom(field: "project")
 }
 
 type Deployment @entity {
   id: ID! # deploymentId, IPFS hash to deployment
-
   version: String! # IPFS hash to version info
-
-  indexers: [Indexer]!
+  indexers: [Indexer]! @derivedFrom(field: "deployment")
 }
 
 type Indexer @entity {
@@ -27,4 +25,6 @@ type Indexer @entity {
   mmrRoot: String
   timestamp: Date
   status: String! # 'indexing' | 'ready' | 'terminated'
+
+  # endpoint: String! # TODO need updated contract
 }
