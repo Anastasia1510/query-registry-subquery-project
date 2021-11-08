@@ -11,8 +11,10 @@ import {
     StartIndexingEvent,
     UpdateDeploymentStatusEvent,
     StopIndexingEvent,
-    UpdateQueryEvent,
+    UpdateQueryMetadataEvent,
+    UpdateQueryDeploymentEvent,
 } from '../types/QueryRegistry'; // TODO import this from @subql/contracts when that is updated
+import { ProjectDeployment } from '../types/models/ProjectDeployment';
 
 type UpdateQueryCall = [BigNumber, string, string, string] & { queryId: BigNumber; version: string; deploymentId: string; metadata: string; };
 
@@ -42,40 +44,80 @@ function bytesToIpfsCid(raw: string): string {
 }
 
 export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args']>): Promise<void> {
-    const project = Project.create({
-        id: event.args.queryId.toHexString(),
-        owner: event.args.creator,
-        metadata: bytesToIpfsCid(event.args.metadata),
-        deploymentsId: [],
+
+    const projectId = event.args.queryId.toHexString();
+    const deploymentId = event.args.deploymentId; // TODO need updated contract
+    const currentVersion = event.args.version; // TODO need updated contract
+
+    const projectDeployment = ProjectDeployment.create({
+        id: `${projectId}-${deploymentId}`,
+        projectId: projectId,
+        deploymentId,
     });
 
-    await project.save();
-}
-
-export async function handleUpdateQuery(call: MoonbeamCall<UpdateQueryCall>): Promise<void> {
-    if (!call.success) return;
-
-    const deploymentId = bytesToIpfsCid(call.args.deploymentId);
-    const version = bytesToIpfsCid(call.args.version);
-
     let deployment = await Deployment.get(deploymentId);
-
     if (!deployment) {
         deployment = Deployment.create({
             id: deploymentId,
-            version,
-            // indexersId: [],
+            version: currentVersion,
         });
 
         deployment.save();
     }
 
-    const project = await Project.get(call.args.queryId.toHexString());
+    projectDeployment.save();
 
-    project.currentDeploymentId = deploymentId;
+    const project = Project.create({
+        id: projectId,
+        owner: event.args.creator,
+        metadata: bytesToIpfsCid(event.args.metadata),
+        currentDeployment: deploymentId,
+        currentVersion,
+    });
+
+    await project.save();
+}
+
+export async function handleUpdateQueryMetadata(event: MoonbeamEvent<UpdateQueryMetadataEvent['args']>): Promise<void> {
+    const queryId = event.args.queryId.toHexString();
+    const project = await Project.get(queryId);
+
+    project.metadata = bytesToIpfsCid(event.args.metadata);
+
+    await project.save();
+}
+
+export async function handleUpdateQueryDeployment(event: MoonbeamEvent<UpdateQueryDeploymentEvent['args']>): Promise<void> {
+    const queryId = event.args.queryId.toHexString();
+    const deploymentId = bytesToIpfsCid(event.args.deploymentId);
+    const version = bytesToIpfsCid(event.args.version);
+    const projectDeploymentId = `${queryId}-${deploymentId}`;
+
+    let deployment = await Deployment.get(deploymentId);
+    if (!deployment) {
+        deployment = Deployment.create({
+            id: deploymentId,
+            version,
+        });
+
+        deployment.save();
+    }
+
+    let projectDeployment = await ProjectDeployment.get(projectDeploymentId);
+    if (!projectDeployment) {
+        projectDeployment = ProjectDeployment.create({
+            id: projectDeploymentId,
+            projectId: queryId,
+            deploymentId,
+        });
+
+        await projectDeployment.save();
+    }
+
+    const project = await Project.get(queryId);
+
+    project.currentDeployment = deploymentId;
     project.currentVersion = version;
-    project.metadata = bytesToIpfsCid(call.args.metadata);
-    project.deploymentsId.push(deploymentId);
 
     await project.save();
 }
@@ -90,10 +132,6 @@ export async function handleStartIndexing(event: MoonbeamEvent<StartIndexingEven
         status: 'indexing',
     });
     await indexer.save();
-
-    // const deployment = await Deployment.get(deploymentId);
-    // deployment.indexersId.push(indexer.id);
-    // await deployment.save();
 }
 
 export async function handleIndexingUpdate(event: MoonbeamEvent<UpdateDeploymentStatusEvent['args']>): Promise<void> {
@@ -111,5 +149,5 @@ export async function handleStopIndexing(event: MoonbeamEvent<StopIndexingEvent[
     indexer.status = 'terminated';
     await indexer.save();
 
-    // TODO remove reference in deployment?
+    // TODO remove indexer instead?
 }

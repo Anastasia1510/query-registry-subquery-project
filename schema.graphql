@@ -1,17 +1,33 @@
+
+# enum Status {
+#   INDEXING
+#   READY
+#   TERMINATED
+# }
+
 type Project @entity {
   id: ID!
 
   owner: String!
   metadata: String! # IPFS hash
-  currentDeployment: Deployment
-  currentVersion: String # IPFS hash
+  currentDeployment: String! # IPFS hash
+  currentVersion: String! # IPFS hash
 
-  deployments: [Deployment]# @derivedFrom(field: "project")
+  deployments: [ProjectDeployment] @derivedFrom(field: "project")
+}
+
+type ProjectDeployment @entity {
+  id: ID!
+
+  project: Project!
+  deployment: Deployment!
 }
 
 type Deployment @entity {
   id: ID! # deploymentId, IPFS hash to deployment
+
   version: String! # IPFS hash to version info
+  projects: [ProjectDeployment] @derivedFrom(field: "deployment")
   indexers: [Indexer]! @derivedFrom(field: "deployment")
 }
 
@@ -24,7 +40,7 @@ type Indexer @entity {
   blockHeight: BigInt!
   mmrRoot: String
   timestamp: Date
-  status: String! # 'indexing' | 'ready' | 'terminated'
+  status: String! # Status!
 
   # endpoint: String! # TODO need updated contract
 }

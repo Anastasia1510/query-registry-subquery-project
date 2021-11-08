@@ -18,10 +18,10 @@ dataSources:
       file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
       options:
         abi: queryRegistry
-        address: '0xeAB4eEBa1FF8504c124D031F6844AD98d07C318f'
+        address: '0xEC69d4f48f4f1740976968FAb9828d645Ad1d77f'
     assets:
       queryRegistry:
-        file: ./queryRegistry.abi.json
+        file: ./src/queryRegistry.abi.json
     mapping:
       file: ./dist/index.js
       handlers:
@@ -29,13 +29,15 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - CreateQuery(uint256 queryId, address creator, bytes32 metadata)
-            # function:
-            #   - createQueryProject(bytes32 metadata, bytes32 version, bytes32 deploymentId)
-        - handler: handleUpdateQuery
-          kind: substrate/MoonbeamCall
+              - CreateQuery(uint256 queryId, address creator, bytes32 metadata, bytes32 deploymentId, bytes32 version)
+        - handler: handleUpdateQueryMetadata
+          kind: substrate/MoonbeamEvent
           filter:
-            function: updateQueryProject(uint256 queryId, bytes32 version, bytes32 deploymentId, bytes32 metadata)
+            topics: UpdateQueryMetadata(address owner, uint256 queryId, bytes32 metadata)
+        - handler: handleUpdateQueryDeployment
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics: UpdateQueryDeployment( address owner, uint256 queryId, bytes32 deploymentId, bytes32 version)
         - handler: handleStartIndexing
           kind: substrate/MoonbeamEvent
           filter:

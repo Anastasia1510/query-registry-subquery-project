@@ -17,36 +17,15 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-
-export interface TypedEventFilter<_EventArgsArray, _EventArgsObject>
-  extends EventFilter {}
-
-export interface TypedEvent<EventArgs extends Result> extends Event {
-  args: EventArgs;
+export interface TypedEventFilter<_EventArgsArray, _EventArgsObject> extends EventFilter {
 }
-
-export type TypedListener<
-  EventArgsArray extends Array<any>,
-  EventArgsObject
-> = (
-  ...listenerArg: [
+export interface TypedEvent<EventArgs extends Result> extends Event {
+    args: EventArgs;
+}
+export declare type TypedListener<EventArgsArray extends Array<any>, EventArgsObject> = (...listenerArg: [
     ...EventArgsArray,
     TypedEvent<EventArgsArray & EventArgsObject>
-  ]
-) => void;
-
-export type MinEthersFactory<C, ARGS> = {
-  deploy(...a: ARGS[]): Promise<C>;
-};
-export type GetContractTypeFromFactory<F> = F extends MinEthersFactory<
-  infer C,
-  any
->
-  ? C
-  : never;
-export type GetARGsTypeFromFactory<F> = F extends MinEthersFactory<any, any>
-  ? Parameters<F["deploy"]>
-  : never;
+]) => void;
 
 
 interface QueryRegistryInterface extends ethers.utils.Interface {
@@ -68,7 +47,8 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     "stopIndexing(bytes32)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unregisterQuery(uint256)": FunctionFragment;
-    "updateQueryProject(uint256,bytes32,bytes32,bytes32)": FunctionFragment;
+    "updateDeployment(uint256,bytes32,bytes32)": FunctionFragment;
+    "updateQueryProjectMetadata(uint256,bytes32)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -131,8 +111,12 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateQueryProject",
-    values: [BigNumberish, BytesLike, BytesLike, BytesLike]
+    functionFragment: "updateDeployment",
+    values: [BigNumberish, BytesLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateQueryProjectMetadata",
+    values: [BigNumberish, BytesLike]
   ): string;
 
   decodeFunctionResult(
@@ -192,17 +176,22 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateQueryProject",
+    functionFragment: "updateDeployment",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateQueryProjectMetadata",
     data: BytesLike
   ): Result;
 
   events: {
-    "CreateQuery(uint256,address,bytes32)": EventFragment;
+    "CreateQuery(uint256,address,bytes32,bytes32,bytes32)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "StartIndexing(address,bytes32)": EventFragment;
     "StopIndexing(address,bytes32)": EventFragment;
     "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256,uint8)": EventFragment;
-    "UpdateQuery(uint256,bytes32,address,bytes32)": EventFragment;
+    "UpdateQueryDeployment(address,uint256,bytes32,bytes32)": EventFragment;
+    "UpdateQueryMetadata(address,uint256,bytes32)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "CreateQuery"): EventFragment;
@@ -210,14 +199,17 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "StartIndexing"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StopIndexing"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateDeploymentStatus"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateQuery"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateQueryDeployment"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateQueryMetadata"): EventFragment;
 }
 
 export type CreateQueryEvent = TypedEvent<
-  [BigNumber, string, string] & {
+  [BigNumber, string, string, string, string] & {
     queryId: BigNumber;
     creator: string;
     metadata: string;
+    deploymentId: string;
+    version: string;
   }
 >;
 
@@ -244,11 +236,19 @@ export type UpdateDeploymentStatusEvent = TypedEvent<
   }
 >;
 
-export type UpdateQueryEvent = TypedEvent<
-  [BigNumber, string, string, string] & {
-    queryId: BigNumber;
-    version: string;
+export type UpdateQueryDeploymentEvent = TypedEvent<
+  [string, BigNumber, string, string] & {
     owner: string;
+    queryId: BigNumber;
+    deploymentId: string;
+    version: string;
+  }
+>;
+
+export type UpdateQueryMetadataEvent = TypedEvent<
+  [string, BigNumber, string] & {
+    owner: string;
+    queryId: BigNumber;
     metadata: string;
   }
 >;
@@ -399,10 +399,15 @@ export type UpdateQueryEvent = TypedEvent<
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<ContractTransaction>;
 
-//     updateQueryProject(
+//     updateDeployment(
 //       queryId: BigNumberish,
-//       version: BytesLike,
 //       deploymentId: BytesLike,
+//       version: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
+//     updateQueryProjectMetadata(
+//       queryId: BigNumberish,
 //       metadata: BytesLike,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<ContractTransaction>;
@@ -510,10 +515,15 @@ export type UpdateQueryEvent = TypedEvent<
 //     overrides?: Overrides & { from?: string | Promise<string> }
 //   ): Promise<ContractTransaction>;
 
-//   updateQueryProject(
+//   updateDeployment(
 //     queryId: BigNumberish,
-//     version: BytesLike,
 //     deploymentId: BytesLike,
+//     version: BytesLike,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
+//   updateQueryProjectMetadata(
+//     queryId: BigNumberish,
 //     metadata: BytesLike,
 //     overrides?: Overrides & { from?: string | Promise<string> }
 //   ): Promise<ContractTransaction>;
@@ -616,32 +626,53 @@ export type UpdateQueryEvent = TypedEvent<
 //       overrides?: CallOverrides
 //     ): Promise<void>;
 
-//     updateQueryProject(
+//     updateDeployment(
 //       queryId: BigNumberish,
-//       version: BytesLike,
 //       deploymentId: BytesLike,
+//       version: BytesLike,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     updateQueryProjectMetadata(
+//       queryId: BigNumberish,
 //       metadata: BytesLike,
 //       overrides?: CallOverrides
 //     ): Promise<void>;
 //   };
 
 //   filters: {
-//     "CreateQuery(uint256,address,bytes32)"(
+//     "CreateQuery(uint256,address,bytes32,bytes32,bytes32)"(
 //       queryId?: null,
 //       creator?: null,
-//       metadata?: null
+//       metadata?: null,
+//       deploymentId?: null,
+//       version?: null
 //     ): TypedEventFilter<
-//       [BigNumber, string, string],
-//       { queryId: BigNumber; creator: string; metadata: string }
+//       [BigNumber, string, string, string, string],
+//       {
+//         queryId: BigNumber;
+//         creator: string;
+//         metadata: string;
+//         deploymentId: string;
+//         version: string;
+//       }
 //     >;
 
 //     CreateQuery(
 //       queryId?: null,
 //       creator?: null,
-//       metadata?: null
+//       metadata?: null,
+//       deploymentId?: null,
+//       version?: null
 //     ): TypedEventFilter<
-//       [BigNumber, string, string],
-//       { queryId: BigNumber; creator: string; metadata: string }
+//       [BigNumber, string, string, string, string],
+//       {
+//         queryId: BigNumber;
+//         creator: string;
+//         metadata: string;
+//         deploymentId: string;
+//         version: string;
+//       }
 //     >;
 
 //     "OwnershipTransferred(address,address)"(
@@ -730,24 +761,52 @@ export type UpdateQueryEvent = TypedEvent<
 //       }
 //     >;
 
-//     "UpdateQuery(uint256,bytes32,address,bytes32)"(
-//       queryId?: null,
-//       version?: null,
+//     "UpdateQueryDeployment(address,uint256,bytes32,bytes32)"(
 //       owner?: null,
-//       metadata?: null
+//       queryId?: null,
+//       deploymentId?: null,
+//       version?: null
 //     ): TypedEventFilter<
-//       [BigNumber, string, string, string],
-//       { queryId: BigNumber; version: string; owner: string; metadata: string }
+//       [string, BigNumber, string, string],
+//       {
+//         owner: string;
+//         queryId: BigNumber;
+//         deploymentId: string;
+//         version: string;
+//       }
 //     >;
 
-//     UpdateQuery(
-//       queryId?: null,
-//       version?: null,
+//     UpdateQueryDeployment(
 //       owner?: null,
+//       queryId?: null,
+//       deploymentId?: null,
+//       version?: null
+//     ): TypedEventFilter<
+//       [string, BigNumber, string, string],
+//       {
+//         owner: string;
+//         queryId: BigNumber;
+//         deploymentId: string;
+//         version: string;
+//       }
+//     >;
+
+//     "UpdateQueryMetadata(address,uint256,bytes32)"(
+//       owner?: null,
+//       queryId?: null,
 //       metadata?: null
 //     ): TypedEventFilter<
-//       [BigNumber, string, string, string],
-//       { queryId: BigNumber; version: string; owner: string; metadata: string }
+//       [string, BigNumber, string],
+//       { owner: string; queryId: BigNumber; metadata: string }
+//     >;
+
+//     UpdateQueryMetadata(
+//       owner?: null,
+//       queryId?: null,
+//       metadata?: null
+//     ): TypedEventFilter<
+//       [string, BigNumber, string],
+//       { owner: string; queryId: BigNumber; metadata: string }
 //     >;
 //   };
 
@@ -836,10 +895,15 @@ export type UpdateQueryEvent = TypedEvent<
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<BigNumber>;
 
-//     updateQueryProject(
+//     updateDeployment(
 //       queryId: BigNumberish,
-//       version: BytesLike,
 //       deploymentId: BytesLike,
+//       version: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     updateQueryProjectMetadata(
+//       queryId: BigNumberish,
 //       metadata: BytesLike,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<BigNumber>;
@@ -930,10 +994,15 @@ export type UpdateQueryEvent = TypedEvent<
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<PopulatedTransaction>;
 
-//     updateQueryProject(
+//     updateDeployment(
 //       queryId: BigNumberish,
-//       version: BytesLike,
 //       deploymentId: BytesLike,
+//       version: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     updateQueryProjectMetadata(
+//       queryId: BigNumberish,
 //       metadata: BytesLike,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<PopulatedTransaction>;
