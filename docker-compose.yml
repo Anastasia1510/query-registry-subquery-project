@@ -10,10 +10,24 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
 
+  moonbeam-development:
+    image: purestake/moonbeam:v0.13.2
+    volumes:
+      - .data/moonbeam:/data
+    ports:
+      - 9933:9933
+      - 9944:9944
+    command:
+      - --dev
+      - --ws-external
+      - --rpc-external
+      - --base-path=/data
+
   subquery-node:
     image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
+      - "moonbeam-development"
     restart: always
     environment:
       DB_USER: postgres
@@ -26,6 +40,7 @@ services:
     command:
       - -f=/app
       - --local
+      - --network-endpoint=ws://moonbeam-development:9944
 
   graphql-engine:
     image: onfinality/subql-query:latest

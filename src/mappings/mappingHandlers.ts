@@ -1,8 +1,7 @@
 // Copyright 2020-2021 OnFinality Limited authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { MoonbeamCall, MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
-import { BigNumber } from 'ethers';
+import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
 import { Deployment, Indexer, Project } from '../types';
 import bs58 from 'bs58';
 
@@ -15,8 +14,6 @@ import {
     UpdateQueryDeploymentEvent,
 } from '../types/QueryRegistry'; // TODO import this from @subql/contracts when that is updated
 import { ProjectDeployment } from '../types/models/ProjectDeployment';
-
-type UpdateQueryCall = [BigNumber, string, string, string] & { queryId: BigNumber; version: string; deploymentId: string; metadata: string; };
 
 type DeploymentStatus = 'notindexing' | 'indexing' | 'ready' | 'terminated';
 

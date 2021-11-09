@@ -18,7 +18,7 @@ dataSources:
       file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
       options:
         abi: queryRegistry
-        address: '0xEC69d4f48f4f1740976968FAb9828d645Ad1d77f'
+        address: '0xeAB4eEBa1FF8504c124D031F6844AD98d07C318f'
     assets:
       queryRegistry:
         file: ./src/queryRegistry.abi.json
