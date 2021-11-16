@@ -6,19 +6,21 @@ repository: ''
 schema:
   file: ./schema.graphql
 network:
-  genesisHash: '0x956876d5b80e47e523a6629b3c3ac3e42f2850ad12e236d87a0aaac87c9f6bc9' # Moonriver
-  endpoint: ws://127.0.0.1:9944
+  # genesisHash: '0x956876d5b80e47e523a6629b3c3ac3e42f2850ad12e236d87a0aaac87c9f6bc9' # Moonriver
+  genesisHash: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527' # Moonbase Alpha
+  endpoint: wss://moonbeam-alpha.api.onfinality.io/public-ws
+  # dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
 
   chaintypes:
     file: "./types.yaml"
 dataSources:
   - kind: substrate/Moonbeam
-    startBlock: 1
+    startBlock: 1162844
     processor:
       file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
       options:
         abi: queryRegistry
-        address: '0xeAB4eEBa1FF8504c124D031F6844AD98d07C318f'
+        address: '0xe5B4EA276e1030F55790bB8695bC1f8362241bb9'
     assets:
       queryRegistry:
         file: ./src/queryRegistry.abi.json
@@ -33,11 +35,13 @@ dataSources:
         - handler: handleUpdateQueryMetadata
           kind: substrate/MoonbeamEvent
           filter:
-            topics: UpdateQueryMetadata(address owner, uint256 queryId, bytes32 metadata)
+            topics:
+              - UpdateQueryMetadata(address owner, uint256 queryId, bytes32 metadata)
         - handler: handleUpdateQueryDeployment
           kind: substrate/MoonbeamEvent
           filter:
-            topics: UpdateQueryDeployment( address owner, uint256 queryId, bytes32 deploymentId, bytes32 version)
+            topics:
+              - UpdateQueryDeployment( address owner, uint256 queryId, bytes32 deploymentId, bytes32 version)
         - handler: handleStartIndexing
           kind: substrate/MoonbeamEvent
           filter:

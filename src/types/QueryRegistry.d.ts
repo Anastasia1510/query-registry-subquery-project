@@ -27,7 +27,6 @@ export declare type TypedListener<EventArgsArray extends Array<any>, EventArgsOb
     TypedEvent<EventArgsArray & EventArgsObject>
 ]) => void;
 
-
 interface QueryRegistryInterface extends ethers.utils.Interface {
   functions: {
     "createQueryProject(bytes32,bytes32,bytes32)": FunctionFragment;

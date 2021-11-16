@@ -43,8 +43,8 @@ function bytesToIpfsCid(raw: string): string {
 export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args']>): Promise<void> {
 
     const projectId = event.args.queryId.toHexString();
-    const deploymentId = event.args.deploymentId; // TODO need updated contract
-    const currentVersion = event.args.version; // TODO need updated contract
+    const deploymentId = bytesToIpfsCid(event.args.deploymentId);
+    const currentVersion = bytesToIpfsCid(event.args.version);
 
     const projectDeployment = ProjectDeployment.create({
         id: `${projectId}-${deploymentId}`,
@@ -53,16 +53,15 @@ export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args
     });
 
     let deployment = await Deployment.get(deploymentId);
+
     if (!deployment) {
         deployment = Deployment.create({
             id: deploymentId,
             version: currentVersion,
         });
 
-        deployment.save();
+        await deployment.save();
     }
-
-    projectDeployment.save();
 
     const project = Project.create({
         id: projectId,
@@ -73,6 +72,7 @@ export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args
     });
 
     await project.save();
+    await projectDeployment.save();
 }
 
 export async function handleUpdateQueryMetadata(event: MoonbeamEvent<UpdateQueryMetadataEvent['args']>): Promise<void> {
@@ -97,7 +97,7 @@ export async function handleUpdateQueryDeployment(event: MoonbeamEvent<UpdateQue
             version,
         });
 
-        deployment.save();
+        await deployment.save();
     }
 
     let projectDeployment = await ProjectDeployment.get(projectDeploymentId);
