@@ -39,7 +39,7 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     "queryInfoIdsByOwner(address,uint256)": FunctionFragment;
     "queryInfos(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
-    "reportIndexingStatus(bytes32,uint256,bytes32,uint256,uint8)": FunctionFragment;
+    "reportIndexingStatus(bytes32,uint256,bytes32,uint256)": FunctionFragment;
     "setSettings(address)": FunctionFragment;
     "settings()": FunctionFragment;
     "startIndexing(bytes32)": FunctionFragment;
@@ -47,6 +47,7 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     "transferOwnership(address)": FunctionFragment;
     "unregisterQuery(uint256)": FunctionFragment;
     "updateDeployment(uint256,bytes32,bytes32)": FunctionFragment;
+    "updateIndexingStatusToReady(bytes32,uint256)": FunctionFragment;
     "updateQueryProjectMetadata(uint256,bytes32)": FunctionFragment;
   };
 
@@ -89,7 +90,7 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "reportIndexingStatus",
-    values: [BytesLike, BigNumberish, BytesLike, BigNumberish, BigNumberish]
+    values: [BytesLike, BigNumberish, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "setSettings", values: [string]): string;
   encodeFunctionData(functionFragment: "settings", values?: undefined): string;
@@ -112,6 +113,10 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "updateDeployment",
     values: [BigNumberish, BytesLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateIndexingStatusToReady",
+    values: [BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "updateQueryProjectMetadata",
@@ -179,6 +184,10 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "updateIndexingStatusToReady",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "updateQueryProjectMetadata",
     data: BytesLike
   ): Result;
@@ -188,7 +197,8 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
     "OwnershipTransferred(address,address)": EventFragment;
     "StartIndexing(address,bytes32)": EventFragment;
     "StopIndexing(address,bytes32)": EventFragment;
-    "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256,uint8)": EventFragment;
+    "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256)": EventFragment;
+    "UpdateIndexingStatusToReady(address,bytes32,uint256)": EventFragment;
     "UpdateQueryDeployment(address,uint256,bytes32,bytes32)": EventFragment;
     "UpdateQueryMetadata(address,uint256,bytes32)": EventFragment;
   };
@@ -198,6 +208,9 @@ interface QueryRegistryInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "StartIndexing"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "StopIndexing"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateDeploymentStatus"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "UpdateIndexingStatusToReady"
+  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateQueryDeployment"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateQueryMetadata"): EventFragment;
 }
@@ -225,13 +238,20 @@ export type StopIndexingEvent = TypedEvent<
 >;
 
 export type UpdateDeploymentStatusEvent = TypedEvent<
-  [string, string, BigNumber, string, BigNumber, number] & {
+  [string, string, BigNumber, string, BigNumber] & {
     indexer: string;
     deploymentId: string;
     blockheight: BigNumber;
     mmrRoot: string;
     timestamp: BigNumber;
-    status: number;
+  }
+>;
+
+export type UpdateIndexingStatusToReadyEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    indexer: string;
+    deploymentId: string;
+    _timestamp: BigNumber;
   }
 >;
 
@@ -308,12 +328,8 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       arg1: string,
 //       overrides?: CallOverrides
 //     ): Promise<
-//       [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
-//         indexer: string;
+//       [string, BigNumber, number] & {
 //         deploymentId: string;
-//         blockheight: BigNumber;
-//         hash: BigNumber;
-//         mmrRoot: string;
 //         timestamp: BigNumber;
 //         status: number;
 //       }
@@ -367,7 +383,6 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       _blockheight: BigNumberish,
 //       _mmrRoot: BytesLike,
 //       _timestamp: BigNumberish,
-//       status: BigNumberish,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<ContractTransaction>;
 
@@ -405,6 +420,12 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<ContractTransaction>;
 
+//     updateIndexingStatusToReady(
+//       deploymentId: BytesLike,
+//       _timestamp: BigNumberish,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<ContractTransaction>;
+
 //     updateQueryProjectMetadata(
 //       queryId: BigNumberish,
 //       metadata: BytesLike,
@@ -424,12 +445,8 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //     arg1: string,
 //     overrides?: CallOverrides
 //   ): Promise<
-//     [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
-//       indexer: string;
+//     [string, BigNumber, number] & {
 //       deploymentId: string;
-//       blockheight: BigNumber;
-//       hash: BigNumber;
-//       mmrRoot: string;
 //       timestamp: BigNumber;
 //       status: number;
 //     }
@@ -483,7 +500,6 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //     _blockheight: BigNumberish,
 //     _mmrRoot: BytesLike,
 //     _timestamp: BigNumberish,
-//     status: BigNumberish,
 //     overrides?: Overrides & { from?: string | Promise<string> }
 //   ): Promise<ContractTransaction>;
 
@@ -521,6 +537,12 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //     overrides?: Overrides & { from?: string | Promise<string> }
 //   ): Promise<ContractTransaction>;
 
+//   updateIndexingStatusToReady(
+//     deploymentId: BytesLike,
+//     _timestamp: BigNumberish,
+//     overrides?: Overrides & { from?: string | Promise<string> }
+//   ): Promise<ContractTransaction>;
+
 //   updateQueryProjectMetadata(
 //     queryId: BigNumberish,
 //     metadata: BytesLike,
@@ -540,12 +562,8 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       arg1: string,
 //       overrides?: CallOverrides
 //     ): Promise<
-//       [string, string, BigNumber, BigNumber, string, BigNumber, number] & {
-//         indexer: string;
+//       [string, BigNumber, number] & {
 //         deploymentId: string;
-//         blockheight: BigNumber;
-//         hash: BigNumber;
-//         mmrRoot: string;
 //         timestamp: BigNumber;
 //         status: number;
 //       }
@@ -597,7 +615,6 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       _blockheight: BigNumberish,
 //       _mmrRoot: BytesLike,
 //       _timestamp: BigNumberish,
-//       status: BigNumberish,
 //       overrides?: CallOverrides
 //     ): Promise<void>;
 
@@ -629,6 +646,12 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       queryId: BigNumberish,
 //       deploymentId: BytesLike,
 //       version: BytesLike,
+//       overrides?: CallOverrides
+//     ): Promise<void>;
+
+//     updateIndexingStatusToReady(
+//       deploymentId: BytesLike,
+//       _timestamp: BigNumberish,
 //       overrides?: CallOverrides
 //     ): Promise<void>;
 
@@ -722,22 +745,20 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       { indexer: string; deploymentId: string }
 //     >;
 
-//     "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256,uint8)"(
+//     "UpdateDeploymentStatus(address,bytes32,uint256,bytes32,uint256)"(
 //       indexer?: null,
 //       deploymentId?: null,
 //       blockheight?: null,
 //       mmrRoot?: null,
-//       timestamp?: null,
-//       status?: null
+//       timestamp?: null
 //     ): TypedEventFilter<
-//       [string, string, BigNumber, string, BigNumber, number],
+//       [string, string, BigNumber, string, BigNumber],
 //       {
 //         indexer: string;
 //         deploymentId: string;
 //         blockheight: BigNumber;
 //         mmrRoot: string;
 //         timestamp: BigNumber;
-//         status: number;
 //       }
 //     >;
 
@@ -746,18 +767,34 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       deploymentId?: null,
 //       blockheight?: null,
 //       mmrRoot?: null,
-//       timestamp?: null,
-//       status?: null
+//       timestamp?: null
 //     ): TypedEventFilter<
-//       [string, string, BigNumber, string, BigNumber, number],
+//       [string, string, BigNumber, string, BigNumber],
 //       {
 //         indexer: string;
 //         deploymentId: string;
 //         blockheight: BigNumber;
 //         mmrRoot: string;
 //         timestamp: BigNumber;
-//         status: number;
 //       }
+//     >;
+
+//     "UpdateIndexingStatusToReady(address,bytes32,uint256)"(
+//       indexer?: null,
+//       deploymentId?: null,
+//       _timestamp?: null
+//     ): TypedEventFilter<
+//       [string, string, BigNumber],
+//       { indexer: string; deploymentId: string; _timestamp: BigNumber }
+//     >;
+
+//     UpdateIndexingStatusToReady(
+//       indexer?: null,
+//       deploymentId?: null,
+//       _timestamp?: null
+//     ): TypedEventFilter<
+//       [string, string, BigNumber],
+//       { indexer: string; deploymentId: string; _timestamp: BigNumber }
 //     >;
 
 //     "UpdateQueryDeployment(address,uint256,bytes32,bytes32)"(
@@ -863,7 +900,6 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       _blockheight: BigNumberish,
 //       _mmrRoot: BytesLike,
 //       _timestamp: BigNumberish,
-//       status: BigNumberish,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<BigNumber>;
 
@@ -898,6 +934,12 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       queryId: BigNumberish,
 //       deploymentId: BytesLike,
 //       version: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<BigNumber>;
+
+//     updateIndexingStatusToReady(
+//       deploymentId: BytesLike,
+//       _timestamp: BigNumberish,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<BigNumber>;
 
@@ -962,7 +1004,6 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       _blockheight: BigNumberish,
 //       _mmrRoot: BytesLike,
 //       _timestamp: BigNumberish,
-//       status: BigNumberish,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<PopulatedTransaction>;
 
@@ -997,6 +1038,12 @@ export type UpdateQueryMetadataEvent = TypedEvent<
 //       queryId: BigNumberish,
 //       deploymentId: BytesLike,
 //       version: BytesLike,
+//       overrides?: Overrides & { from?: string | Promise<string> }
+//     ): Promise<PopulatedTransaction>;
+
+//     updateIndexingStatusToReady(
+//       deploymentId: BytesLike,
+//       _timestamp: BigNumberish,
 //       overrides?: Overrides & { from?: string | Promise<string> }
 //     ): Promise<PopulatedTransaction>;
 

@@ -15,12 +15,12 @@ network:
     file: "./types.yaml"
 dataSources:
   - kind: substrate/Moonbeam
-    startBlock: 1162844
+    startBlock: 1171141
     processor:
       file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
       options:
         abi: queryRegistry
-        address: '0xe5B4EA276e1030F55790bB8695bC1f8362241bb9'
+        address: '0x1EBbb7E88b2f939E7D5CBf409189A721dF8C7792'
     assets:
       queryRegistry:
         file: ./src/queryRegistry.abi.json
@@ -41,7 +41,7 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - UpdateQueryDeployment( address owner, uint256 queryId, bytes32 deploymentId, bytes32 version)
+              - UpdateQueryDeployment(address owner, uint256 queryId, bytes32 deploymentId, bytes32 version)
         - handler: handleStartIndexing
           kind: substrate/MoonbeamEvent
           filter:
@@ -52,6 +52,11 @@ dataSources:
           filter:
             topics:
               - UpdateDeploymentStatus(address indexer, bytes32 deploymentId, uint256 blockheight, bytes32 mmrRoot, uint256 timestamp, IndexingServiceStatus status)
+        - handler: handleIndexingReady
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - UpdateIndexingStatusToReady(address indexer, bytes32 deploymentId, uint256 _timestamp)
         - handler: handleStopIndexing
           kind: substrate/MoonbeamEvent
           filter:

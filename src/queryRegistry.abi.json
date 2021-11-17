@@ -136,15 +136,34 @@
           "internalType": "uint256",
           "name": "timestamp",
           "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "enum IndexingServiceStatus",
-          "name": "status",
-          "type": "uint8"
         }
       ],
       "name": "UpdateDeploymentStatus",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "indexer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "deploymentId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "UpdateIndexingStatusToReady",
       "type": "event"
     },
     {
@@ -242,28 +261,8 @@
       "name": "deploymentStatusByIndexer",
       "outputs": [
         {
-          "internalType": "address",
-          "name": "indexer",
-          "type": "address"
-        },
-        {
           "internalType": "bytes32",
           "name": "deploymentId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "uint256",
-          "name": "blockheight",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "hash",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bytes32",
-          "name": "mmrRoot",
           "type": "bytes32"
         },
         {
@@ -459,11 +458,6 @@
           "internalType": "uint256",
           "name": "_timestamp",
           "type": "uint256"
-        },
-        {
-          "internalType": "enum IndexingServiceStatus",
-          "name": "status",
-          "type": "uint8"
         }
       ],
       "name": "reportIndexingStatus",
@@ -568,6 +562,24 @@
         }
       ],
       "name": "updateDeployment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "deploymentId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateIndexingStatusToReady",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

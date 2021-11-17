@@ -12,8 +12,10 @@ import {
     StopIndexingEvent,
     UpdateQueryMetadataEvent,
     UpdateQueryDeploymentEvent,
+    UpdateIndexingStatusToReadyEvent
 } from '../types/QueryRegistry'; // TODO import this from @subql/contracts when that is updated
 import { ProjectDeployment } from '../types/models/ProjectDeployment';
+import {BigNumber} from '@ethersproject/bignumber';
 
 type DeploymentStatus = 'notindexing' | 'indexing' | 'ready' | 'terminated';
 
@@ -38,6 +40,10 @@ function bytesToIpfsCid(raw: string): string {
     const hashHex = "1220" + raw.slice(2);
     const hashBytes = Buffer.from(hashHex, 'hex');
     return bs58.encode(hashBytes);
+}
+
+function bnToDate(bn: BigNumber): Date {
+    return new Date(bn.toNumber() * 1000);
 }
 
 export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args']>): Promise<void> {
@@ -135,8 +141,16 @@ export async function handleIndexingUpdate(event: MoonbeamEvent<UpdateDeployment
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const indexer = await Indexer.get(`${event.args.indexer}-${deploymentId}`);
     indexer.blockHeight = event.args.blockheight.toBigInt();
-    indexer.status = parseStatus(event.args.status);
     indexer.mmrRoot = event.args.mmrRoot;
+    indexer.timestamp = bnToDate(event.args.timestamp);
+    await indexer.save();
+}
+
+export async function handleIndexingReady(event: MoonbeamEvent<UpdateIndexingStatusToReadyEvent['args']>): Promise<void> {
+    const deploymentId = bytesToIpfsCid(event.args.deploymentId);
+    const indexer = await Indexer.get(`${event.args.indexer}-${deploymentId}`);
+    indexer.status = 'ready';
+    indexer.timestamp = bnToDate(event.args._timestamp);
     await indexer.save();
 }
 
