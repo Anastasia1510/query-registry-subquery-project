@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
-import { Deployment, Indexer, Project } from '../types';
+import { Deployment, Indexer, Project, Status } from '../types';
 import bs58 from 'bs58';
 
 import {
@@ -18,20 +18,6 @@ import { ProjectDeployment } from '../types/models/ProjectDeployment';
 import {BigNumber} from '@ethersproject/bignumber';
 
 type DeploymentStatus = 'notindexing' | 'indexing' | 'ready' | 'terminated';
-
-function parseStatus(status: number): DeploymentStatus {
-    switch(status) {
-        default:
-        case 0:
-            return 'notindexing';
-        case 1:
-            return 'indexing';
-        case 2:
-            return 'ready';
-        case 3:
-            return 'terminated';
-    }
-}
 
 function bytesToIpfsCid(raw: string): string {
     // Add our default ipfs values for first 2 bytes:
@@ -132,7 +118,7 @@ export async function handleStartIndexing(event: MoonbeamEvent<StartIndexingEven
         indexer: event.args.indexer,
         deploymentId: deploymentId,
         blockHeight: BigInt(0),
-        status: 'indexing',
+        status: Status.INDEXING,
     });
     await indexer.save();
 }
@@ -149,7 +135,7 @@ export async function handleIndexingUpdate(event: MoonbeamEvent<UpdateDeployment
 export async function handleIndexingReady(event: MoonbeamEvent<UpdateIndexingStatusToReadyEvent['args']>): Promise<void> {
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const indexer = await Indexer.get(`${event.args.indexer}-${deploymentId}`);
-    indexer.status = 'ready';
+    indexer.status = Status.READY;
     indexer.timestamp = bnToDate(event.args._timestamp);
     await indexer.save();
 }
@@ -157,7 +143,7 @@ export async function handleIndexingReady(event: MoonbeamEvent<UpdateIndexingSta
 export async function handleStopIndexing(event: MoonbeamEvent<StopIndexingEvent['args']>): Promise<void> {
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const indexer = await Indexer.get(`${event.args.indexer}-${deploymentId}`);
-    indexer.status = 'terminated';
+    indexer.status = Status.TERMINATED;
     await indexer.save();
 
     // TODO remove indexer instead?

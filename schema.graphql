@@ -1,9 +1,9 @@
 
-# enum Status {
-#   INDEXING
-#   READY
-#   TERMINATED
-# }
+enum Status {
+  INDEXING
+  READY
+  TERMINATED
+}
 
 type Project @entity {
   id: ID!
@@ -40,7 +40,7 @@ type Indexer @entity {
   blockHeight: BigInt!
   mmrRoot: String
   timestamp: Date
-  status: String! # Status!
+  status: Status!
 
   # endpoint: String! # TODO need updated contract
 }
