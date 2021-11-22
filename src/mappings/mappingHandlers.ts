@@ -17,8 +17,6 @@ import {
 import { ProjectDeployment } from '../types/models/ProjectDeployment';
 import {BigNumber} from '@ethersproject/bignumber';
 
-type DeploymentStatus = 'notindexing' | 'indexing' | 'ready' | 'terminated';
-
 function bytesToIpfsCid(raw: string): string {
     // Add our default ipfs values for first 2 bytes:
     // function:0x12=sha2, size:0x20=256 bits
