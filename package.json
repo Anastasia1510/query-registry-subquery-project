@@ -19,9 +19,9 @@
   "author": "Subquery",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polkadot/api": "^5.7.1",
+    "@polkadot/api": "^6",
     "@subql/cli": "latest",
-    "@subql/types": "^0.10.0",
+    "@subql/types": "latest",
     "@types/bs58": "^4.0.1",
     "moonbeam-types-bundle": "^2.0.0",
     "typescript": "^4.1.3"
