@@ -59,6 +59,8 @@ export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args
         metadata: bytesToIpfsCid(event.args.metadata),
         currentDeployment: deploymentId,
         currentVersion,
+        updatedTimestamp: event.blockTimestamp,
+        createdTimestamp: event.blockTimestamp,
     });
 
     await project.save();
@@ -70,6 +72,7 @@ export async function handleUpdateQueryMetadata(event: MoonbeamEvent<UpdateQuery
     const project = await Project.get(queryId);
 
     project.metadata = bytesToIpfsCid(event.args.metadata);
+    project.updatedTimestamp = event.blockTimestamp;
 
     await project.save();
 }
@@ -85,6 +88,7 @@ export async function handleUpdateQueryDeployment(event: MoonbeamEvent<UpdateQue
         deployment = Deployment.create({
             id: deploymentId,
             version,
+            createdTimestamp: event.blockTimestamp,
         });
 
         await deployment.save();
@@ -105,6 +109,7 @@ export async function handleUpdateQueryDeployment(event: MoonbeamEvent<UpdateQue
 
     project.currentDeployment = deploymentId;
     project.currentVersion = version;
+    project.updatedTimestamp = event.blockTimestamp;
 
     await project.save();
 }

@@ -12,6 +12,8 @@ type Project @entity {
   metadata: String! # IPFS hash
   currentDeployment: String! # IPFS hash
   currentVersion: String! # IPFS hash
+  updatedTimestamp: Date!
+  createdTimestamp: Date!
 
   deployments: [ProjectDeployment] @derivedFrom(field: "project")
 }
@@ -29,6 +31,7 @@ type Deployment @entity {
   version: String! # IPFS hash to version info
   projects: [ProjectDeployment] @derivedFrom(field: "deployment")
   indexers: [Indexer]! @derivedFrom(field: "deployment")
+  createdTimestamp: Date!
 }
 
 type Indexer @entity {
