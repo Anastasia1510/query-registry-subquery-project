@@ -29,5 +29,8 @@
   "dependencies": {
     "@subql/contract-processors": "^0.3.0",
     "bs58": "^4.0.1"
+  },
+  "resolutions": {
+    "class-transformer": "0.4.0"
   }
 }
