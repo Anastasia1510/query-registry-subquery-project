@@ -13,7 +13,7 @@ import {
     UpdateQueryMetadataEvent,
     UpdateQueryDeploymentEvent,
     UpdateIndexingStatusToReadyEvent
-} from '../types/QueryRegistry'; // TODO import this from @subql/contracts when that is updated
+} from '@subql/contract-sdk/typechain/QueryRegistry';
 import { ProjectDeployment } from '../types/models/ProjectDeployment';
 import {BigNumber} from '@ethersproject/bignumber';
 
