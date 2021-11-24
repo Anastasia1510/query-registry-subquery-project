@@ -48,6 +48,7 @@ export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args
         deployment = Deployment.create({
             id: deploymentId,
             version: currentVersion,
+            createdTimestamp: event.blockTimestamp,
         });
 
         await deployment.save();
