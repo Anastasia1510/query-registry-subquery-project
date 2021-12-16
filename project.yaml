@@ -52,7 +52,7 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - UpdateDeploymentStatus(address indexer, bytes32 deploymentId, uint256 blockheight, bytes32 mmrRoot, uint256 timestamp, IndexingServiceStatus status)
+              - UpdateDeploymentStatus(address indexer, bytes32 deploymentId, uint256 blockheight, bytes32 mmrRoot, uint256 timestamp)
         - handler: handleIndexingReady
           kind: substrate/MoonbeamEvent
           filter:
