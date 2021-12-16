@@ -9,21 +9,22 @@ network:
   # genesisHash: '0x956876d5b80e47e523a6629b3c3ac3e42f2850ad12e236d87a0aaac87c9f6bc9' # Moonriver
   genesisHash: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527' # Moonbase Alpha
   endpoint: wss://moonbeam-alpha.api.onfinality.io/public-ws
-  # dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
+  dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
 
   chaintypes:
     file: "./types.yaml"
 dataSources:
   - kind: substrate/Moonbeam
-    startBlock: 1171141
+    startBlock: 1358829
     processor:
       file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
       options:
         abi: queryRegistry
-        address: '0x1EBbb7E88b2f939E7D5CBf409189A721dF8C7792'
+        address: '0xB0b3f6bc7a8E0bCb2aa1Cd2Ae2dE56fbdA3c0651'
     assets:
       queryRegistry:
         file: ./src/queryRegistry.abi.json
+        # file: ./node_modules/@subql/contract-sdk/publish/contracts/QueryRegistry.json
     mapping:
       file: ./dist/index.js
       handlers:

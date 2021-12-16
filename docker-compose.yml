@@ -24,7 +24,7 @@ services:
   #     - --base-path=/data
 
   subquery-node:
-    image: onfinality/subql-node:v0.25.0
+    image: onfinality/subql-node:latest
     depends_on:
       - "postgres"
       # - "moonbeam-development"
