@@ -1,7 +1,7 @@
 // Copyright 2020-2021 OnFinality Limited authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
+import { MoonbeamEvent, MoonbeamCall } from '@subql/contract-processors/dist/moonbeam';
 import { Deployment, Indexer, Project, Status } from '../types';
 import bs58 from 'bs58';
 
@@ -30,8 +30,11 @@ function bnToDate(bn: BigNumber): Date {
     return new Date(bn.toNumber() * 1000);
 }
 
-export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args']>): Promise<void> {
+export async function handleUpdateSettings(call: MoonbeamCall<[string, string, string, string, string]>): Promise<void> {
+    await (global as any).createDynamicDatasource('QueryRegistry', { address: call.args[3]});
+}
 
+export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args']>): Promise<void> {
     const projectId = event.args.queryId.toHexString();
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const currentVersion = bytesToIpfsCid(event.args.version);
