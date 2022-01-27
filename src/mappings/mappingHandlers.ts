@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { MoonbeamEvent, MoonbeamCall } from '@subql/contract-processors/dist/moonbeam';
-import { Deployment, Indexer, Project, Status } from '../types';
+import { /*createQueryRegistryDatasource,*/ Deployment, Indexer, Project, Status } from '../types';
 import bs58 from 'bs58';
 
 import {
@@ -31,6 +31,9 @@ function bnToDate(bn: BigNumber): Date {
 }
 
 export async function handleUpdateSettings(call: MoonbeamCall<[string, string, string, string, string]>): Promise<void> {
+    // With codegen from new cli
+    // await createQueryRegistryDatasource({ address: call.args[3]});
+    // Without codegen
     await (global as any).createDynamicDatasource('QueryRegistry', { address: call.args[3]});
 }
 
