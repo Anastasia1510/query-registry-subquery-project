@@ -13,9 +13,14 @@ import assert from 'assert';
 import { Delegation, Withdrawl } from '../types';
 import FrontierEthProvider from './ethProvider';
 import { updateTotalStake, upsertEraValue } from './utils';
+import {BigNumber} from '@ethersproject/bignumber';
 
 function getDelegationId(delegator: string, indexer: string): string {
     return `${delegator}:${indexer}`;
+}
+
+function getWithdrawlId(delegator: string, index: BigNumber): string {
+    return `${delegator}:${index.toHexString()}`;
 }
 
 /* Staking Handlers */
@@ -63,41 +68,36 @@ export async function handleRemoveNomination(event: MoonbeamEvent<DelegationRemo
 }
 
 /* TODO wait for new contracts */
-// export async function handleWithdrawRequested(event: MoonbeamEvent<UnbondRequestedEvent['args']>): Promise<void> {
-//     assert(event.args, 'No event args');
+export async function handleWithdrawRequested(event: MoonbeamEvent<UnbondRequestedEvent['args']>): Promise<void> {
+    assert(event.args, 'No event args');
 
-//     const { source, indexer, amount } = event.args;
-//     const id = getDelegationId(source, indexer);
+    const { source, indexer, index, amount } = event.args;
+    const id = getWithdrawlId(source, index);
 
-//     let withdrawl = await Withdrawl.get(id);
+    const withdrawl = Withdrawl.create({
+        id,
+        delegator: source,
+        indexer,
+        index: index.toBigInt(),
+        startTime: event.blockTimestamp,
+        amount: amount.toBigInt(),
+        claimed: false,
+    });
 
-//     if (!withdrawl) {
-//         withdrawl = Withdrawl.create({
-//             id,
-//             delegator: source,
-//             indexer,
-//             startTime: event.blockTimestamp,
-//             amount: amount.toBigInt(),
-//         })
-//     } else {
-//         withdrawl.amount += amount.toBigInt();
-//         withdrawl.startTime = event.blockTimestamp;
-//     }
+    await withdrawl.save();
+}
 
-//     await withdrawl.save();
-// }
+export async function handleWithdrawClaimed(event: MoonbeamEvent<UnbondWithdrawnEvent['args']>): Promise<void> {
+    assert(event.args, 'No event args');
 
-// export async function handleWithdrawClaimed(event: MoonbeamEvent<UnbondWithdrawnEvent['args']>): Promise<void> {
-//     assert(event.args, 'No event args');
+    const { source, index } = event.args;
+    const id = getWithdrawlId(source, index);
 
-//     const { source, indexer } = event.args;
-//     const id = getDelegationId(source, indexer);
+    const withdrawl = await Withdrawl.get(id);
+    assert(withdrawl, `Expected withdrawl (${id}) to exist`);
 
-//     const withdrawl = await Withdrawl.get(id);
-//     assert(withdrawl, `Expected withdrawl (${id}) to exist`);
+    withdrawl.claimed = true;
 
-//     withdrawl.amount = BigInt(0);
-
-//     await withdrawl.save();
-// }
+    await withdrawl.save();
+}
 

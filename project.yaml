@@ -17,7 +17,7 @@ network:
 
 x-moonbeam: &moonbeam
   kind: substrate/Moonbeam
-  startBlock: 1545235 #TODO
+  startBlock: 1669156
   processor: &moonbeam-processor
     file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
   assets:
@@ -36,8 +36,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: eraManager
-        # TODO
-        # address: '0x'
+        address: '0xD12E89D18072d7067B7028DbeDdd26912C5D0E63'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -51,8 +50,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: indexerRegistry
-        # TODO
-        # address: '0x'
+        address: '0x7307232AA64Fc96B2767F8E9531d70Df44E86129'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -91,8 +89,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: staking
-        # TODO
-        # address: '0x'
+        address: '0xDcF225468b34F97497d956679E9Fa601510DC5e4'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -121,8 +118,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: queryRegistry
-        # TODO
-        # address: '0x'
+        address: '0x4018013c306C3f015566e8f2161bDbFdBC6c021D'
     mapping:
       file: ./dist/index.js
       handlers:

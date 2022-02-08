@@ -93,11 +93,15 @@ type Delegation @entity {
 type Withdrawl @entity {
   id: ID! # nominator + indexer addresses
 
+  index: BigInt! # Index of the withdrawl
+
   delegator: String! # nominator address
   indexer: String! # nominator address
 
   startTime: Date!
   amount: BigInt!
+
+  claimed: Boolean!
 }
 
 
