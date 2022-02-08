@@ -12,19 +12,117 @@ network:
   dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
 
   chaintypes:
-    file: "./types.yaml"
+    file: ./chaintypes.js
+
+
+x-moonbeam: &moonbeam
+  kind: substrate/Moonbeam
+  startBlock: 1545235 #TODO
+  processor: &moonbeam-processor
+    file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
+  assets:
+    eraManager:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/EraManager.json
+    staking:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/Staking.json
+    indexerRegistry:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/IndexerRegistry.json
+    queryRegistry:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/QueryRegistry.json
+
 dataSources:
-  - kind: substrate/Moonbeam
-    startBlock: 1358829
+  - <<: *moonbeam
     processor:
-      file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
+      <<: *moonbeam-processor
+      options:
+        abi: eraManager
+        # TODO
+        # address: '0x'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleNewEra
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - NewEraStart(uint256 indexed era, address caller)
+  - <<: *moonbeam
+    processor:
+      <<: *moonbeam-processor
+      options:
+        abi: indexerRegistry
+        # TODO
+        # address: '0x'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleRegisterIndexer
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - RegisterIndexer(address indexed indexer, uint256 amount, bytes32 metadata)
+        - handler: handleUnregisterIndexer
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - UnregisterIndexer(address indexed indexer);
+        - handler: handleUpdateIndexerMetadata
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - UpdateMetadata(address indexed indexer, bytes32 metadata)
+        - handler: handleSetControllerAccount
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - SetControllerAccount(address indexed indexer, address indexed controller)
+        - handler: handleRemoveControllerAccount
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - RemoveControllerAccount(address indexed indexer, address indexed controller)
+        - handler: handleSetCommissionRate
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - SetCommissionRate(address indexed indexer, uint256 amount)
+  - <<: *moonbeam
+    processor:
+      <<: *moonbeam-processor
+      options:
+        abi: staking
+        # TODO
+        # address: '0x'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleAddDelegation
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - DelegationAdded(address indexed source, address indexed indexer, uint256 amount)
+        - handler: handleRemoveDelegation
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - DelegationRemoved(address indexed source, address indexed indexer, uint256 amount)
+        - handler: handleWithdrawRequested
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - UnbondRequested(address indexed source, address indexed indexer, uint256 amount)
+        - handler: handleWithdrawClaimed
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - UnbondWithdrawn(address indexed source, address indexed indexer, uint256 amount, uint256 burnAmount)
+  - <<: *moonbeam
+    processor:
+      <<: *moonbeam-processor
       options:
         abi: queryRegistry
-        address: '0xB0b3f6bc7a8E0bCb2aa1Cd2Ae2dE56fbdA3c0651'
-    assets:
-      queryRegistry:
-        file: ./src/queryRegistry.abi.json
-        # file: ./node_modules/@subql/contract-sdk/publish/contracts/QueryRegistry.json
+        # TODO
+        # address: '0x'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -57,7 +155,7 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - UpdateIndexingStatusToReady(address indexer, bytes32 deploymentId, uint256 _timestamp)
+              - UpdateIndexingStatusToReady(address indexer, bytes32 deploymentId)
         - handler: handleStopIndexing
           kind: substrate/MoonbeamEvent
           filter:

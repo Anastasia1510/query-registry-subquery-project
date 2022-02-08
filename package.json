@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -b",
+    "build": "./node_modules/.bin/subql build",
     "prepack": "rm -rf dist && npm build",
     "test": "jest",
     "codegen": "./node_modules/.bin/subql codegen"
@@ -19,17 +19,19 @@
   "author": "Subquery",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@polkadot/api": "^6",
+    "@polkadot/api": "^7",
     "@subql/cli": "latest",
     "@subql/types": "latest",
     "@types/bs58": "^4.0.1",
-    "moonbeam-types-bundle": "^2.0.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@subql/contract-processors": "0.3.2-1",
-    "@subql/contract-sdk": "^0.1.1-6",
-    "bs58": "^4.0.1"
+    "@subql/contract-processors": "^0.4.2-1",
+    "@subql/contract-sdk": "^0.1.1-25",
+    "@types/pino": "^7.0.5",
+    "@types/validator": "^13.7.1",
+    "bs58": "^4.0.1",
+    "moonbeam-types-bundle": "^2.0.3"
   },
   "resolutions": {
     "class-transformer": "0.4.0"
