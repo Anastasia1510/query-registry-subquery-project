@@ -161,3 +161,8 @@ dataSources:
           filter:
             topics:
               - StopIndexing(address indexer, bytes32 deploymentId)
+        - handler: handleUnregisterQuery
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - UnregisterQuery(address indexed owner, uint256 indexed queryId)

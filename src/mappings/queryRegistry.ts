@@ -12,7 +12,8 @@ import {
     StopIndexingEvent,
     UpdateQueryMetadataEvent,
     UpdateQueryDeploymentEvent,
-    UpdateIndexingStatusToReadyEvent
+    UpdateIndexingStatusToReadyEvent,
+    UnregisterQueryEvent
 } from '@subql/contract-sdk/typechain/QueryRegistry';
 import { ProjectDeployment } from '../types/models/ProjectDeployment';
 import { bnToDate, bytesToIpfsCid } from './utils';
@@ -163,4 +164,17 @@ export async function handleStopIndexing(event: MoonbeamEvent<StopIndexingEvent[
     await indexer.save();
 
     // TODO remove indexer instead?
+}
+
+export async function handleUnregisterQuery(event: MoonbeamEvent<UnregisterQueryEvent['args']>): Promise<void> {
+    assert(event.args, 'No event args');
+
+    const projectId = event.args.queryId.toHexString();
+    const projectDeployments = await ProjectDeployment.getByProjectId(projectId);
+
+    if (projectDeployments) {
+        Promise.all(projectDeployments.map(pd => ProjectDeployment.remove(pd.id)));
+    }
+
+    await Project.remove(projectId);
 }
