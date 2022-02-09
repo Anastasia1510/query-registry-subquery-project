@@ -17,6 +17,8 @@ export async function handleNewEra(event: MoonbeamEvent<NewEraStartEvent['args']
         assert(previousEra, `Era ${previousId} doesn't exist`);
 
         previousEra.endTime = event.blockTimestamp;
+
+        await previousEra.save();
     }
 
     const era = Era.create({
