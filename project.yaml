@@ -20,7 +20,7 @@ network:
 
 x-moonbeam: &moonbeam
   kind: substrate/Moonbeam
-  startBlock: 1669156
+  startBlock: 48
   processor: &moonbeam-processor
     file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
   assets:
