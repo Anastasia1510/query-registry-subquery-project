@@ -91,7 +91,7 @@ type Delegation @entity {
 }
 
 type Withdrawl @entity {
-  id: ID! # nominator + indexer addresses
+  id: ID! # nominator + index
 
   index: BigInt! # Index of the withdrawl
 

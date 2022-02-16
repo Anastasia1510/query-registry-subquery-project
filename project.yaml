@@ -6,14 +6,17 @@ repository: ''
 schema:
   file: ./schema.graphql
 network:
-  # genesisHash: '0x956876d5b80e47e523a6629b3c3ac3e42f2850ad12e236d87a0aaac87c9f6bc9' # Moonriver
-  genesisHash: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527' # Moonbase Alpha
-  endpoint: wss://moonbeam-alpha.api.onfinality.io/public-ws
-  dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
+  # Moonbase Alpha
+  # genesisHash: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527'
+  # endpoint: wss://moonbeam-alpha.api.onfinality.io/public-ws
+  # dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
+
+  # SQN testnet
+  genesisHash: '0xec9e57244a775883ee05d452352dfa9692267612243bb064182da3f4cee2e86c'
+  endpoint: 'wss://node-6899466758367993856.lh.onfinality.io/ws?apikey=4de1316d-df00-439a-a51b-2b59346b2789'
 
   chaintypes:
     file: ./chaintypes.js
-
 
 x-moonbeam: &moonbeam
   kind: substrate/Moonbeam
@@ -36,7 +39,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: eraManager
-        address: '0xD12E89D18072d7067B7028DbeDdd26912C5D0E63'
+        address: '0xED8f079e89717A94ff9E72F04A8e2775161024FF'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -50,7 +53,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: indexerRegistry
-        address: '0x7307232AA64Fc96B2767F8E9531d70Df44E86129'
+        address: '0x6B30bf34254ca3dD79cACC425feddf376199e586'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -89,7 +92,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: staking
-        address: '0xDcF225468b34F97497d956679E9Fa601510DC5e4'
+        address: '0x2F50025987C58549018841e007c61759d8Fb9BeD'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -118,7 +121,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: queryRegistry
-        address: '0x4018013c306C3f015566e8f2161bDbFdBC6c021D'
+        address: '0x778F2EbDec0F19bae9dE190f51837176208EbC96'
     mapping:
       file: ./dist/index.js
       handlers:

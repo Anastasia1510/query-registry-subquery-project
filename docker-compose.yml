@@ -40,7 +40,7 @@ services:
     command:
       - -f=/app
       - --local
-      - --debug
+      # - --debug
       - --batch-size=15
       # - --network-endpoint=ws://moonbeam-development:9944
 
