@@ -12,7 +12,7 @@ network:
   # dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
 
   # SQN testnet
-  genesisHash: '0x299a192d24652e7f489d1214f9a451e82a18543d0a578237f470e65d240ee509'
+  genesisHash: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
   endpoint: 'wss://node-6899466758367993856.lh.onfinality.io/ws?apikey=4de1316d-df00-439a-a51b-2b59346b2789'
 
   chaintypes:
