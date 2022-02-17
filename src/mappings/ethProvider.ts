@@ -1,9 +1,10 @@
 
 import { Block, BlockTag, BlockWithTransactions, EventType, Filter, Listener, Log, Provider, TransactionReceipt, TransactionRequest, TransactionResponse } from '@ethersproject/abstract-provider';
 import { Network } from '@ethersproject/networks';
-import { Deferrable } from '@ethersproject/properties';
+import { Deferrable, resolveProperties } from '@ethersproject/properties';
 import { BigNumber, BigNumberish} from '@ethersproject/bignumber';
 import { EthLog, EthRichBlock, EthTransaction } from '@polkadot/types/interfaces';
+import { hexZeroPad } from '@ethersproject/bytes';
 
 function ethTransactionToTransactionResponse(tx: EthTransaction): TransactionResponse {
   throw new Error('Method not implemented.');
@@ -18,6 +19,10 @@ function ethTransactionToTransactionResponse(tx: EthTransaction): TransactionRes
   //   // chainId: null,
   //   wait: () => { throw new Error('Method not implemented')}
   // }
+}
+
+function BNishToHex(value: BigNumberish): string {
+  return BigNumber.from(value).toHexString();
 }
 
 function ethRichBlockToBlock(b: EthRichBlock): Block {
@@ -82,7 +87,17 @@ export default class FrontierEthProvider extends Provider {
 
   async call(transaction: Deferrable<TransactionRequest>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
-    const r = await this.eth.call(transaction);
+
+    const tx = await resolveProperties(transaction);
+
+    const r = await this.eth.call({
+      ...tx,
+      nonce: tx.nonce && BNishToHex(tx.nonce),
+      gas: tx.gasLimit && BNishToHex(tx.gasLimit),
+      gasPrice: tx.gasPrice && BNishToHex(tx.gasPrice),
+      value: tx.value && BNishToHex(tx.value),
+      data: tx.data
+    });
     return r.toHex();
   }
 

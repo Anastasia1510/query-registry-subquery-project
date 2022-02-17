@@ -57,10 +57,15 @@ type Era @entity {
   endTime: Date # Block timestamp that the successive Era is started
 }
 
+type JSONBigInt @jsonField {
+  type: String! # Always "bigint",
+  value: String! # Hex encoded string
+}
+
 type EraValue @jsonField {
   era: Int!
-  value: BigInt!
-  valueAfter: BigInt!
+  value: JSONBigInt!
+  valueAfter: JSONBigInt!
 }
 
 type Indexer @entity {

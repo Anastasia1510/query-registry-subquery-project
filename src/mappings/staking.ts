@@ -12,7 +12,7 @@ import {
 import assert from 'assert';
 import { Delegation, Withdrawl } from '../types';
 import FrontierEthProvider from './ethProvider';
-import { updateTotalStake, upsertEraValue } from './utils';
+import { ERA_MANAGER_ADDRESS, updateTotalStake, upsertEraValue } from './utils';
 import {BigNumber} from '@ethersproject/bignumber';
 
 function getDelegationId(delegator: string, indexer: string): string {
@@ -29,7 +29,7 @@ export async function handleAddDelegation(event: MoonbeamEvent<DelegationAddedEv
 
     const { source, indexer, amount } = event.args;
     const id = getDelegationId(source, indexer);
-    const eraManager = EraManager__factory.connect(event.address, new FrontierEthProvider());
+    const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
 
     let delegation = await Delegation.get(id);
 
@@ -55,7 +55,7 @@ export async function handleRemoveNomination(event: MoonbeamEvent<DelegationRemo
 
     const { source, indexer, amount } = event.args;
     const id = getDelegationId(source, indexer);
-    const eraManager = EraManager__factory.connect(event.address, new FrontierEthProvider());
+    const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
 
     const delegation = await Delegation.get(id);
     assert(delegation, `Expected delegation (${id}) to exist`);

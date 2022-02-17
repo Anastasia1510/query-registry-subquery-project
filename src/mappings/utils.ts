@@ -1,7 +1,43 @@
 import bs58 from 'bs58';
 import {BigNumber} from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';
-import { Indexer, EraValue } from '../types';
+import { Indexer, EraValue, JSONBigInt } from '../types';
+
+
+// TODO get this from contract-sdk when network is bundled
+export const ERA_MANAGER_ADDRESS = '0xED8f079e89717A94ff9E72F04A8e2775161024FF';
+
+declare global {
+    interface BigIntConstructor {
+        fromJSONType(value: unknown): bigint;
+    }
+    interface BigInt {
+        toJSON(): string;
+        toJSONType(): JSONBigInt;
+        fromJSONType(value: unknown): bigint;
+    }
+}
+
+
+BigInt.prototype.toJSON = function() {
+    return BigNumber.from(this).toHexString();
+}
+
+BigInt.prototype.toJSONType = function() {
+    return {
+        type: 'bigint',
+        value: this.toJSON(),
+    };
+}
+
+BigInt.fromJSONType = function(value: JSONBigInt): bigint {
+    if (value?.type !== 'bigint' && !value.value) {
+        throw new Error('Value is not JSOBigInt');
+    }
+
+    return BigNumber.from(value.value).toBigInt();
+}
+
 
 export function bytesToIpfsCid(raw: string): string {
     // Add our default ipfs values for first 2 bytes:
@@ -35,23 +71,30 @@ export async function upsertEraValue(
     if (!eraValue) {
         return {
             era: currentEra,
-            value: BigInt(0),
-            valueAfter: value,
+            value: BigInt(0).toJSONType(),
+            valueAfter: value.toJSONType(),
         }
     }
 
     if (eraValue.era === currentEra) {
+        BigInt.fromJSONType(eraValue.valueAfter)
         return {
             era: currentEra,
             value: eraValue.value,
-            valueAfter: operations[operation](eraValue.valueAfter,value),
+            valueAfter: operations[operation](
+                BigInt.fromJSONType(eraValue.valueAfter),
+                value
+            ).toJSONType(),
         }
     }
 
     return {
         era: currentEra,
         value: eraValue.valueAfter,
-        valueAfter: operations[operation](eraValue.valueAfter,value)
+        valueAfter: operations[operation](
+            BigInt.fromJSONType(eraValue.valueAfter),
+            value
+        ).toJSONType(),
     };
 }
 

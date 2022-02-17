@@ -7,7 +7,7 @@ import { RegisterIndexerEvent, RemoveControllerAccountEvent, SetCommissionRateEv
 import assert from 'assert';
 import { Indexer } from '../types';
 import FrontierEthProvider from './ethProvider';
-import { bytesToIpfsCid, upsertEraValue } from './utils';
+import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 
 /* Indexer Registry Handlers */
 export async function handleRegisterIndexer(event: MoonbeamEvent<RegisterIndexerEvent['args']>): Promise<void> {
@@ -15,7 +15,7 @@ export async function handleRegisterIndexer(event: MoonbeamEvent<RegisterIndexer
     const { indexer: indexerAddress, metadata } = event.args;
 
     let indexer = await Indexer.get(indexerAddress);
-    const eraManager = EraManager__factory.connect(event.address, new FrontierEthProvider());
+    const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
 
     /* WARNING, other events are emitted before this handler (AddNomination, SetCommissionRate),
      * their handlers are used to set their relevant values.
@@ -81,7 +81,7 @@ export async function handleSetCommissionRate(event: MoonbeamEvent<SetCommission
     assert(event.args, 'No event args');
 
     const address = event.args.indexer;
-    const eraManager = EraManager__factory.connect(event.address, new FrontierEthProvider());
+    const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
 
     const indexer = await Indexer.get(address);
     assert(indexer, `Expected indexer (${address}) to exist`);
