@@ -57,6 +57,7 @@ type Era @entity {
   endTime: Date # Block timestamp that the successive Era is started
 }
 
+# Necessary without https://github.com/subquery/subql/issues/442
 type JSONBigInt @jsonField {
   type: String! # Always "bigint",
   value: String! # Hex encoded string
