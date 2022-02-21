@@ -116,7 +116,7 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - UnbondWithdrawn(address indexed source, address indexed indexer, uint256 amount, uint256 burnAmount)
+              - UnbondWithdrawn(address indexed source, address indexed indexer, uint256 amount)
   - <<: *moonbeam
     processor:
       <<: *moonbeam-processor
