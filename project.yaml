@@ -13,7 +13,8 @@ network:
 
   # SQN testnet
   genesisHash: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
-  endpoint: 'wss://node-6899466758367993856.lh.onfinality.io/ws?apikey=4de1316d-df00-439a-a51b-2b59346b2789'
+  # endpoint: 'https://node-6901336963938430976.jm.onfinality.io/rpc?apikey=65f0a4da-7861-429b-a21d-fd42209f4d2f'
+  endpoint: 'wss://sqtn.api.onfinality.io/public-ws'
 
   chaintypes:
     file: ./chaintypes.js
@@ -110,7 +111,7 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - UnbondRequested(address indexed source, address indexed indexer, uint256 amount)
+              - UnbondRequested(address indexed source, address indexed indexer, uint256 amount, uint256 index)
         - handler: handleWithdrawClaimed
           kind: substrate/MoonbeamEvent
           filter:
