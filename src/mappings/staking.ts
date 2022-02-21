@@ -39,7 +39,7 @@ export async function handleAddDelegation(event: MoonbeamEvent<DelegationAddedEv
             delegatorAddress: source,
             indexerAddress: indexer,
             indexerId: indexer,
-            amount: await upsertEraValue(eraManager, undefined, BigInt(0)),
+            amount: await upsertEraValue(eraManager, undefined, amount.toBigInt()),
         });
     } else {
         delegation.amount = await upsertEraValue(eraManager, delegation.amount, amount.toBigInt());
