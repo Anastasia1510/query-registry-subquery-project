@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   postgres:
@@ -9,25 +9,17 @@ services:
       - .data/postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
-
-  # moonbeam-development:
-  #   image: purestake/moonbeam:v0.13.2
-  #   volumes:
-  #     - .data/moonbeam:/data
-  #   ports:
-  #     - 9933:9933
-  #     - 9944:9944
-  #   command:
-  #     - --dev
-  #     - --ws-external
-  #     - --rpc-external
-  #     - --base-path=/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   subquery-node:
-    image: onfinality/subql-node:latest
+    image: onfinality/subql-node:v0.27.2
     depends_on:
-      - "postgres"
-      # - "moonbeam-development"
+      "postgres":
+        condition: service_healthy
     restart: always
     environment:
       DB_USER: postgres
@@ -39,18 +31,24 @@ services:
       - ./:/app
     command:
       - -f=/app
-      - --local
-      # - --debug
-      - --batch-size=15
-      # - --network-endpoint=ws://moonbeam-development:9944
+      - --db-schema=app
+      - --unsafe
+      # - --force-clean
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://subquery-node:3000/ready"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
 
   graphql-engine:
     image: onfinality/subql-query:latest
     ports:
       - 3000:3000
     depends_on:
-      - "postgres"
-      - "subquery-node"
+      "postgres":
+        condition: service_healthy
+      "subquery-node":
+        condition: service_healthy
     restart: always
     environment:
       DB_USER: postgres
