@@ -50,7 +50,8 @@ export async function handleAddDelegation(event: MoonbeamEvent<DelegationAddedEv
     await delegation.save();
 }
 
-export async function handleRemoveNomination(event: MoonbeamEvent<DelegationRemovedEvent['args']>): Promise<void> {
+export async function handleRemoveDelegation(event: MoonbeamEvent<DelegationRemovedEvent['args']>): Promise<void> {
+    logger.warn('handleRemoveDelegation');
     assert(event.args, 'No event args');
 
     const { source, indexer, amount } = event.args;
@@ -69,6 +70,7 @@ export async function handleRemoveNomination(event: MoonbeamEvent<DelegationRemo
 
 /* TODO wait for new contracts */
 export async function handleWithdrawRequested(event: MoonbeamEvent<UnbondRequestedEvent['args']>): Promise<void> {
+    logger.warn('handleWithdrawRequested');
     assert(event.args, 'No event args');
 
     const { source, indexer, index, amount } = event.args;

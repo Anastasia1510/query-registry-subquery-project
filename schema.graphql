@@ -110,5 +110,26 @@ type Withdrawl @entity {
   claimed: Boolean!
 }
 
+type PlanTemplate @entity {
+  id: ID! # Index, hex encoded
+
+  period: BigInt!
+  dailyReqCap: BigInt!
+  rateLimit: BigInt!
+  metadata: String!
+  active: Boolean!
+}
+
+type Plan @entity {
+  id: ID! # Index, hex encoded
+
+  price: BigInt!
+  creator: String! # Address
+  planTemplate: PlanTemplate!
+  active: Boolean!
+
+  deploymentId: String
+}
+
 
 # TODO include rewards to claim

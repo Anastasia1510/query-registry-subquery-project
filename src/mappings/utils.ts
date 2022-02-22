@@ -6,6 +6,7 @@ import { Indexer, EraValue, JSONBigInt } from '../types';
 
 // TODO get this from contract-sdk when network is bundled
 export const ERA_MANAGER_ADDRESS = '0xED8f079e89717A94ff9E72F04A8e2775161024FF';
+export const PLAN_MANAGER_ADDRESS = '0xF7212a9D6468709a954A34125A3A9d14D6db083e';
 
 declare global {
     interface BigIntConstructor {

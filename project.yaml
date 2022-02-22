@@ -33,6 +33,8 @@ x-moonbeam: &moonbeam
       file: ./node_modules/@subql/contract-sdk/publish/contracts/IndexerRegistry.json
     queryRegistry:
       file: ./node_modules/@subql/contract-sdk/publish/contracts/QueryRegistry.json
+    planManager:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/PlanManager.json
 
 dataSources:
   - <<: *moonbeam
@@ -116,7 +118,7 @@ dataSources:
           kind: substrate/MoonbeamEvent
           filter:
             topics:
-              - UnbondWithdrawn(address indexed source, address indexed indexer, uint256 amount)
+              - UnbondWithdrawn(address indexed source, uint256 amount, uint256 index)
   - <<: *moonbeam
     processor:
       <<: *moonbeam-processor
@@ -166,3 +168,37 @@ dataSources:
           filter:
             topics:
               - UnregisterQuery(address indexed owner, uint256 indexed queryId)
+  - <<: *moonbeam
+    processor:
+      <<: *moonbeam-processor
+      options:
+        abi: planManager
+        # address: '0x778F2EbDec0F19bae9dE190f51837176208EbC96'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handlePlanTemplateCreated
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - PlanTemplateCreated(uint256 indexed planTemplateId)
+        - handler: handlePlanTemplateMetadataUpdated
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - PlanTemplateMetadataChanged(uint256 indexed planTemplateId, bool active)
+        - handler: handlePlanTemplateStatusUpdated
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - PlanTemplateStatusChanged(uint256 indexed planTemplateId, bool active);
+        - handler: handlePlanCreated
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - PlanCreated(address indexed creator, bytes32 indexed deploymentId, uint256 planTemplateId, uint256 planId, uint256 price)
+        - handler: handlePlanRemoved
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - PlanRemoved(address indexed source, uint256 id, bytes32 deploymentId)
