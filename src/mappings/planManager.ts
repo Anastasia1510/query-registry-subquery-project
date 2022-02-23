@@ -5,6 +5,7 @@ import assert from 'assert';
 import { Plan, PlanTemplate } from "../types";
 import FrontierEthProvider from "./ethProvider";
 import { bytesToIpfsCid, PLAN_MANAGER_ADDRESS } from "./utils";
+import { constants } from 'ethers';
 
 export async function handlePlanTemplateCreated(
   event: MoonbeamEvent<PlanTemplateCreatedEvent['args']>
@@ -20,7 +21,9 @@ export async function handlePlanTemplateCreated(
     period: rawPlanTemplate.period.toBigInt(),
     dailyReqCap: rawPlanTemplate.dailyReqCap.toBigInt(),
     rateLimit: rawPlanTemplate.rateLimit.toBigInt(),
-    metadata: bytesToIpfsCid(rawPlanTemplate.metadata),
+    metadata: constants.HashZero === rawPlanTemplate.metadata
+      ? undefined
+      : bytesToIpfsCid(rawPlanTemplate.metadata),
     active: true,
   });
 
@@ -66,7 +69,9 @@ export async function handlePlanCreated(
     creator: event.args.creator,
     price: event.args.price.toBigInt(),
     active: true,
-    deploymentId: bytesToIpfsCid(event.args.deploymentId) // TODO null check
+    deploymentId: constants.HashZero === event.args.deploymentId
+      ? undefined
+      : bytesToIpfsCid(event.args.deploymentId)
   });
 
   await plan.save();

@@ -116,7 +116,7 @@ type PlanTemplate @entity {
   period: BigInt!
   dailyReqCap: BigInt!
   rateLimit: BigInt!
-  metadata: String!
+  metadata: String
   active: Boolean!
 }
 

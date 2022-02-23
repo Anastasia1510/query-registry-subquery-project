@@ -5,3 +5,4 @@ export * from './eraManager';
 export * from './queryRegistry';
 export * from './indexerRegistry';
 export * from './staking';
+export * from './planManager';
