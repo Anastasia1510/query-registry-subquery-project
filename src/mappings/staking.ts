@@ -7,9 +7,10 @@ import {
   DelegationRemovedEvent,
   UnbondRequestedEvent,
   UnbondWithdrawnEvent,
+  SetCommissionRateEvent,
 } from '@subql/contract-sdk/typechain/Staking';
 import assert from 'assert';
-import { Delegation, Withdrawl } from '../types';
+import { Delegation, Withdrawl, Indexer } from '../types';
 import FrontierEthProvider from './ethProvider';
 import { ERA_MANAGER_ADDRESS, updateTotalStake, upsertEraValue } from './utils';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -123,4 +124,24 @@ export async function handleWithdrawClaimed(
   withdrawl.claimed = true;
 
   await withdrawl.save();
+}
+
+
+export async function handleSetCommissionRate(event: FrontierEvmEvent<SetCommissionRateEvent['args']>): Promise<void> {
+  assert(event.args, 'No event args');
+
+  const address = event.args.indexer;
+  const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
+
+  const indexer = await Indexer.get(address);
+  assert(indexer, `Expected indexer (${address}) to exist`);
+
+  indexer.commission = await upsertEraValue(
+      eraManager,
+      indexer.commission,
+      event.args.amount.toBigInt(),
+      'replace'
+  );
+
+  await indexer.save();
 }

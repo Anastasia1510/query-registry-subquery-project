@@ -124,4 +124,11 @@ type ServiceAgreement @entity {
   # period: BigInt! # nees updated contracts
 }
 
-# TODO include rewards to claim
+type Reward @entity {
+  id: ID! # indexer + delegator
+
+  indexerAddress: String!
+  delegatorAddress: String!
+
+  amount: BigInt!
+}

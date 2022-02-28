@@ -6,4 +6,5 @@ export * from './queryRegistry';
 export * from './indexerRegistry';
 export * from './staking';
 export * from './planManager';
+export * from './rewardsDistributor';
 export * from './serviceAgreement';

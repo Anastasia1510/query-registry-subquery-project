@@ -32,6 +32,8 @@ x-frontier: &frontier
       file: ./node_modules/@subql/contract-sdk/publish/contracts/PlanManager.json
     serviceAgreementRegistry:
       file: ./node_modules/@subql/contract-sdk/publish/contracts/ServiceAgreementRegistry.json
+    rewardsDistributor:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/RewardsDistributer.json
 
 dataSources:
   - <<: *frontier
@@ -82,11 +84,6 @@ dataSources:
           filter:
             topics:
               - RemoveControllerAccount(address indexed indexer, address indexed controller)
-        - handler: handleSetCommissionRate
-          kind: substrate/FrontierEvmEvent
-          filter:
-            topics:
-              - SetCommissionRate(address indexed indexer, uint256 amount)
   - <<: *frontier
     processor:
       <<: *frontier-processor
@@ -116,6 +113,11 @@ dataSources:
           filter:
             topics:
               - UnbondWithdrawn(address indexed source, uint256 amount, uint256 index)
+        - handler: handleSetCommissionRate
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - SetCommissionRate(address indexed indexer, uint256 amount)
   - <<: *frontier
     processor:
       <<: *frontier-processor
@@ -213,3 +215,22 @@ dataSources:
           filter:
             topics:
               - ServiceAgreementCreated(address indexed serviceAgreement, address indexed consumer, address indexed indexer)
+  - <<: *frontier
+    processor:
+      <<: *frontier-processor
+      options:
+        abi: rewardsDistributor
+        # address: '0x778F2EbDec0F19bae9dE190f51837176208EbC96'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleRewardsDistributed
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - DistributeRewards(address indexed indexer)
+        - handler: handleRewardsClaimed
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - ClaimRewards(address indexed indexer, address indexed delegator, uint256 rewards)
