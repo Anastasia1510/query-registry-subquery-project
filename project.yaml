@@ -35,6 +35,8 @@ x-moonbeam: &moonbeam
       file: ./node_modules/@subql/contract-sdk/publish/contracts/QueryRegistry.json
     planManager:
       file: ./node_modules/@subql/contract-sdk/publish/contracts/PlanManager.json
+    serviceAgreementRegistry:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/ServiceAgreementRegistry.json
 
 dataSources:
   - <<: *moonbeam
@@ -173,7 +175,7 @@ dataSources:
       <<: *moonbeam-processor
       options:
         abi: planManager
-        # address: '0x778F2EbDec0F19bae9dE190f51837176208EbC96'
+        address: '0xF7212a9D6468709a954A34125A3A9d14D6db083e'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -202,3 +204,17 @@ dataSources:
           filter:
             topics:
               - PlanRemoved(address indexed source, uint256 id, bytes32 deploymentId)
+  - <<: *moonbeam
+    processor:
+      <<: *moonbeam-processor
+      options:
+        abi: serviceAgreementRegistry
+        address: '0xAd9Ec6BDB97798C43BF4dab638ba14F794B15859'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleServiceAgreementCreated
+          kind: substrate/MoonbeamEvent
+          filter:
+            topics:
+              - ServiceAgreementCreated(address indexed serviceAgreement, address indexed consumer, address indexed indexer)
