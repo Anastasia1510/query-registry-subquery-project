@@ -8,7 +8,6 @@ SubQuery project for indexing data for the [QueryRegistry](https://github.com/su
 - `subql codegen`
 - `yarn build`
 
-
 ## Running locally
 
 The docker compose file has been updated to include a moonbeam development node

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import assert from 'assert';
-import { ServiceAgreementCreatedEvent } from "@subql/contract-sdk/typechain/ServiceAgreementRegistry";
+import { ServiceAgreementCreatedEvent } from '@subql/contract-sdk/typechain/ServiceAgreementRegistry';
 import { ServiceAgreement } from '../types';
 import { bytesToIpfsCid } from './utils';
 import { IServiceAgreement__factory } from '@subql/contract-sdk';
@@ -19,7 +19,7 @@ export async function handleServiceAgreementCreated(
     new FrontierEthProvider()
   );
 
-  const [deploymentId/*, period*/] = await Promise.all([
+  const [deploymentId /*, period*/] = await Promise.all([
     saContract.deploymentId(),
     // saContract.period(),
   ]);

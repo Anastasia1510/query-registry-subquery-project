@@ -1,29 +1,41 @@
-import { PlanManager__factory } from "@subql/contract-sdk";
-import { PlanCreatedEvent, PlanRemovedEvent, PlanTemplateCreatedEvent, PlanTemplateMetadataChangedEvent, PlanTemplateStatusChangedEvent } from "@subql/contract-sdk/typechain/PlanManager";
+import { PlanManager__factory } from '@subql/contract-sdk';
+import {
+  PlanCreatedEvent,
+  PlanRemovedEvent,
+  PlanTemplateCreatedEvent,
+  PlanTemplateMetadataChangedEvent,
+  PlanTemplateStatusChangedEvent,
+} from '@subql/contract-sdk/typechain/PlanManager';
 import assert from 'assert';
-import { Plan, PlanTemplate } from "../types";
-import FrontierEthProvider from "./ethProvider";
-import { bytesToIpfsCid, PLAN_MANAGER_ADDRESS } from "./utils";
+import { Plan, PlanTemplate } from '../types';
+import FrontierEthProvider from './ethProvider';
+import { bytesToIpfsCid, PLAN_MANAGER_ADDRESS } from './utils';
 import { constants } from 'ethers';
-import { FrontierEvmEvent } from "@subql/contract-processors/dist/frontierEvm";
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 export async function handlePlanTemplateCreated(
   event: FrontierEvmEvent<PlanTemplateCreatedEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 
-  const planManager = PlanManager__factory.connect(PLAN_MANAGER_ADDRESS, new FrontierEthProvider());
+  const planManager = PlanManager__factory.connect(
+    PLAN_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
-  const rawPlanTemplate = await planManager.planTemplates(event.args.planTemplateId);
+  const rawPlanTemplate = await planManager.planTemplates(
+    event.args.planTemplateId
+  );
 
   const planTemplate = PlanTemplate.create({
     id: event.args.planTemplateId.toHexString(),
     period: rawPlanTemplate.period.toBigInt(),
     dailyReqCap: rawPlanTemplate.dailyReqCap.toBigInt(),
     rateLimit: rawPlanTemplate.rateLimit.toBigInt(),
-    metadata: constants.HashZero === rawPlanTemplate.metadata
-      ? undefined
-      : bytesToIpfsCid(rawPlanTemplate.metadata),
+    metadata:
+      constants.HashZero === rawPlanTemplate.metadata
+        ? undefined
+        : bytesToIpfsCid(rawPlanTemplate.metadata),
     active: true,
   });
 
@@ -32,7 +44,7 @@ export async function handlePlanTemplateCreated(
 
 export async function handlePlanTemplateMetadataUpdated(
   event: FrontierEvmEvent<PlanTemplateMetadataChangedEvent['args']>
-  ): Promise<void> {
+): Promise<void> {
   assert(event.args, 'No event args');
 
   const id = event.args.planTemplateId.toHexString();
@@ -69,9 +81,10 @@ export async function handlePlanCreated(
     creator: event.args.creator,
     price: event.args.price.toBigInt(),
     active: true,
-    deploymentId: constants.HashZero === event.args.deploymentId
-      ? undefined
-      : bytesToIpfsCid(event.args.deploymentId)
+    deploymentId:
+      constants.HashZero === event.args.deploymentId
+        ? undefined
+        : bytesToIpfsCid(event.args.deploymentId),
   });
 
   await plan.save();
@@ -82,7 +95,7 @@ export async function handlePlanRemoved(
 ): Promise<void> {
   assert(event.args, 'No event args');
 
-  const plan = await Plan.get(event.args.id.toHexString())
+  const plan = await Plan.get(event.args.id.toHexString());
   assert(plan, `Plan not found. planId="${event.args.id.toHexString()}"`);
 
   plan.active = false;

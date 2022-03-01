@@ -3,113 +3,124 @@
 
 import { EraManager__factory } from '@subql/contract-sdk';
 import {
-    DelegationAddedEvent,
-    DelegationRemovedEvent,
-    UnbondRequestedEvent,
-    UnbondWithdrawnEvent,
+  DelegationAddedEvent,
+  DelegationRemovedEvent,
+  UnbondRequestedEvent,
+  UnbondWithdrawnEvent,
 } from '@subql/contract-sdk/typechain/Staking';
 import assert from 'assert';
 import { Delegation, Withdrawl } from '../types';
 import FrontierEthProvider from './ethProvider';
 import { ERA_MANAGER_ADDRESS, updateTotalStake, upsertEraValue } from './utils';
-import {BigNumber} from '@ethersproject/bignumber';
+import { BigNumber } from '@ethersproject/bignumber';
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 function getDelegationId(delegator: string, indexer: string): string {
-    return `${delegator}:${indexer}`;
+  return `${delegator}:${indexer}`;
 }
 
 function getWithdrawlId(delegator: string, index: BigNumber): string {
-    return `${delegator}:${index.toHexString()}`;
+  return `${delegator}:${index.toHexString()}`;
 }
 
 export async function handleAddDelegation(
-    event: FrontierEvmEvent<DelegationAddedEvent['args']>
+  event: FrontierEvmEvent<DelegationAddedEvent['args']>
 ): Promise<void> {
-    assert(event.args, 'No event args');
+  assert(event.args, 'No event args');
 
-    const { source, indexer, amount } = event.args;
-    const id = getDelegationId(source, indexer);
-    const eraManager = EraManager__factory.connect(
-        ERA_MANAGER_ADDRESS,
-        new FrontierEthProvider()
+  const { source, indexer, amount } = event.args;
+  const id = getDelegationId(source, indexer);
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
+
+  let delegation = await Delegation.get(id);
+
+  if (!delegation) {
+    delegation = Delegation.create({
+      id,
+      delegatorAddress: source,
+      indexerAddress: indexer,
+      indexerId: indexer,
+      amount: await upsertEraValue(eraManager, undefined, amount.toBigInt()),
+    });
+  } else {
+    delegation.amount = await upsertEraValue(
+      eraManager,
+      delegation.amount,
+      amount.toBigInt()
     );
+  }
 
-    let delegation = await Delegation.get(id);
+  await updateTotalStake(eraManager, indexer, amount.toBigInt(), 'add');
 
-    if (!delegation) {
-        delegation = Delegation.create({
-            id,
-            delegatorAddress: source,
-            indexerAddress: indexer,
-            indexerId: indexer,
-            amount: await upsertEraValue(eraManager, undefined, amount.toBigInt()),
-        });
-    } else {
-        delegation.amount = await upsertEraValue(eraManager, delegation.amount, amount.toBigInt());
-    }
-
-    updateTotalStake(eraManager, indexer, amount.toBigInt(), 'add');
-
-    await delegation.save();
+  await delegation.save();
 }
 
 export async function handleRemoveDelegation(
-    event: FrontierEvmEvent<DelegationRemovedEvent['args']>
+  event: FrontierEvmEvent<DelegationRemovedEvent['args']>
 ): Promise<void> {
-    logger.warn('handleRemoveDelegation');
-    assert(event.args, 'No event args');
+  logger.warn('handleRemoveDelegation');
+  assert(event.args, 'No event args');
 
-    const { source, indexer, amount } = event.args;
-    const id = getDelegationId(source, indexer);
-    const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
+  const { source, indexer, amount } = event.args;
+  const id = getDelegationId(source, indexer);
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
-    const delegation = await Delegation.get(id);
-    assert(delegation, `Expected delegation (${id}) to exist`);
+  const delegation = await Delegation.get(id);
+  assert(delegation, `Expected delegation (${id}) to exist`);
 
-    delegation.amount = await upsertEraValue(eraManager, delegation.amount, amount.toBigInt(), 'sub');
+  delegation.amount = await upsertEraValue(
+    eraManager,
+    delegation.amount,
+    amount.toBigInt(),
+    'sub'
+  );
 
-    updateTotalStake(eraManager, indexer, amount.toBigInt(), 'sub');
+  await updateTotalStake(eraManager, indexer, amount.toBigInt(), 'sub');
 
-    await delegation.save();
+  await delegation.save();
 }
 
 /* TODO wait for new contracts */
 export async function handleWithdrawRequested(
-    event: FrontierEvmEvent<UnbondRequestedEvent['args']>
+  event: FrontierEvmEvent<UnbondRequestedEvent['args']>
 ): Promise<void> {
-    logger.warn('handleWithdrawRequested');
-    assert(event.args, 'No event args');
+  logger.warn('handleWithdrawRequested');
+  assert(event.args, 'No event args');
 
-    const { source, indexer, index, amount } = event.args;
-    const id = getWithdrawlId(source, index);
+  const { source, indexer, index, amount } = event.args;
+  const id = getWithdrawlId(source, index);
 
-    const withdrawl = Withdrawl.create({
-        id,
-        delegator: source,
-        indexer,
-        index: index.toBigInt(),
-        startTime: event.blockTimestamp,
-        amount: amount.toBigInt(),
-        claimed: false,
-    });
+  const withdrawl = Withdrawl.create({
+    id,
+    delegator: source,
+    indexer,
+    index: index.toBigInt(),
+    startTime: event.blockTimestamp,
+    amount: amount.toBigInt(),
+    claimed: false,
+  });
 
-    await withdrawl.save();
+  await withdrawl.save();
 }
 
 export async function handleWithdrawClaimed(
-    event: FrontierEvmEvent<UnbondWithdrawnEvent['args']>
+  event: FrontierEvmEvent<UnbondWithdrawnEvent['args']>
 ): Promise<void> {
-    assert(event.args, 'No event args');
+  assert(event.args, 'No event args');
 
-    const { source, index } = event.args;
-    const id = getWithdrawlId(source, index);
+  const { source, index } = event.args;
+  const id = getWithdrawlId(source, index);
 
-    const withdrawl = await Withdrawl.get(id);
-    assert(withdrawl, `Expected withdrawl (${id}) to exist`);
+  const withdrawl = await Withdrawl.get(id);
+  assert(withdrawl, `Expected withdrawl (${id}) to exist`);
 
-    withdrawl.claimed = true;
+  withdrawl.claimed = true;
 
-    await withdrawl.save();
+  await withdrawl.save();
 }
-
