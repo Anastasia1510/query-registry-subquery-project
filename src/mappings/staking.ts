@@ -1,7 +1,6 @@
 // Copyright 2020-2022 OnFinality Limited authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
 import { EraManager__factory } from '@subql/contract-sdk';
 import {
     DelegationAddedEvent,
@@ -14,6 +13,7 @@ import { Delegation, Withdrawl } from '../types';
 import FrontierEthProvider from './ethProvider';
 import { ERA_MANAGER_ADDRESS, updateTotalStake, upsertEraValue } from './utils';
 import {BigNumber} from '@ethersproject/bignumber';
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 function getDelegationId(delegator: string, indexer: string): string {
     return `${delegator}:${indexer}`;
@@ -23,13 +23,17 @@ function getWithdrawlId(delegator: string, index: BigNumber): string {
     return `${delegator}:${index.toHexString()}`;
 }
 
-/* Staking Handlers */
-export async function handleAddDelegation(event: MoonbeamEvent<DelegationAddedEvent['args']>): Promise<void> {
+export async function handleAddDelegation(
+    event: FrontierEvmEvent<DelegationAddedEvent['args']>
+): Promise<void> {
     assert(event.args, 'No event args');
 
     const { source, indexer, amount } = event.args;
     const id = getDelegationId(source, indexer);
-    const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
+    const eraManager = EraManager__factory.connect(
+        ERA_MANAGER_ADDRESS,
+        new FrontierEthProvider()
+    );
 
     let delegation = await Delegation.get(id);
 
@@ -50,7 +54,9 @@ export async function handleAddDelegation(event: MoonbeamEvent<DelegationAddedEv
     await delegation.save();
 }
 
-export async function handleRemoveDelegation(event: MoonbeamEvent<DelegationRemovedEvent['args']>): Promise<void> {
+export async function handleRemoveDelegation(
+    event: FrontierEvmEvent<DelegationRemovedEvent['args']>
+): Promise<void> {
     logger.warn('handleRemoveDelegation');
     assert(event.args, 'No event args');
 
@@ -69,7 +75,9 @@ export async function handleRemoveDelegation(event: MoonbeamEvent<DelegationRemo
 }
 
 /* TODO wait for new contracts */
-export async function handleWithdrawRequested(event: MoonbeamEvent<UnbondRequestedEvent['args']>): Promise<void> {
+export async function handleWithdrawRequested(
+    event: FrontierEvmEvent<UnbondRequestedEvent['args']>
+): Promise<void> {
     logger.warn('handleWithdrawRequested');
     assert(event.args, 'No event args');
 
@@ -89,7 +97,9 @@ export async function handleWithdrawRequested(event: MoonbeamEvent<UnbondRequest
     await withdrawl.save();
 }
 
-export async function handleWithdrawClaimed(event: MoonbeamEvent<UnbondWithdrawnEvent['args']>): Promise<void> {
+export async function handleWithdrawClaimed(
+    event: FrontierEvmEvent<UnbondWithdrawnEvent['args']>
+): Promise<void> {
     assert(event.args, 'No event args');
 
     const { source, index } = event.args;

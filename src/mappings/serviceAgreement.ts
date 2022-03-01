@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import assert from 'assert';
-import { MoonbeamEvent } from "@subql/contract-processors/dist/moonbeam";
 import { ServiceAgreementCreatedEvent } from "@subql/contract-sdk/typechain/ServiceAgreementRegistry";
 import { ServiceAgreement } from '../types';
 import { bytesToIpfsCid } from './utils';
 import { IServiceAgreement__factory } from '@subql/contract-sdk';
 import FrontierEthProvider from './ethProvider';
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 export async function handleServiceAgreementCreated(
-  event: MoonbeamEvent<ServiceAgreementCreatedEvent['args']>
+  event: FrontierEvmEvent<ServiceAgreementCreatedEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 

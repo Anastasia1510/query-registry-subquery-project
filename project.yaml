@@ -6,11 +6,6 @@ repository: ''
 schema:
   file: ./schema.graphql
 network:
-  # Moonbase Alpha
-  # genesisHash: '0x91bc6e169807aaa54802737e1c504b2577d4fafedd5a02c10293b1cd60e39527'
-  # endpoint: wss://moonbeam-alpha.api.onfinality.io/public-ws
-  # dictionary: https://api.subquery.network/sq/subquery/moonbase-alpha-dictionary
-
   # SQN testnet
   genesisHash: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
   # endpoint: 'https://node-6901336963938430976.jm.onfinality.io/rpc?apikey=65f0a4da-7861-429b-a21d-fd42209f4d2f'
@@ -19,11 +14,11 @@ network:
   chaintypes:
     file: ./chaintypes.js
 
-x-moonbeam: &moonbeam
-  kind: substrate/Moonbeam
+x-frontier: &frontier
+  kind: substrate/FrontierEvm
   startBlock: 48
-  processor: &moonbeam-processor
-    file: './node_modules/@subql/contract-processors/dist/moonbeam.js'
+  processor: &frontier-processor
+    file: './node_modules/@subql/contract-processors/dist/frontierEvm.js'
   assets:
     eraManager:
       file: ./node_modules/@subql/contract-sdk/publish/contracts/EraManager.json
@@ -39,9 +34,9 @@ x-moonbeam: &moonbeam
       file: ./node_modules/@subql/contract-sdk/publish/contracts/ServiceAgreementRegistry.json
 
 dataSources:
-  - <<: *moonbeam
+  - <<: *frontier
     processor:
-      <<: *moonbeam-processor
+      <<: *frontier-processor
       options:
         abi: eraManager
         address: '0xED8f079e89717A94ff9E72F04A8e2775161024FF'
@@ -49,13 +44,13 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handleNewEra
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - NewEraStart(uint256 indexed era, address caller)
-  - <<: *moonbeam
+  - <<: *frontier
     processor:
-      <<: *moonbeam-processor
+      <<: *frontier-processor
       options:
         abi: indexerRegistry
         address: '0x6B30bf34254ca3dD79cACC425feddf376199e586'
@@ -63,38 +58,38 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handleRegisterIndexer
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - RegisterIndexer(address indexed indexer, uint256 amount, bytes32 metadata)
         - handler: handleUnregisterIndexer
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UnregisterIndexer(address indexed indexer);
         - handler: handleUpdateIndexerMetadata
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UpdateMetadata(address indexed indexer, bytes32 metadata)
         - handler: handleSetControllerAccount
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - SetControllerAccount(address indexed indexer, address indexed controller)
         - handler: handleRemoveControllerAccount
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - RemoveControllerAccount(address indexed indexer, address indexed controller)
         - handler: handleSetCommissionRate
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - SetCommissionRate(address indexed indexer, uint256 amount)
-  - <<: *moonbeam
+  - <<: *frontier
     processor:
-      <<: *moonbeam-processor
+      <<: *frontier-processor
       options:
         abi: staking
         address: '0x2F50025987C58549018841e007c61759d8Fb9BeD'
@@ -102,28 +97,28 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handleAddDelegation
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - DelegationAdded(address indexed source, address indexed indexer, uint256 amount)
         - handler: handleRemoveDelegation
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - DelegationRemoved(address indexed source, address indexed indexer, uint256 amount)
         - handler: handleWithdrawRequested
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UnbondRequested(address indexed source, address indexed indexer, uint256 amount, uint256 index)
         - handler: handleWithdrawClaimed
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UnbondWithdrawn(address indexed source, uint256 amount, uint256 index)
-  - <<: *moonbeam
+  - <<: *frontier
     processor:
-      <<: *moonbeam-processor
+      <<: *frontier-processor
       options:
         abi: queryRegistry
         address: '0x778F2EbDec0F19bae9dE190f51837176208EbC96'
@@ -131,48 +126,48 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handleNewQuery
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - CreateQuery(uint256 queryId, address creator, bytes32 metadata, bytes32 deploymentId, bytes32 version)
         - handler: handleUpdateQueryMetadata
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UpdateQueryMetadata(address owner, uint256 queryId, bytes32 metadata)
         - handler: handleUpdateQueryDeployment
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UpdateQueryDeployment(address owner, uint256 queryId, bytes32 deploymentId, bytes32 version)
         - handler: handleStartIndexing
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - StartIndexing(address indexer, bytes32 deploymentId)
         - handler: handleIndexingUpdate
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UpdateDeploymentStatus(address indexer, bytes32 deploymentId, uint256 blockheight, bytes32 mmrRoot, uint256 timestamp)
         - handler: handleIndexingReady
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UpdateIndexingStatusToReady(address indexer, bytes32 deploymentId)
         - handler: handleStopIndexing
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - StopIndexing(address indexer, bytes32 deploymentId)
         - handler: handleUnregisterQuery
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - UnregisterQuery(address indexed owner, uint256 indexed queryId)
-  - <<: *moonbeam
+  - <<: *frontier
     processor:
-      <<: *moonbeam-processor
+      <<: *frontier-processor
       options:
         abi: planManager
         address: '0xF7212a9D6468709a954A34125A3A9d14D6db083e'
@@ -180,33 +175,33 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handlePlanTemplateCreated
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - PlanTemplateCreated(uint256 indexed planTemplateId)
         - handler: handlePlanTemplateMetadataUpdated
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - PlanTemplateMetadataChanged(uint256 indexed planTemplateId, bool active)
         - handler: handlePlanTemplateStatusUpdated
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - PlanTemplateStatusChanged(uint256 indexed planTemplateId, bool active);
         - handler: handlePlanCreated
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - PlanCreated(address indexed creator, bytes32 indexed deploymentId, uint256 planTemplateId, uint256 planId, uint256 price)
         - handler: handlePlanRemoved
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - PlanRemoved(address indexed source, uint256 id, bytes32 deploymentId)
-  - <<: *moonbeam
+  - <<: *frontier
     processor:
-      <<: *moonbeam-processor
+      <<: *frontier-processor
       options:
         abi: serviceAgreementRegistry
         address: '0xAd9Ec6BDB97798C43BF4dab638ba14F794B15859'
@@ -214,7 +209,7 @@ dataSources:
       file: ./dist/index.js
       handlers:
         - handler: handleServiceAgreementCreated
-          kind: substrate/MoonbeamEvent
+          kind: substrate/FrontierEvmEvent
           filter:
             topics:
               - ServiceAgreementCreated(address indexed serviceAgreement, address indexed consumer, address indexed indexer)

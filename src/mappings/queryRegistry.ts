@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import assert from 'assert';
-import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
 import { DeploymentIndexer, Deployment, Project, Status } from '../types';
 
 import {
@@ -17,12 +16,13 @@ import {
 } from '@subql/contract-sdk/typechain/QueryRegistry';
 import { ProjectDeployment } from '../types/models/ProjectDeployment';
 import { bnToDate, bytesToIpfsCid } from './utils';
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 function getDeploymentIndexerId(indexer: string, deploymentId: string): string {
     return `${indexer}:${deploymentId}`;
 }
 
-export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args']>): Promise<void> {
+export async function handleNewQuery(event: FrontierEvmEvent<CreateQueryEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
 
     const projectId = event.args.queryId.toHexString();
@@ -61,7 +61,7 @@ export async function handleNewQuery(event: MoonbeamEvent<CreateQueryEvent['args
     await projectDeployment.save();
 }
 
-export async function handleUpdateQueryMetadata(event: MoonbeamEvent<UpdateQueryMetadataEvent['args']>): Promise<void> {
+export async function handleUpdateQueryMetadata(event: FrontierEvmEvent<UpdateQueryMetadataEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const queryId = event.args.queryId.toHexString();
     const project = await Project.get(queryId);
@@ -74,7 +74,7 @@ export async function handleUpdateQueryMetadata(event: MoonbeamEvent<UpdateQuery
     await project.save();
 }
 
-export async function handleUpdateQueryDeployment(event: MoonbeamEvent<UpdateQueryDeploymentEvent['args']>): Promise<void> {
+export async function handleUpdateQueryDeployment(event: FrontierEvmEvent<UpdateQueryDeploymentEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const queryId = event.args.queryId.toHexString();
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
@@ -114,7 +114,7 @@ export async function handleUpdateQueryDeployment(event: MoonbeamEvent<UpdateQue
     await project.save();
 }
 
-export async function handleStartIndexing(event: MoonbeamEvent<StartIndexingEvent['args']>): Promise<void> {
+export async function handleStartIndexing(event: FrontierEvmEvent<StartIndexingEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const indexer = DeploymentIndexer.create({
@@ -128,7 +128,7 @@ export async function handleStartIndexing(event: MoonbeamEvent<StartIndexingEven
     await indexer.save();
 }
 
-export async function handleIndexingUpdate(event: MoonbeamEvent<UpdateDeploymentStatusEvent['args']>): Promise<void> {
+export async function handleIndexingUpdate(event: FrontierEvmEvent<UpdateDeploymentStatusEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const id = getDeploymentIndexerId(event.args.indexer, deploymentId);
@@ -141,7 +141,7 @@ export async function handleIndexingUpdate(event: MoonbeamEvent<UpdateDeployment
     await indexer.save();
 }
 
-export async function handleIndexingReady(event: MoonbeamEvent<UpdateIndexingStatusToReadyEvent['args']>): Promise<void> {
+export async function handleIndexingReady(event: FrontierEvmEvent<UpdateIndexingStatusToReadyEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const id = getDeploymentIndexerId(event.args.indexer, deploymentId);
@@ -153,7 +153,7 @@ export async function handleIndexingReady(event: MoonbeamEvent<UpdateIndexingSta
     await indexer.save();
 }
 
-export async function handleStopIndexing(event: MoonbeamEvent<StopIndexingEvent['args']>): Promise<void> {
+export async function handleStopIndexing(event: FrontierEvmEvent<StopIndexingEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const deploymentId = bytesToIpfsCid(event.args.deploymentId);
     const id = getDeploymentIndexerId(event.args.indexer, deploymentId);
@@ -166,7 +166,7 @@ export async function handleStopIndexing(event: MoonbeamEvent<StopIndexingEvent[
     // TODO remove indexer instead?
 }
 
-export async function handleUnregisterQuery(event: MoonbeamEvent<UnregisterQueryEvent['args']>): Promise<void> {
+export async function handleUnregisterQuery(event: FrontierEvmEvent<UnregisterQueryEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
 
     const projectId = event.args.queryId.toHexString();

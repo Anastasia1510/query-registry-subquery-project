@@ -1,4 +1,3 @@
-import { MoonbeamEvent } from "@subql/contract-processors/dist/moonbeam";
 import { PlanManager__factory } from "@subql/contract-sdk";
 import { PlanCreatedEvent, PlanRemovedEvent, PlanTemplateCreatedEvent, PlanTemplateMetadataChangedEvent, PlanTemplateStatusChangedEvent } from "@subql/contract-sdk/typechain/PlanManager";
 import assert from 'assert';
@@ -6,9 +5,10 @@ import { Plan, PlanTemplate } from "../types";
 import FrontierEthProvider from "./ethProvider";
 import { bytesToIpfsCid, PLAN_MANAGER_ADDRESS } from "./utils";
 import { constants } from 'ethers';
+import { FrontierEvmEvent } from "@subql/contract-processors/dist/frontierEvm";
 
 export async function handlePlanTemplateCreated(
-  event: MoonbeamEvent<PlanTemplateCreatedEvent['args']>
+  event: FrontierEvmEvent<PlanTemplateCreatedEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 
@@ -31,7 +31,7 @@ export async function handlePlanTemplateCreated(
 }
 
 export async function handlePlanTemplateMetadataUpdated(
-  event: MoonbeamEvent<PlanTemplateMetadataChangedEvent['args']>
+  event: FrontierEvmEvent<PlanTemplateMetadataChangedEvent['args']>
   ): Promise<void> {
   assert(event.args, 'No event args');
 
@@ -45,7 +45,7 @@ export async function handlePlanTemplateMetadataUpdated(
 }
 
 export async function handlePlanTemplateStatusUpdated(
-  event: MoonbeamEvent<PlanTemplateStatusChangedEvent['args']>
+  event: FrontierEvmEvent<PlanTemplateStatusChangedEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 
@@ -59,7 +59,7 @@ export async function handlePlanTemplateStatusUpdated(
 }
 
 export async function handlePlanCreated(
-  event: MoonbeamEvent<PlanCreatedEvent['args']>
+  event: FrontierEvmEvent<PlanCreatedEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 
@@ -78,7 +78,7 @@ export async function handlePlanCreated(
 }
 
 export async function handlePlanRemoved(
-  event: MoonbeamEvent<PlanRemovedEvent['args']>
+  event: FrontierEvmEvent<PlanRemovedEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 

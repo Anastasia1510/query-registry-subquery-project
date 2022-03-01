@@ -1,7 +1,7 @@
 // Copyright 2020-2022 OnFinality Limited authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 import { EraManager__factory } from '@subql/contract-sdk';
 import { RegisterIndexerEvent, RemoveControllerAccountEvent, SetCommissionRateEvent, SetControllerAccountEvent, UnregisterIndexerEvent, UpdateMetadataEvent } from '@subql/contract-sdk/typechain/IndexerRegistry';
 import assert from 'assert';
@@ -10,7 +10,7 @@ import FrontierEthProvider from './ethProvider';
 import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 
 /* Indexer Registry Handlers */
-export async function handleRegisterIndexer(event: MoonbeamEvent<RegisterIndexerEvent['args']>): Promise<void> {
+export async function handleRegisterIndexer(event: FrontierEvmEvent<RegisterIndexerEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const { indexer: indexerAddress, metadata } = event.args;
 
@@ -35,14 +35,14 @@ export async function handleRegisterIndexer(event: MoonbeamEvent<RegisterIndexer
     await indexer.save();
 }
 
-export async function handleUnregisterIndexer(event: MoonbeamEvent<UnregisterIndexerEvent['args']>): Promise<void> {
+export async function handleUnregisterIndexer(event: FrontierEvmEvent<UnregisterIndexerEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
 
     // TODO does this take effect next era?
     await Indexer.remove(event.args.indexer);
 }
 
-export async function handleUpdateIndexerMetadata(event: MoonbeamEvent<UpdateMetadataEvent['args']>): Promise<void> {
+export async function handleUpdateIndexerMetadata(event: FrontierEvmEvent<UpdateMetadataEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const address = event.args.indexer;
 
@@ -53,7 +53,7 @@ export async function handleUpdateIndexerMetadata(event: MoonbeamEvent<UpdateMet
     await indexer.save();
 }
 
-export async function handleSetControllerAccount(event: MoonbeamEvent<SetControllerAccountEvent['args']>): Promise<void> {
+export async function handleSetControllerAccount(event: FrontierEvmEvent<SetControllerAccountEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const address = event.args.indexer;
 
@@ -65,7 +65,7 @@ export async function handleSetControllerAccount(event: MoonbeamEvent<SetControl
     await indexer.save();
 }
 
-export async function handleRemoveControllerAccount(event: MoonbeamEvent<RemoveControllerAccountEvent['args']>): Promise<void> {
+export async function handleRemoveControllerAccount(event: FrontierEvmEvent<RemoveControllerAccountEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
     const address = event.args.indexer;
 
@@ -77,7 +77,7 @@ export async function handleRemoveControllerAccount(event: MoonbeamEvent<RemoveC
     await indexer.save();
 }
 
-export async function handleSetCommissionRate(event: MoonbeamEvent<SetCommissionRateEvent['args']>): Promise<void> {
+export async function handleSetCommissionRate(event: FrontierEvmEvent<SetCommissionRateEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
 
     const address = event.args.indexer;

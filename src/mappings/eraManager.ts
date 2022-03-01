@@ -1,12 +1,12 @@
 
-import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 import { NewEraStartEvent } from '@subql/contract-sdk/typechain/EraManager';
 import assert from 'assert';
 
 import { Era } from '../types';
 
 /* Era Handlers */
-export async function handleNewEra(event: MoonbeamEvent<NewEraStartEvent['args']>): Promise<void> {
+export async function handleNewEra(event: FrontierEvmEvent<NewEraStartEvent['args']>): Promise<void> {
     assert(event.args, 'No event args');
 
     const { era: id } = event.args;
