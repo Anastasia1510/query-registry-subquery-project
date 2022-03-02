@@ -16,7 +16,7 @@ network:
 
 x-frontier: &frontier
   kind: substrate/FrontierEvm
-  startBlock: 48
+  startBlock: 7000
   processor: &frontier-processor
     file: './node_modules/@subql/contract-processors/dist/frontierEvm.js'
   assets:
