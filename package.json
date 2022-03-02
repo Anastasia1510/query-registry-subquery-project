@@ -24,9 +24,9 @@
     "@subql/cli": "^0.19.1-6",
     "@subql/types": "latest",
     "@types/bs58": "^4.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.13.0",
-    "@typescript-eslint/parser": "^5.13.0",
-    "eslint": "^8.10.0",
+    "@typescript-eslint/eslint-plugin": "4",
+    "@typescript-eslint/parser": "4",
+    "eslint": "7",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-import": "^2.25.4",
     "husky": ">=6",
@@ -50,6 +50,7 @@
     "*.{ts,css,md}": "prettier --write"
   },
   "exports": {
-    "frontierEvm": "./node_modules/@subql/contract-processors/dist/frontierEvm.js"
+    "frontierEvm": "./node_modules/@subql/contract-processors/dist/frontierEvm.js",
+    "chaintypes": "./chaintypes.js"
   }
 }

@@ -12,7 +12,7 @@ network:
   endpoint: 'wss://sqtn.api.onfinality.io/public-ws'
 
   chaintypes:
-    file: ./chaintypes.js
+    file: ./dist/chaintypes.js
 
 x-frontier: &frontier
   kind: substrate/FrontierEvm
