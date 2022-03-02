@@ -18,7 +18,7 @@ x-frontier: &frontier
   kind: substrate/FrontierEvm
   startBlock: 7000
   processor: &frontier-processor
-    file: './node_modules/@subql/contract-processors/dist/frontierEvm.js'
+    file: './dist/frontierEvm.js'
   assets:
     eraManager:
       file: ./node_modules/@subql/contract-sdk/publish/contracts/EraManager.json
