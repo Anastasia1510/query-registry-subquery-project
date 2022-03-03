@@ -39,12 +39,26 @@ export async function handleAddDelegation(
   let delegation = await Delegation.get(id);
 
   if (!delegation) {
+    // Indexers first stake is effective immediately
+    const eraAmount =
+      indexer === source
+        ? await upsertEraValue(
+            eraManager,
+            {
+              era: 0,
+              value: amount.toBigInt().toJSONType(),
+              valueAfter: amount.toBigInt().toJSONType(),
+            },
+            BigInt(0)
+          )
+        : await upsertEraValue(eraManager, undefined, amount.toBigInt());
+
     delegation = Delegation.create({
       id,
       delegatorAddress: source,
       indexerAddress: indexer,
       indexerId: indexer,
-      amount: await upsertEraValue(eraManager, undefined, amount.toBigInt()),
+      amount: eraAmount,
     });
   } else {
     delegation.amount = await upsertEraValue(
@@ -126,21 +140,25 @@ export async function handleWithdrawClaimed(
   await withdrawl.save();
 }
 
-
-export async function handleSetCommissionRate(event: FrontierEvmEvent<SetCommissionRateEvent['args']>): Promise<void> {
+export async function handleSetCommissionRate(
+  event: FrontierEvmEvent<SetCommissionRateEvent['args']>
+): Promise<void> {
   assert(event.args, 'No event args');
 
   const address = event.args.indexer;
-  const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, new FrontierEthProvider());
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
   const indexer = await Indexer.get(address);
   assert(indexer, `Expected indexer (${address}) to exist`);
 
   indexer.commission = await upsertEraValue(
-      eraManager,
-      indexer.commission,
-      event.args.amount.toBigInt(),
-      'replace'
+    eraManager,
+    indexer.commission,
+    event.args.amount.toBigInt(),
+    'replace'
   );
 
   await indexer.save();

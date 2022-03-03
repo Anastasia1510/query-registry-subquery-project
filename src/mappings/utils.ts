@@ -64,7 +64,7 @@ export async function upsertEraValue(
   value: bigint,
   operation: keyof typeof operations = 'add'
 ): Promise<EraValue> {
-  const currentEra = await eraManager.eraNumber().then((r) => r.toNumber()); // TODO get from chain
+  const currentEra = await eraManager.eraNumber().then((r) => r.toNumber());
 
   if (!eraValue) {
     return {
