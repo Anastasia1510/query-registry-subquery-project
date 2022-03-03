@@ -121,7 +121,7 @@ type ServiceAgreement @entity {
   consumerAddress: String!
 
   deployment: Deployment!
-  # period: BigInt! # nees updated contracts
+  period: BigInt!
 }
 
 type Reward @entity {
