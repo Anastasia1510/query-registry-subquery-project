@@ -22,6 +22,13 @@ function getDeploymentIndexerId(indexer: string, deploymentId: string): string {
   return `${indexer}:${deploymentId}`;
 }
 
+function getProjectDeploymentId(
+  projectId: string,
+  deploymentId: string
+): string {
+  return `${projectId}:${deploymentId}`;
+}
+
 export async function handleNewQuery(
   event: FrontierEvmEvent<CreateQueryEvent['args']>
 ): Promise<void> {
@@ -32,7 +39,7 @@ export async function handleNewQuery(
   const currentVersion = bytesToIpfsCid(event.args.version);
 
   const projectDeployment = ProjectDeployment.create({
-    id: `${projectId}-${deploymentId}`,
+    id: getProjectDeploymentId(projectId, deploymentId),
     projectId: projectId,
     deploymentId,
   });
@@ -82,10 +89,10 @@ export async function handleUpdateQueryDeployment(
   event: FrontierEvmEvent<UpdateQueryDeploymentEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
-  const queryId = event.args.queryId.toHexString();
+  const projectId = event.args.queryId.toHexString();
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const version = bytesToIpfsCid(event.args.version);
-  const projectDeploymentId = `${queryId}-${deploymentId}`;
+  const projectDeploymentId = getProjectDeploymentId(projectId, deploymentId);
 
   let deployment = await Deployment.get(deploymentId);
   if (!deployment) {
@@ -102,16 +109,16 @@ export async function handleUpdateQueryDeployment(
   if (!projectDeployment) {
     projectDeployment = ProjectDeployment.create({
       id: projectDeploymentId,
-      projectId: queryId,
+      projectId,
       deploymentId,
     });
 
     await projectDeployment.save();
   }
 
-  const project = await Project.get(queryId);
+  const project = await Project.get(projectId);
 
-  assert(project, `Expected query (${queryId}) to exist`);
+  assert(project, `Expected query (${projectId}) to exist`);
 
   project.currentDeployment = deploymentId;
   project.currentVersion = version;
