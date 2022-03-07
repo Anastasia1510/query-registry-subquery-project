@@ -126,7 +126,7 @@ export async function handleStartIndexing(
   assert(event.args, 'No event args');
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const indexer = DeploymentIndexer.create({
-    id: `${event.args.indexer}-${deploymentId}`,
+    id: getDeploymentIndexerId(event.args.indexer, deploymentId),
     indexerAddress: event.args.indexer,
     indexerId: event.args.indexer,
     deploymentId: deploymentId,
