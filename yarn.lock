@@ -885,7 +885,7 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
-"@openzeppelin/contracts-upgradeable@^4.3.3":
+"@openzeppelin/contracts-upgradeable@^4.5.2":
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/@openzeppelin/contracts-upgradeable/-/contracts-upgradeable-4.5.2.tgz#90d9e47bacfd8693bfad0ac8a394645575528d05"
   integrity sha512-xgWZYaPlrEOQo3cBj97Ufiuv79SPd8Brh4GcFYhPgb6WvAq4ppz8dWKL6h+jLAK01rUqMRp/TS9AdXgAeNvCLA==
@@ -1466,12 +1466,12 @@
     class-validator "^0.13.2"
     ethers "^5.5.4"
 
-"@subql/contract-sdk@^0.1.1-36":
-  version "0.1.1-36"
-  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.1.1-36.tgz#0318c173cdd931804adf1b51ef580d79cbc17372"
-  integrity sha512-u8jVFnljAS/EWuV6hn23Q9WEmxWP1bkPpognIgKp6iOVBMXrF8/xkEcregCw37WeWt260O4447aVKFJBM/K0rA==
+"@subql/contract-sdk@^0.1.1-37":
+  version "0.1.1-37"
+  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.1.1-37.tgz#cea0ecd29d7f7b65b544b70f185998586ae45c6e"
+  integrity sha512-jztsqwWJQX4HP9tPip10yMETeLGtR/OdSFyi/05cWSzt/FHHV/U8keH20AMXWsGIU2AH8FWs4x1whhmxg4vWFg==
   dependencies:
-    "@openzeppelin/contracts-upgradeable" "^4.3.3"
+    "@openzeppelin/contracts-upgradeable" "^4.5.2"
     dotenv "^10.0.0"
     fs "^0.0.1-security"
 

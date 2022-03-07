@@ -131,4 +131,5 @@ type Reward @entity {
   delegatorAddress: String!
 
   amount: BigInt!
+  claimed: Boolean!
 }
