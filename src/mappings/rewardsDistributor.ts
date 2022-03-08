@@ -3,13 +3,14 @@
 
 import assert from 'assert';
 import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
-import { Delegation, Reward } from '../types';
+import { Delegation, Reward, UnclaimedReward } from '../types';
 import { RewardsDistributer__factory } from '@subql/contract-sdk';
 import FrontierEthProvider from './ethProvider';
 import {
   ClaimRewardsEvent,
   DistributeRewardsEvent,
 } from '@subql/contract-sdk/typechain/RewardsDistributer';
+import { REWARD_DIST_ADDRESS } from './utils';
 
 function buildRewardId(indexer: string, delegator: string): string {
   return `${indexer}:${delegator}`;
@@ -25,7 +26,7 @@ export async function handleRewardsDistributed(
   if (!delegators) return;
 
   const rewardsDistributor = RewardsDistributer__factory.connect(
-    '',
+    REWARD_DIST_ADDRESS,
     new FrontierEthProvider()
   );
 
@@ -37,15 +38,14 @@ export async function handleRewardsDistributed(
       );
       const id = buildRewardId(indexer, delegator.id);
 
-      let reward = await Reward.get(id);
+      let reward = await UnclaimedReward.get(id);
 
       if (!reward) {
-        reward = Reward.create({
+        reward = UnclaimedReward.create({
           id,
           delegatorAddress: delegator.id,
           indexerAddress: indexer,
           amount: rewards.toBigInt(),
-          claimed: false,
         });
       }
 
@@ -61,10 +61,15 @@ export async function handleRewardsClaimed(
 
   const id = buildRewardId(event.args.indexer, event.args.delegator);
 
-  const reward = await Reward.get(id);
-  assert(reward, `Reward not found: ${id}`);
+  await UnclaimedReward.remove(id);
 
-  reward.claimed = true;
+  const reward = Reward.create({
+    id: `${id}:${event.transactionHash}`,
+    indexerAddress: event.args.indexer,
+    delegatorAddress: event.args.delegator,
+    amount: event.args.rewards.toBigInt(),
+    claimedTime: event.blockTimestamp,
+  });
 
   await reward.save();
 }

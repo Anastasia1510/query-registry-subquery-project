@@ -124,12 +124,21 @@ type ServiceAgreement @entity {
   period: BigInt!
 }
 
-type Reward @entity {
+type UnclaimedReward @entity {
   id: ID! # indexer + delegator
 
   indexerAddress: String!
   delegatorAddress: String!
 
   amount: BigInt!
-  claimed: Boolean!
+}
+
+type Reward @entity {
+  id: ID! # indexer + delegator + blockNumber
+
+  indexerAddress: String!
+  delegatorAddress: String!
+
+  amount: BigInt!
+  claimedTime: Date!
 }
