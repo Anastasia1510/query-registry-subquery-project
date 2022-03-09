@@ -3,12 +3,13 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';
 import { Indexer, EraValue, JSONBigInt } from '../types';
 
-// TODO get this from contract-sdk when network is bundled
-export const ERA_MANAGER_ADDRESS = '0xD376C00320CBDB8b3c862094Fa103529639cE881';
-export const PLAN_MANAGER_ADDRESS =
-  '0x2F87033B54D34b8Ed1c632b25567f20136D5D5A4';
-export const SA_REGISTRY_ADDRESS = '0xF0eC7ae35CAeDBF3e247fB0d776E9be98906746F';
-export const REWARD_DIST_ADDRESS = '0x9f84F585CD0A1F234824b4507e4497a9a7d11669';
+import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
+
+export const ERA_MANAGER_ADDRESS = testnetAddresses.EraManager.address;
+export const PLAN_MANAGER_ADDRESS = testnetAddresses.PlanManager.address;
+export const SA_REGISTRY_ADDRESS =
+  testnetAddresses.ServiceAgreementRegistry.address;
+export const REWARD_DIST_ADDRESS = testnetAddresses.RewardsDistributer.address;
 
 declare global {
   interface BigIntConstructor {
