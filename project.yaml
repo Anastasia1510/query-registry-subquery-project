@@ -16,7 +16,7 @@ network:
 
 x-frontier: &frontier
   kind: substrate/FrontierEvm
-  startBlock: 95037
+  startBlock: 102241
   processor: &frontier-processor
     file: './dist/frontierEvm.js'
   assets:
