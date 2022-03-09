@@ -134,11 +134,26 @@ type UnclaimedReward @entity {
 }
 
 type Reward @entity {
-  id: ID! # indexer + delegator + blockNumber
+  id: ID! # indexer + delegator + tx hash
 
   indexerAddress: String!
   delegatorAddress: String!
 
   amount: BigInt!
   claimedTime: Date!
+}
+
+# Expected total reward an indexer will get each epoch
+type IndexerReward @entity {
+  id: ID! # indexer + era
+
+  indexer: Indexer!
+  indexerAddress: String!
+
+  era: Era!
+  eraIdx: String!
+
+  amount: BigInt!
+  additions: BigInt!
+  removals: BigInt!
 }

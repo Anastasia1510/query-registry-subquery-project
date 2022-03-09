@@ -41,7 +41,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: eraManager
-        address: '0xDFde80A41Cc8dc05Bb7623F6e7382dC495983e39'
+        address: '0x8271e0DE985214838e113eD214222aEf2D58D044'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -55,7 +55,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: indexerRegistry
-        address: '0xa8fd778366bBadBf35cDC7437f7E0D19C69d3D1b'
+        address: '0xD882293f1aa564Fd38e44523C39BBFab9112C382'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -89,7 +89,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: staking
-        address: '0xEA1E2DCf62178Cc2e9766E6851813b2EF6dFa683'
+        address: '0x236c0c0aF5cDC0d60d3843cF3C2cB5d0d9C6301A'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -123,7 +123,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: queryRegistry
-        address: '0xc8e6CE3fca4C9973CB965719B8D648c75F29246B'
+        address: '0xFEAD5a6b48f605B11e5ab275276d085c2d0Ae89F'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -172,7 +172,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: planManager
-        address: '0x68dFaB68072527372fd0D9cEA43Cb9B921d9a631'
+        address: '0xb71374572CcEe7EF7CB6c45484C879fABf6bE994'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -206,7 +206,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: serviceAgreementRegistry
-        address: '0x4478Db9052F993Bf3e4f99A67D1815c279a4D0F1'
+        address: '0x70A7fBA70b33C54475A2f9b44B53DD07de6b6759'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -220,7 +220,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: rewardsDistributor
-        address: '0x894DE634cb4a86F7915c79b5A12Ea8eA3879Cb82'
+        address: '0x51dbA34A581e795443f127A6E89D118cEf0045f6'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -234,3 +234,8 @@ dataSources:
           filter:
             topics:
               - ClaimRewards(address indexed indexer, address indexed delegator, uint256 rewards)
+        - handler: handleRewardsUpdated
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - RewardsChanged(address indexed indexer, uint256 indexed eraIdx, uint256 additions, uint256 removals)

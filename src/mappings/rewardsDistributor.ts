@@ -2,22 +2,32 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import assert from 'assert';
-import { MoonbeamEvent } from '@subql/contract-processors/dist/moonbeam';
-import { Delegation, Reward, UnclaimedReward } from '../types';
+import { Delegation, IndexerReward, Reward, UnclaimedReward } from '../types';
 import { RewardsDistributer__factory } from '@subql/contract-sdk';
 import FrontierEthProvider from './ethProvider';
 import {
   ClaimRewardsEvent,
   DistributeRewardsEvent,
+  RewardsChangedEvent,
 } from '@subql/contract-sdk/typechain/RewardsDistributer';
 import { REWARD_DIST_ADDRESS } from './utils';
+import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import { BigNumber } from '@ethersproject/bignumber';
 
 function buildRewardId(indexer: string, delegator: string): string {
   return `${indexer}:${delegator}`;
 }
 
+function getIndexerRewardId(indexer: string, eraIdx: BigNumber): string {
+  return `${indexer}:${eraIdx.toHexString()}`;
+}
+
+function getPrevIndexerRewardId(indexer: string, eraIdx: BigNumber): string {
+  return getIndexerRewardId(indexer, eraIdx.sub(1));
+}
+
 export async function handleRewardsDistributed(
-  event: MoonbeamEvent<DistributeRewardsEvent['args']>
+  event: FrontierEvmEvent<DistributeRewardsEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 
@@ -55,7 +65,7 @@ export async function handleRewardsDistributed(
 }
 
 export async function handleRewardsClaimed(
-  event: MoonbeamEvent<ClaimRewardsEvent['args']>
+  event: FrontierEvmEvent<ClaimRewardsEvent['args']>
 ): Promise<void> {
   assert(event.args, 'No event args');
 
@@ -72,4 +82,67 @@ export async function handleRewardsClaimed(
   });
 
   await reward.save();
+}
+
+export async function handleRewardsUpdated(
+  event: FrontierEvmEvent<RewardsChangedEvent['args']>
+): Promise<void> {
+  assert(event.args, 'No event args');
+
+  const { indexer, eraIdx, additions, removals } = event.args;
+  const id = getIndexerRewardId(indexer, eraIdx);
+
+  const prevEraRewards = await IndexerReward.get(
+    getPrevIndexerRewardId(indexer, eraIdx)
+  );
+  const prevAmount = prevEraRewards?.amount ?? BigInt(0);
+
+  let eraRewards = await IndexerReward.get(id);
+
+  if (!eraRewards) {
+    eraRewards = IndexerReward.create({
+      id,
+      indexerAddress: indexer,
+      indexerId: indexer,
+      eraId: eraIdx.toHexString(),
+      eraIdx: eraIdx.toHexString(),
+      additions: additions.toBigInt(),
+      removals: removals.toBigInt(),
+
+      amount: prevAmount + additions.toBigInt() - removals.toBigInt(),
+    });
+  } else {
+    const additionsDiff = additions.toBigInt() - eraRewards.additions;
+    const removalsDiff = removals.toBigInt() - eraRewards.removals;
+
+    eraRewards.amount = eraRewards.amount + additionsDiff - removalsDiff;
+
+    eraRewards.additions = additions.toBigInt();
+    eraRewards.removals = removals.toBigInt();
+  }
+
+  await eraRewards.save();
+
+  /* Rewards changed events don't come in in order and may not be the latest set era */
+  await reapplyRewardAmount(indexer, eraIdx.add(1), eraRewards);
+}
+
+/* Recalculates reward amounts for later eras */
+async function reapplyRewardAmount(
+  indexer: string,
+  eraIdx: BigNumber,
+  prevEraRewards: Readonly<IndexerReward>
+): Promise<void> {
+  const id = getIndexerRewardId(indexer, eraIdx);
+  const eraRewards = await IndexerReward.get(id);
+
+  // Theres no future eras with rewards
+  if (!eraRewards) return;
+
+  eraRewards.amount =
+    prevEraRewards.amount + eraRewards.additions - eraRewards.removals;
+
+  await eraRewards.save();
+
+  return reapplyRewardAmount(indexer, eraIdx.add(1), eraRewards);
 }
