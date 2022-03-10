@@ -76,9 +76,19 @@ type Indexer @entity {
   delegations: [Delegation] @derivedFrom(field: "indexer")
 }
 
+type Delegator @entity {
+  id: ID! # Address
+
+  totalDelegations: EraValue!
+  delegations: [Delegation] @derivedFrom(field: "delegator")
+}
+
 type Delegation @entity {
   id: ID! # nominator + indexer addresses
+
   delegatorAddress: String! # nominator address
+  delegator: Delegator!
+
   indexerAddress: String! # indexer address
   indexer: Indexer!
 

@@ -1,7 +1,7 @@
 import bs58 from 'bs58';
 import { BigNumber } from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';
-import { Indexer, EraValue, JSONBigInt } from '../types';
+import { Delegator, Indexer, EraValue, JSONBigInt } from '../types';
 
 import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
 
@@ -64,37 +64,44 @@ export async function upsertEraValue(
   eraManager: EraManager,
   eraValue: EraValue | undefined,
   value: bigint,
-  operation: keyof typeof operations = 'add'
+  operation: keyof typeof operations = 'add',
+  applyInstantly?: boolean
 ): Promise<EraValue> {
   const currentEra = await eraManager.eraNumber().then((r) => r.toNumber());
 
   if (!eraValue) {
     return {
       era: currentEra,
-      value: BigInt(0).toJSONType(),
+      value: (applyInstantly ? value : BigInt(0)).toJSONType(),
       valueAfter: value.toJSONType(),
     };
   }
 
+  const applyOperation = (existing: JSONBigInt) =>
+    operations[operation](BigInt.fromJSONType(existing), value).toJSONType();
+
+  const valueAfter = applyOperation(eraValue.valueAfter);
+
   if (eraValue.era === currentEra) {
-    BigInt.fromJSONType(eraValue.valueAfter);
+    const newValue = applyInstantly
+      ? applyOperation(eraValue.value)
+      : eraValue.value;
+
     return {
       era: currentEra,
-      value: eraValue.value,
-      valueAfter: operations[operation](
-        BigInt.fromJSONType(eraValue.valueAfter),
-        value
-      ).toJSONType(),
+      value: newValue,
+      valueAfter,
     };
   }
 
+  const newValue = applyInstantly
+    ? applyOperation(eraValue.valueAfter)
+    : eraValue.valueAfter;
+
   return {
     era: currentEra,
-    value: eraValue.valueAfter,
-    valueAfter: operations[operation](
-      BigInt.fromJSONType(eraValue.valueAfter),
-      value
-    ).toJSONType(),
+    value: newValue,
+    valueAfter,
   };
 }
 
@@ -102,7 +109,8 @@ export async function updateTotalStake(
   eraManager: EraManager,
   indexerAddress: string,
   amount: bigint,
-  operation: keyof typeof operations
+  operation: keyof typeof operations,
+  applyInstantly?: boolean
 ): Promise<void> {
   let indexer = await Indexer.get(indexerAddress);
 
@@ -115,7 +123,13 @@ export async function updateTotalStake(
         amount,
         operation
       ),
-      commission: await upsertEraValue(eraManager, undefined, BigInt(0)),
+      commission: await upsertEraValue(
+        eraManager,
+        undefined,
+        BigInt(0),
+        operation,
+        applyInstantly
+      ),
     });
   } else {
     indexer.totalStake = await upsertEraValue(
@@ -127,4 +141,37 @@ export async function updateTotalStake(
   }
 
   await indexer.save();
+}
+
+export async function updateTotalDelegation(
+  eraManager: EraManager,
+  delegatorAddress: string,
+  amount: bigint,
+  operation: keyof typeof operations = 'add',
+  applyInstantly?: boolean
+): Promise<void> {
+  let delegator = await Delegator.get(delegatorAddress);
+
+  if (!delegator) {
+    delegator = Delegator.create({
+      id: delegatorAddress,
+      totalDelegations: await upsertEraValue(
+        eraManager,
+        undefined,
+        amount,
+        operation,
+        applyInstantly
+      ),
+    });
+  } else {
+    delegator.totalDelegations = await upsertEraValue(
+      eraManager,
+      delegator.totalDelegations,
+      amount,
+      operation,
+      applyInstantly
+    );
+  }
+
+  await delegator.save();
 }

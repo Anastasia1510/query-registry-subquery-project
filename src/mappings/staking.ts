@@ -12,7 +12,12 @@ import {
 import assert from 'assert';
 import { Delegation, Withdrawl, Indexer } from '../types';
 import FrontierEthProvider from './ethProvider';
-import { ERA_MANAGER_ADDRESS, updateTotalStake, upsertEraValue } from './utils';
+import {
+  ERA_MANAGER_ADDRESS,
+  updateTotalStake,
+  upsertEraValue,
+  updateTotalDelegation,
+} from './utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
@@ -36,39 +41,53 @@ export async function handleAddDelegation(
     new FrontierEthProvider()
   );
 
+  const amountBn = amount.toBigInt();
+
+  await updateTotalDelegation(
+    eraManager,
+    source,
+    amountBn,
+    'add',
+    indexer === source
+  );
+
   let delegation = await Delegation.get(id);
 
   if (!delegation) {
     // Indexers first stake is effective immediately
-    const eraAmount =
+    const eraAmount = await upsertEraValue(
+      eraManager,
+      undefined,
+      amountBn,
+      'add',
       indexer === source
-        ? await upsertEraValue(
-            eraManager,
-            {
-              era: 0,
-              value: amount.toBigInt().toJSONType(),
-              valueAfter: amount.toBigInt().toJSONType(),
-            },
-            BigInt(0)
-          )
-        : await upsertEraValue(eraManager, undefined, amount.toBigInt());
+    );
 
     delegation = Delegation.create({
       id,
       delegatorAddress: source,
+      delegatorId: source,
       indexerAddress: indexer,
       indexerId: indexer,
       amount: eraAmount,
     });
+
+    await updateTotalStake(
+      eraManager,
+      indexer,
+      amountBn,
+      'add',
+      indexer === source
+    );
   } else {
     delegation.amount = await upsertEraValue(
       eraManager,
       delegation.amount,
-      amount.toBigInt()
+      amountBn
     );
-  }
 
-  await updateTotalStake(eraManager, indexer, amount.toBigInt(), 'add');
+    await updateTotalStake(eraManager, indexer, amountBn, 'add');
+  }
 
   await delegation.save();
 }
@@ -96,6 +115,7 @@ export async function handleRemoveDelegation(
     'sub'
   );
 
+  await updateTotalDelegation(eraManager, source, amount.toBigInt(), 'sub');
   await updateTotalStake(eraManager, indexer, amount.toBigInt(), 'sub');
 
   await delegation.save();
