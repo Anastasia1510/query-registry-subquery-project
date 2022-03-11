@@ -14,20 +14,13 @@ type Project @entity {
   updatedTimestamp: Date!
   createdTimestamp: Date!
 
-  deployments: [ProjectDeployment] @derivedFrom(field: "project")
-}
-
-type ProjectDeployment @entity {
-  id: ID!
-
-  project: Project!
-  deployment: Deployment!
+  deployments: [Deployment] @derivedFrom(field: "project")
 }
 
 type Deployment @entity {
   id: ID! # deploymentId, IPFS hash to deployment
   version: String! # IPFS hash to version info
-  projects: [ProjectDeployment] @derivedFrom(field: "deployment")
+  project: Project!
   indexers: [DeploymentIndexer]! @derivedFrom(field: "deployment")
   createdTimestamp: Date!
 }
