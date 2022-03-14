@@ -12,20 +12,12 @@ import {
   UpdateQueryMetadataEvent,
   UpdateQueryDeploymentEvent,
   UpdateIndexingStatusToReadyEvent,
-  UnregisterQueryEvent,
 } from '@subql/contract-sdk/typechain/QueryRegistry';
 import { bnToDate, bytesToIpfsCid } from './utils';
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 function getDeploymentIndexerId(indexer: string, deploymentId: string): string {
   return `${indexer}:${deploymentId}`;
-}
-
-function getProjectDeploymentId(
-  projectId: string,
-  deploymentId: string
-): string {
-  return `${projectId}:${deploymentId}`;
 }
 
 export async function handleNewQuery(
