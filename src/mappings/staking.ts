@@ -7,11 +7,17 @@ import {
   DelegationRemovedEvent,
   UnbondRequestedEvent,
   UnbondWithdrawnEvent,
+  SetCommissionRateEvent,
 } from '@subql/contract-sdk/typechain/Staking';
 import assert from 'assert';
-import { Delegation, Withdrawl } from '../types';
+import { Delegation, Withdrawl, Indexer } from '../types';
 import FrontierEthProvider from './ethProvider';
-import { ERA_MANAGER_ADDRESS, updateTotalStake, upsertEraValue } from './utils';
+import {
+  ERA_MANAGER_ADDRESS,
+  updateTotalStake,
+  upsertEraValue,
+  updateTotalDelegation,
+} from './utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
@@ -35,25 +41,53 @@ export async function handleAddDelegation(
     new FrontierEthProvider()
   );
 
+  const amountBn = amount.toBigInt();
+
+  await updateTotalDelegation(
+    eraManager,
+    source,
+    amountBn,
+    'add',
+    indexer === source
+  );
+
   let delegation = await Delegation.get(id);
 
   if (!delegation) {
+    // Indexers first stake is effective immediately
+    const eraAmount = await upsertEraValue(
+      eraManager,
+      undefined,
+      amountBn,
+      'add',
+      indexer === source
+    );
+
     delegation = Delegation.create({
       id,
       delegatorAddress: source,
+      delegatorId: source,
       indexerAddress: indexer,
       indexerId: indexer,
-      amount: await upsertEraValue(eraManager, undefined, amount.toBigInt()),
+      amount: eraAmount,
     });
+
+    await updateTotalStake(
+      eraManager,
+      indexer,
+      amountBn,
+      'add',
+      indexer === source
+    );
   } else {
     delegation.amount = await upsertEraValue(
       eraManager,
       delegation.amount,
-      amount.toBigInt()
+      amountBn
     );
-  }
 
-  await updateTotalStake(eraManager, indexer, amount.toBigInt(), 'add');
+    await updateTotalStake(eraManager, indexer, amountBn, 'add');
+  }
 
   await delegation.save();
 }
@@ -81,6 +115,7 @@ export async function handleRemoveDelegation(
     'sub'
   );
 
+  await updateTotalDelegation(eraManager, source, amount.toBigInt(), 'sub');
   await updateTotalStake(eraManager, indexer, amount.toBigInt(), 'sub');
 
   await delegation.save();
@@ -123,4 +158,28 @@ export async function handleWithdrawClaimed(
   withdrawl.claimed = true;
 
   await withdrawl.save();
+}
+
+export async function handleSetCommissionRate(
+  event: FrontierEvmEvent<SetCommissionRateEvent['args']>
+): Promise<void> {
+  assert(event.args, 'No event args');
+
+  const address = event.args.indexer;
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
+
+  const indexer = await Indexer.get(address);
+  assert(indexer, `Expected indexer (${address}) to exist`);
+
+  indexer.commission = await upsertEraValue(
+    eraManager,
+    indexer.commission,
+    event.args.amount.toBigInt(),
+    'replace'
+  );
+
+  await indexer.save();
 }

@@ -6,7 +6,6 @@ import { EraManager__factory } from '@subql/contract-sdk';
 import {
   RegisterIndexerEvent,
   RemoveControllerAccountEvent,
-  SetCommissionRateEvent,
   SetControllerAccountEvent,
   UnregisterIndexerEvent,
   UpdateMetadataEvent,
@@ -101,30 +100,6 @@ export async function handleRemoveControllerAccount(
   assert(indexer, `Expected indexer (${address}) to exist`);
 
   delete indexer.controller;
-
-  await indexer.save();
-}
-
-export async function handleSetCommissionRate(
-  event: FrontierEvmEvent<SetCommissionRateEvent['args']>
-): Promise<void> {
-  assert(event.args, 'No event args');
-
-  const address = event.args.indexer;
-  const eraManager = EraManager__factory.connect(
-    ERA_MANAGER_ADDRESS,
-    new FrontierEthProvider()
-  );
-
-  const indexer = await Indexer.get(address);
-  assert(indexer, `Expected indexer (${address}) to exist`);
-
-  indexer.commission = await upsertEraValue(
-    eraManager,
-    indexer.commission,
-    event.args.amount.toBigInt(),
-    'replace'
-  );
 
   await indexer.save();
 }

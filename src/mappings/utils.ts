@@ -1,13 +1,15 @@
 import bs58 from 'bs58';
 import { BigNumber } from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';
-import { Indexer, EraValue, JSONBigInt } from '../types';
+import { Delegator, Indexer, EraValue, JSONBigInt } from '../types';
 
-// TODO get this from contract-sdk when network is bundled
-export const ERA_MANAGER_ADDRESS = '0xED8f079e89717A94ff9E72F04A8e2775161024FF';
-export const PLAN_MANAGER_ADDRESS =
-  '0xF7212a9D6468709a954A34125A3A9d14D6db083e';
-export const SA_REGISTRY_ADDRESS = '0xAd9Ec6BDB97798C43BF4dab638ba14F794B15859';
+import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
+
+export const ERA_MANAGER_ADDRESS = testnetAddresses.EraManager.address;
+export const PLAN_MANAGER_ADDRESS = testnetAddresses.PlanManager.address;
+export const SA_REGISTRY_ADDRESS =
+  testnetAddresses.ServiceAgreementRegistry.address;
+export const REWARD_DIST_ADDRESS = testnetAddresses.RewardsDistributer.address;
 
 declare global {
   interface BigIntConstructor {
@@ -62,37 +64,44 @@ export async function upsertEraValue(
   eraManager: EraManager,
   eraValue: EraValue | undefined,
   value: bigint,
-  operation: keyof typeof operations = 'add'
+  operation: keyof typeof operations = 'add',
+  applyInstantly?: boolean
 ): Promise<EraValue> {
-  const currentEra = await eraManager.eraNumber().then((r) => r.toNumber()); // TODO get from chain
+  const currentEra = await eraManager.eraNumber().then((r) => r.toNumber());
 
   if (!eraValue) {
     return {
       era: currentEra,
-      value: BigInt(0).toJSONType(),
+      value: (applyInstantly ? value : BigInt(0)).toJSONType(),
       valueAfter: value.toJSONType(),
     };
   }
 
+  const applyOperation = (existing: JSONBigInt) =>
+    operations[operation](BigInt.fromJSONType(existing), value).toJSONType();
+
+  const valueAfter = applyOperation(eraValue.valueAfter);
+
   if (eraValue.era === currentEra) {
-    BigInt.fromJSONType(eraValue.valueAfter);
+    const newValue = applyInstantly
+      ? applyOperation(eraValue.value)
+      : eraValue.value;
+
     return {
       era: currentEra,
-      value: eraValue.value,
-      valueAfter: operations[operation](
-        BigInt.fromJSONType(eraValue.valueAfter),
-        value
-      ).toJSONType(),
+      value: newValue,
+      valueAfter,
     };
   }
 
+  const newValue = applyInstantly
+    ? applyOperation(eraValue.valueAfter)
+    : eraValue.valueAfter;
+
   return {
     era: currentEra,
-    value: eraValue.valueAfter,
-    valueAfter: operations[operation](
-      BigInt.fromJSONType(eraValue.valueAfter),
-      value
-    ).toJSONType(),
+    value: newValue,
+    valueAfter,
   };
 }
 
@@ -100,7 +109,8 @@ export async function updateTotalStake(
   eraManager: EraManager,
   indexerAddress: string,
   amount: bigint,
-  operation: keyof typeof operations
+  operation: keyof typeof operations,
+  applyInstantly?: boolean
 ): Promise<void> {
   let indexer = await Indexer.get(indexerAddress);
 
@@ -113,7 +123,13 @@ export async function updateTotalStake(
         amount,
         operation
       ),
-      commission: await upsertEraValue(eraManager, undefined, BigInt(0)),
+      commission: await upsertEraValue(
+        eraManager,
+        undefined,
+        BigInt(0),
+        operation,
+        applyInstantly
+      ),
     });
   } else {
     indexer.totalStake = await upsertEraValue(
@@ -125,4 +141,37 @@ export async function updateTotalStake(
   }
 
   await indexer.save();
+}
+
+export async function updateTotalDelegation(
+  eraManager: EraManager,
+  delegatorAddress: string,
+  amount: bigint,
+  operation: keyof typeof operations = 'add',
+  applyInstantly?: boolean
+): Promise<void> {
+  let delegator = await Delegator.get(delegatorAddress);
+
+  if (!delegator) {
+    delegator = Delegator.create({
+      id: delegatorAddress,
+      totalDelegations: await upsertEraValue(
+        eraManager,
+        undefined,
+        amount,
+        operation,
+        applyInstantly
+      ),
+    });
+  } else {
+    delegator.totalDelegations = await upsertEraValue(
+      eraManager,
+      delegator.totalDelegations,
+      amount,
+      operation,
+      applyInstantly
+    );
+  }
+
+  await delegator.save();
 }

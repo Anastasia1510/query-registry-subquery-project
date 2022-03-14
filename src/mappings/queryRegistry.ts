@@ -12,21 +12,12 @@ import {
   UpdateQueryMetadataEvent,
   UpdateQueryDeploymentEvent,
   UpdateIndexingStatusToReadyEvent,
-  UnregisterQueryEvent,
 } from '@subql/contract-sdk/typechain/QueryRegistry';
-import { ProjectDeployment } from '../types/models/ProjectDeployment';
 import { bnToDate, bytesToIpfsCid } from './utils';
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 
 function getDeploymentIndexerId(indexer: string, deploymentId: string): string {
   return `${indexer}:${deploymentId}`;
-}
-
-function getProjectDeploymentId(
-  projectId: string,
-  deploymentId: string
-): string {
-  return `${projectId}:${deploymentId}`;
 }
 
 export async function handleNewQuery(
@@ -37,24 +28,6 @@ export async function handleNewQuery(
   const projectId = event.args.queryId.toHexString();
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const currentVersion = bytesToIpfsCid(event.args.version);
-
-  const projectDeployment = ProjectDeployment.create({
-    id: getProjectDeploymentId(projectId, deploymentId),
-    projectId: projectId,
-    deploymentId,
-  });
-
-  let deployment = await Deployment.get(deploymentId);
-
-  if (!deployment) {
-    deployment = Deployment.create({
-      id: deploymentId,
-      version: currentVersion,
-      createdTimestamp: event.blockTimestamp,
-    });
-
-    await deployment.save();
-  }
 
   const project = Project.create({
     id: projectId,
@@ -67,7 +40,15 @@ export async function handleNewQuery(
   });
 
   await project.save();
-  await projectDeployment.save();
+
+  const deployment = Deployment.create({
+    id: deploymentId,
+    version: currentVersion,
+    createdTimestamp: event.blockTimestamp,
+    projectId,
+  });
+
+  await deployment.save();
 }
 
 export async function handleUpdateQueryMetadata(
@@ -92,29 +73,15 @@ export async function handleUpdateQueryDeployment(
   const projectId = event.args.queryId.toHexString();
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const version = bytesToIpfsCid(event.args.version);
-  const projectDeploymentId = getProjectDeploymentId(projectId, deploymentId);
 
-  let deployment = await Deployment.get(deploymentId);
-  if (!deployment) {
-    deployment = Deployment.create({
-      id: deploymentId,
-      version,
-      createdTimestamp: event.blockTimestamp,
-    });
+  const deployment = Deployment.create({
+    id: deploymentId,
+    version,
+    createdTimestamp: event.blockTimestamp,
+    projectId,
+  });
 
-    await deployment.save();
-  }
-
-  let projectDeployment = await ProjectDeployment.get(projectDeploymentId);
-  if (!projectDeployment) {
-    projectDeployment = ProjectDeployment.create({
-      id: projectDeploymentId,
-      projectId,
-      deploymentId,
-    });
-
-    await projectDeployment.save();
-  }
+  await deployment.save();
 
   const project = await Project.get(projectId);
 
@@ -185,21 +152,4 @@ export async function handleStopIndexing(
   await indexer.save();
 
   // TODO remove indexer instead?
-}
-
-export async function handleUnregisterQuery(
-  event: FrontierEvmEvent<UnregisterQueryEvent['args']>
-): Promise<void> {
-  assert(event.args, 'No event args');
-
-  const projectId = event.args.queryId.toHexString();
-  const projectDeployments = await ProjectDeployment.getByProjectId(projectId);
-
-  if (projectDeployments) {
-    await Promise.all(
-      projectDeployments.map((pd) => ProjectDeployment.remove(pd.id))
-    );
-  }
-
-  await Project.remove(projectId);
 }

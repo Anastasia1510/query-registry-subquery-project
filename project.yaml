@@ -16,7 +16,7 @@ network:
 
 x-frontier: &frontier
   kind: substrate/FrontierEvm
-  startBlock: 7000
+  startBlock: 134980
   processor: &frontier-processor
     file: './dist/frontierEvm.js'
   assets:
@@ -32,6 +32,8 @@ x-frontier: &frontier
       file: ./node_modules/@subql/contract-sdk/publish/contracts/PlanManager.json
     serviceAgreementRegistry:
       file: ./node_modules/@subql/contract-sdk/publish/contracts/ServiceAgreementRegistry.json
+    rewardsDistributor:
+      file: ./node_modules/@subql/contract-sdk/publish/contracts/RewardsDistributer.json
 
 dataSources:
   - <<: *frontier
@@ -39,7 +41,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: eraManager
-        address: '0xED8f079e89717A94ff9E72F04A8e2775161024FF'
+        address: '0x9C7cB5e9991eE7cD43032C2cA5580a90AF2F699F'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -53,7 +55,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: indexerRegistry
-        address: '0x6B30bf34254ca3dD79cACC425feddf376199e586'
+        address: '0x23EDdDcEB597c9F556137A245AfC467F0ce4CF33'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -82,17 +84,12 @@ dataSources:
           filter:
             topics:
               - RemoveControllerAccount(address indexed indexer, address indexed controller)
-        - handler: handleSetCommissionRate
-          kind: substrate/FrontierEvmEvent
-          filter:
-            topics:
-              - SetCommissionRate(address indexed indexer, uint256 amount)
   - <<: *frontier
     processor:
       <<: *frontier-processor
       options:
         abi: staking
-        address: '0x2F50025987C58549018841e007c61759d8Fb9BeD'
+        address: '0x1274D11F823f68C596fF055E699e806bd2766ADB'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -116,12 +113,17 @@ dataSources:
           filter:
             topics:
               - UnbondWithdrawn(address indexed source, uint256 amount, uint256 index)
+        - handler: handleSetCommissionRate
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - SetCommissionRate(address indexed indexer, uint256 amount)
   - <<: *frontier
     processor:
       <<: *frontier-processor
       options:
         abi: queryRegistry
-        address: '0x778F2EbDec0F19bae9dE190f51837176208EbC96'
+        address: '0x924087507b011f5623e578741f8683f4716cFBBf'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -160,17 +162,12 @@ dataSources:
           filter:
             topics:
               - StopIndexing(address indexer, bytes32 deploymentId)
-        - handler: handleUnregisterQuery
-          kind: substrate/FrontierEvmEvent
-          filter:
-            topics:
-              - UnregisterQuery(address indexed owner, uint256 indexed queryId)
   - <<: *frontier
     processor:
       <<: *frontier-processor
       options:
         abi: planManager
-        address: '0xF7212a9D6468709a954A34125A3A9d14D6db083e'
+        address: '0xC0870ce0b9c66B8250B992080B4D32A0F44B3e88'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -204,7 +201,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: serviceAgreementRegistry
-        address: '0xAd9Ec6BDB97798C43BF4dab638ba14F794B15859'
+        address: '0xd6b7789e77c62418C88508534D1F7283e9B7B5A2'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -213,3 +210,27 @@ dataSources:
           filter:
             topics:
               - ServiceAgreementCreated(address indexed serviceAgreement, address indexed consumer, address indexed indexer)
+  - <<: *frontier
+    processor:
+      <<: *frontier-processor
+      options:
+        abi: rewardsDistributor
+        address: '0x0754ffC14820dB9b7CD88A2FC3Bdf05e625b404C'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleRewardsDistributed
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - DistributeRewards(address indexed indexer)
+        - handler: handleRewardsClaimed
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - ClaimRewards(address indexed indexer, address indexed delegator, uint256 rewards)
+        - handler: handleRewardsUpdated
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - RewardsChanged(address indexed indexer, uint256 indexed eraIdx, uint256 additions, uint256 removals)
