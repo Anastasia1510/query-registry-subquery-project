@@ -178,7 +178,9 @@ export async function handleSetCommissionRate(
     eraManager,
     indexer.commission,
     event.args.amount.toBigInt(),
-    'replace'
+    'replace',
+    // Apply instantly when era is -1, this is an indication that indexer has just registered
+    indexer.commission.era === -1
   );
 
   await indexer.save();

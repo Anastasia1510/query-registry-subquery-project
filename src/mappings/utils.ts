@@ -121,7 +121,8 @@ export async function updateTotalStake(
         eraManager,
         undefined,
         amount,
-        operation
+        operation,
+        applyInstantly
       ),
       commission: await upsertEraValue(
         eraManager,
@@ -136,7 +137,8 @@ export async function updateTotalStake(
       eraManager,
       indexer.totalStake,
       amount,
-      operation
+      operation,
+      applyInstantly
     );
   }
 

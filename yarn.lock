@@ -1466,7 +1466,7 @@
     class-validator "^0.13.2"
     ethers "^5.5.4"
 
-"@subql/contract-sdk@^0.1.1-47":
+"@subql/contract-sdk@0.1.1-47":
   version "0.1.1-47"
   resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.1.1-47.tgz#d352999ba92edf11f30a254aa72f604de2d80890"
   integrity sha512-dq77L0QwI5MA8aleqsRT033PslBODwh+Qi8lKmbKZkQ77NXChrlaQSXCGYsJEcgJJ2VcousPX5i9IkiU+9lH1A==
