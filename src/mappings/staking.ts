@@ -32,6 +32,7 @@ function getWithdrawlId(delegator: string, index: BigNumber): string {
 export async function handleAddDelegation(
   event: FrontierEvmEvent<DelegationAddedEvent['args']>
 ): Promise<void> {
+  logger.info('handleAddDelegation');
   assert(event.args, 'No event args');
 
   const { source, indexer, amount } = event.args;
@@ -95,6 +96,7 @@ export async function handleAddDelegation(
 export async function handleRemoveDelegation(
   event: FrontierEvmEvent<DelegationRemovedEvent['args']>
 ): Promise<void> {
+  logger.info('handleRemoveDelegation');
   assert(event.args, 'No event args');
 
   const { source, indexer, amount } = event.args;
@@ -124,7 +126,7 @@ export async function handleRemoveDelegation(
 export async function handleWithdrawRequested(
   event: FrontierEvmEvent<UnbondRequestedEvent['args']>
 ): Promise<void> {
-  logger.warn('handleWithdrawRequested');
+  logger.info('handleWithdrawRequested');
   assert(event.args, 'No event args');
 
   const { source, indexer, index, amount } = event.args;
@@ -146,6 +148,7 @@ export async function handleWithdrawRequested(
 export async function handleWithdrawClaimed(
   event: FrontierEvmEvent<UnbondWithdrawnEvent['args']>
 ): Promise<void> {
+  logger.info('handleWithdrawClaimed');
   assert(event.args, 'No event args');
 
   const { source, index } = event.args;
@@ -162,6 +165,7 @@ export async function handleWithdrawClaimed(
 export async function handleSetCommissionRate(
   event: FrontierEvmEvent<SetCommissionRateEvent['args']>
 ): Promise<void> {
+  logger.info('handleSetCommissionRate');
   assert(event.args, 'No event args');
 
   const address = event.args.indexer;

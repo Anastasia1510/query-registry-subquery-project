@@ -8,6 +8,7 @@ import { Era } from '../types';
 export async function handleNewEra(
   event: FrontierEvmEvent<NewEraStartEvent['args']>
 ): Promise<void> {
+  logger.info('handleNewEra');
   assert(event.args, 'No event args');
 
   const { era: id } = event.args;

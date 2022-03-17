@@ -12,6 +12,7 @@ import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 export async function handleServiceAgreementCreated(
   event: FrontierEvmEvent<ServiceAgreementCreatedEvent['args']>
 ): Promise<void> {
+  logger.info('handleServiceAgreementCreated');
   assert(event.args, 'No event args');
 
   const saContract = IServiceAgreement__factory.connect(

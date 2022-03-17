@@ -19,6 +19,7 @@ import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 export async function handleRegisterIndexer(
   event: FrontierEvmEvent<RegisterIndexerEvent['args']>
 ): Promise<void> {
+  logger.info('handleRegisterIndexer');
   assert(event.args, 'No event args');
   const { indexer: indexerAddress, metadata } = event.args;
 
@@ -52,6 +53,7 @@ export async function handleRegisterIndexer(
 export async function handleUnregisterIndexer(
   event: FrontierEvmEvent<UnregisterIndexerEvent['args']>
 ): Promise<void> {
+  logger.info('handleUnregisterIndexer');
   assert(event.args, 'No event args');
 
   // TODO does this take effect next era?
@@ -61,6 +63,7 @@ export async function handleUnregisterIndexer(
 export async function handleUpdateIndexerMetadata(
   event: FrontierEvmEvent<UpdateMetadataEvent['args']>
 ): Promise<void> {
+  logger.info('handleUpdateIndexerMetadata');
   assert(event.args, 'No event args');
   const address = event.args.indexer;
 
@@ -74,6 +77,7 @@ export async function handleUpdateIndexerMetadata(
 export async function handleSetControllerAccount(
   event: FrontierEvmEvent<SetControllerAccountEvent['args']>
 ): Promise<void> {
+  logger.info('handleSetControllerAccount');
   assert(event.args, 'No event args');
   const address = event.args.indexer;
 
@@ -88,6 +92,7 @@ export async function handleSetControllerAccount(
 export async function handleRemoveControllerAccount(
   event: FrontierEvmEvent<RemoveControllerAccountEvent['args']>
 ): Promise<void> {
+  logger.info('handleRemoveControllerAccount');
   assert(event.args, 'No event args');
   const address = event.args.indexer;
 

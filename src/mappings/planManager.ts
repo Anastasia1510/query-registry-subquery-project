@@ -16,6 +16,7 @@ import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
 export async function handlePlanTemplateCreated(
   event: FrontierEvmEvent<PlanTemplateCreatedEvent['args']>
 ): Promise<void> {
+  logger.info('handlePlanTemplateCreated');
   assert(event.args, 'No event args');
 
   const planManager = PlanManager__factory.connect(
@@ -45,6 +46,7 @@ export async function handlePlanTemplateCreated(
 export async function handlePlanTemplateMetadataUpdated(
   event: FrontierEvmEvent<PlanTemplateMetadataChangedEvent['args']>
 ): Promise<void> {
+  logger.info('handlePlanTemplateMetadataUpdated');
   assert(event.args, 'No event args');
 
   const id = event.args.planTemplateId.toHexString();
@@ -59,6 +61,7 @@ export async function handlePlanTemplateMetadataUpdated(
 export async function handlePlanTemplateStatusUpdated(
   event: FrontierEvmEvent<PlanTemplateStatusChangedEvent['args']>
 ): Promise<void> {
+  logger.info('handlePlanTemplateStatusUpdated');
   assert(event.args, 'No event args');
 
   const id = event.args.planTemplateId.toHexString();
@@ -73,6 +76,7 @@ export async function handlePlanTemplateStatusUpdated(
 export async function handlePlanCreated(
   event: FrontierEvmEvent<PlanCreatedEvent['args']>
 ): Promise<void> {
+  logger.info('handlePlanCreated');
   assert(event.args, 'No event args');
 
   const plan = Plan.create({
@@ -93,6 +97,7 @@ export async function handlePlanCreated(
 export async function handlePlanRemoved(
   event: FrontierEvmEvent<PlanRemovedEvent['args']>
 ): Promise<void> {
+  logger.info('handlePlanRemoved');
   assert(event.args, 'No event args');
 
   const plan = await Plan.get(event.args.id.toHexString());

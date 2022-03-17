@@ -23,6 +23,7 @@ function getDeploymentIndexerId(indexer: string, deploymentId: string): string {
 export async function handleNewQuery(
   event: FrontierEvmEvent<CreateQueryEvent['args']>
 ): Promise<void> {
+  logger.info('handleNewQuery');
   assert(event.args, 'No event args');
 
   const projectId = event.args.queryId.toHexString();
@@ -54,6 +55,7 @@ export async function handleNewQuery(
 export async function handleUpdateQueryMetadata(
   event: FrontierEvmEvent<UpdateQueryMetadataEvent['args']>
 ): Promise<void> {
+  logger.info('handleUpdateQueryMetadata');
   assert(event.args, 'No event args');
   const queryId = event.args.queryId.toHexString();
   const project = await Project.get(queryId);
@@ -69,6 +71,7 @@ export async function handleUpdateQueryMetadata(
 export async function handleUpdateQueryDeployment(
   event: FrontierEvmEvent<UpdateQueryDeploymentEvent['args']>
 ): Promise<void> {
+  logger.info('handleUpdateQueryDeployment');
   assert(event.args, 'No event args');
   const projectId = event.args.queryId.toHexString();
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
@@ -97,6 +100,7 @@ export async function handleUpdateQueryDeployment(
 export async function handleStartIndexing(
   event: FrontierEvmEvent<StartIndexingEvent['args']>
 ): Promise<void> {
+  logger.info('handleStartIndexing');
   assert(event.args, 'No event args');
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const indexer = DeploymentIndexer.create({
@@ -113,6 +117,7 @@ export async function handleStartIndexing(
 export async function handleIndexingUpdate(
   event: FrontierEvmEvent<UpdateDeploymentStatusEvent['args']>
 ): Promise<void> {
+  logger.info('handleIndexingUpdate');
   assert(event.args, 'No event args');
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const id = getDeploymentIndexerId(event.args.indexer, deploymentId);
@@ -128,6 +133,7 @@ export async function handleIndexingUpdate(
 export async function handleIndexingReady(
   event: FrontierEvmEvent<UpdateIndexingStatusToReadyEvent['args']>
 ): Promise<void> {
+  logger.info('handleIndexingReady');
   assert(event.args, 'No event args');
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const id = getDeploymentIndexerId(event.args.indexer, deploymentId);
@@ -142,6 +148,7 @@ export async function handleIndexingReady(
 export async function handleStopIndexing(
   event: FrontierEvmEvent<StopIndexingEvent['args']>
 ): Promise<void> {
+  logger.info('handleStopIndexing');
   assert(event.args, 'No event args');
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const id = getDeploymentIndexerId(event.args.indexer, deploymentId);

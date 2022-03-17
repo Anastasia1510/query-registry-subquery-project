@@ -29,6 +29,7 @@ function getPrevIndexerRewardId(indexer: string, eraIdx: BigNumber): string {
 export async function handleRewardsDistributed(
   event: FrontierEvmEvent<DistributeRewardsEvent['args']>
 ): Promise<void> {
+  logger.info('handleRewardsDistributed');
   assert(event.args, 'No event args');
 
   const { indexer } = event.args;
@@ -67,6 +68,7 @@ export async function handleRewardsDistributed(
 export async function handleRewardsClaimed(
   event: FrontierEvmEvent<ClaimRewardsEvent['args']>
 ): Promise<void> {
+  logger.info('handleRewardsClaimed');
   assert(event.args, 'No event args');
 
   const id = buildRewardId(event.args.indexer, event.args.delegator);
@@ -87,6 +89,7 @@ export async function handleRewardsClaimed(
 export async function handleRewardsUpdated(
   event: FrontierEvmEvent<RewardsChangedEvent['args']>
 ): Promise<void> {
+  logger.info('handleRewardsUpdated');
   assert(event.args, 'No event args');
 
   const { indexer, eraIdx, additions, removals } = event.args;
