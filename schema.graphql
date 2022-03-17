@@ -23,6 +23,8 @@ type Deployment @entity {
   project: Project!
   indexers: [DeploymentIndexer]! @derivedFrom(field: "deployment")
   createdTimestamp: Date!
+
+  plans: [Plan]! @derivedFrom(field: "deployment")
 }
 
 type DeploymentIndexer @entity {
@@ -115,7 +117,7 @@ type Plan @entity {
   planTemplate: PlanTemplate!
   active: Boolean!
 
-  deploymentId: String
+  deployment: Deployment
 }
 
 type ServiceAgreement @entity {
