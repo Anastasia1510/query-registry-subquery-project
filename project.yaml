@@ -64,11 +64,6 @@ dataSources:
           filter:
             topics:
               - RegisterIndexer(address indexed indexer, uint256 amount, bytes32 metadata)
-        - handler: handleUnregisterIndexer
-          kind: substrate/FrontierEvmEvent
-          filter:
-            topics:
-              - UnregisterIndexer(address indexed indexer);
         - handler: handleUpdateIndexerMetadata
           kind: substrate/FrontierEvmEvent
           filter:
@@ -84,6 +79,11 @@ dataSources:
           filter:
             topics:
               - RemoveControllerAccount(address indexed indexer, address indexed controller)
+        - handler: handleUnregisterIndexer
+          kind: substrate/FrontierEvmEvent
+          filter:
+            topics:
+              - UnregisterIndexer(address indexed indexer)
   - <<: *frontier
     processor:
       <<: *frontier-processor
@@ -185,7 +185,7 @@ dataSources:
           kind: substrate/FrontierEvmEvent
           filter:
             topics:
-              - PlanTemplateStatusChanged(uint256 indexed planTemplateId, bool active);
+              - PlanTemplateStatusChanged(uint256 indexed planTemplateId, bool active)
         - handler: handlePlanCreated
           kind: substrate/FrontierEvmEvent
           filter:

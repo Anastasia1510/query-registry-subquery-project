@@ -95,7 +95,6 @@ export async function handleAddDelegation(
 export async function handleRemoveDelegation(
   event: FrontierEvmEvent<DelegationRemovedEvent['args']>
 ): Promise<void> {
-  logger.warn('handleRemoveDelegation');
   assert(event.args, 'No event args');
 
   const { source, indexer, amount } = event.args;
