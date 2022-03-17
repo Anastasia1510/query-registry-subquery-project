@@ -110,10 +110,15 @@ export async function handleRemoveDelegation(
   logger.warn(`DELEGATION ${JSON.stringify(delegation)}`);
 
   const delegatorDelegations = await Delegation.getByDelegatorId(source);
-
   logger.warn(`COUNT DELEGATOR DELEGATIONS: ${delegatorDelegations?.length}`);
   delegatorDelegations?.forEach((d) => {
     logger.warn(`DELEGATOR DELEGATION ID ${d.id}`);
+  });
+
+  const indexerDelegations = await Delegation.getByIndexerId(indexer);
+  logger.warn(`COUNT INDEXER DELEGATIONS: ${indexerDelegations?.length}`);
+  indexerDelegations?.forEach((d) => {
+    logger.warn(`INDEXER DELEGATION ID ${d.id}`);
   });
 
   assert(delegation, `Expected delegation (${id}) to exist`);
