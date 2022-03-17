@@ -16,5 +16,13 @@ module.exports = {
     project: ['tsconfig.json']
   },
   plugins: ['@typescript-eslint'],
-  rules: {},
+  rules: {
+    '@typescript-eslint/restrict-template-expressions': ['error', {
+      allowNumber: true,
+      allowBoolean: true,
+      allowAny: false,
+      allowNullish: true,
+      allowRegExp: false,
+    }]
+  },
 };
