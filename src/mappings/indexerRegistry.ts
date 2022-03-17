@@ -92,9 +92,10 @@ export async function handleRemoveControllerAccount(
   const address = event.args.indexer;
 
   const indexer = await Indexer.get(address);
-  assert(indexer, `Expected indexer (${address}) to exist`);
+  // assert(indexer, `Expected indexer (${address}) to exist`);
+  if (indexer) {
+    delete indexer.controller;
 
-  delete indexer.controller;
-
-  await indexer.save();
+    await indexer.save();
+  }
 }
