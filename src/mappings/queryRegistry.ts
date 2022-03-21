@@ -105,7 +105,6 @@ export async function handleStartIndexing(
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const indexer = DeploymentIndexer.create({
     id: getDeploymentIndexerId(event.args.indexer, deploymentId),
-    indexerAddress: event.args.indexer,
     indexerId: event.args.indexer,
     deploymentId: deploymentId,
     blockHeight: BigInt(0),

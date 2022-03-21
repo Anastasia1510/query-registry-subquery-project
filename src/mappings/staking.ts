@@ -66,9 +66,7 @@ export async function handleAddDelegation(
 
     delegation = Delegation.create({
       id,
-      delegatorAddress: source,
       delegatorId: source,
-      indexerAddress: indexer,
       indexerId: indexer,
       amount: eraAmount,
     });
