@@ -41,7 +41,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: eraManager
-        address: '0x3761B082b2B113f1215D9023b8C2eb4E8e2115BC'
+        address: '0x1EBbb7E88b2f939E7D5CBf409189A721dF8C7792'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -55,7 +55,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: indexerRegistry
-        address: '0xAa5D9c11CAD5cc171eD6C04f025Df353432e4099'
+        address: '0xcD4f81007611a838A370f1CAc868fc56835d828B'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -89,7 +89,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: staking
-        address: '0x7885ADc32325F039F3414DC7e9096aF2E59d2495'
+        address: '0xF7212a9D6468709a954A34125A3A9d14D6db083e'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -123,7 +123,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: queryRegistry
-        address: '0xa6d164f7f67C6B42118DCC7140d7524C9bbb0924'
+        address: '0x80C7556Cb07057C2c94128DaC3A65348D52e7A2a'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -167,7 +167,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: planManager
-        address: '0x57227148c5C33536973210A3DB8DE35E2cc5A323'
+        address: '0x71637C833ba7a126dC50C83ba7dAeF213fF2581D'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -201,7 +201,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: serviceAgreementRegistry
-        address: '0x649A4F812141e3959281e1Dc49D98edE2c9AEC55'
+        address: '0xbc2d25Cb5b472435c8D8d996532d074dFe4261BD'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -215,7 +215,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: rewardsDistributor
-        address: '0x273d4ff686b1B442E1539Efbbd90bFE57b841B60'
+        address: '0x5c5A80ff0c3f402009a2B4b5EB3c464F6b84537F'
     mapping:
       file: ./dist/index.js
       handlers:
