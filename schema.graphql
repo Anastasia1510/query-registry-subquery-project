@@ -122,6 +122,9 @@ type ServiceAgreement @entity {
 
   deployment: Deployment!
   period: BigInt!
+  startTime: Date!
+
+  value: BigInt!
 }
 
 type UnclaimedReward @entity {

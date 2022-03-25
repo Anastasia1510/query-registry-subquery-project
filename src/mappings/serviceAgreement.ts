@@ -20,7 +20,10 @@ export async function handleServiceAgreementCreated(
     new FrontierEthProvider()
   );
 
-  const period = await saContract.period();
+  const [period, value] = await Promise.all([
+    saContract.period(),
+    saContract.value(),
+  ]);
 
   const sa = ServiceAgreement.create({
     id: event.args.serviceAgreement,
@@ -28,6 +31,8 @@ export async function handleServiceAgreementCreated(
     consumerAddress: event.args.consumer,
     deploymentId: bytesToIpfsCid(event.args.deploymentId),
     period: period.toBigInt(),
+    value: value.toBigInt(),
+    startTime: event.blockTimestamp,
   });
 
   await sa.save();
