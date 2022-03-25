@@ -29,7 +29,6 @@ type Deployment @entity {
 
 type DeploymentIndexer @entity {
   id: ID! # indexer adderss + deployment id
-  indexerAddress: String! # address of indexer
   indexer: Indexer!
   deployment: Deployment!
 
@@ -80,11 +79,7 @@ type Delegator @entity {
 
 type Delegation @entity {
   id: ID! # nominator + indexer addresses
-
-  delegatorAddress: String! # nominator address
   delegator: Delegator!
-
-  indexerAddress: String! # indexer address
   indexer: Indexer!
 
   amount: EraValue!
@@ -153,7 +148,6 @@ type IndexerReward @entity {
   id: ID! # indexer + era
 
   indexer: Indexer!
-  indexerAddress: String!
 
   era: Era!
   eraIdx: String!

@@ -1466,10 +1466,10 @@
     class-validator "^0.13.2"
     ethers "^5.5.4"
 
-"@subql/contract-sdk@0.1.1-47":
-  version "0.1.1-47"
-  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.1.1-47.tgz#d352999ba92edf11f30a254aa72f604de2d80890"
-  integrity sha512-dq77L0QwI5MA8aleqsRT033PslBODwh+Qi8lKmbKZkQ77NXChrlaQSXCGYsJEcgJJ2VcousPX5i9IkiU+9lH1A==
+"@subql/contract-sdk@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@subql/contract-sdk/-/contract-sdk-0.3.2.tgz#c3d99a34a82cb9189dbf128a9c7a2a8b633c1b5d"
+  integrity sha512-6DvA+SxcFV3pzYufkUn5SAQvuNlARpjjIAZO2T5DHgUXnxsIzbPJrin1Csh8n28AacFHBRm2siBsR7eTeTNYYw==
   dependencies:
     "@openzeppelin/contracts-upgradeable" "^4.5.2"
     dotenv "^10.0.0"
