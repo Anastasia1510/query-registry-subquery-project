@@ -152,7 +152,7 @@ type IndexerReward @entity {
 
   indexer: Indexer!
 
-  era: Era!
+  # era: Era #Doesn't work as optional
   eraIdx: String!
 
   amount: BigInt!

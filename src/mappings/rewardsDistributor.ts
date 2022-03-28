@@ -106,7 +106,6 @@ export async function handleRewardsUpdated(
     eraRewards = IndexerReward.create({
       id,
       indexerId: indexer,
-      eraId: eraIdx.toHexString(),
       eraIdx: eraIdx.toHexString(),
       additions: additions.toBigInt(),
       removals: removals.toBigInt(),
