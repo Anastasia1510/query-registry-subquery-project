@@ -115,18 +115,14 @@ export async function handleRewardsUpdated(
       eraIdx: eraIdx.toHexString(),
       additions: additions.toBigInt(),
       removals: removals.toBigInt(),
-
-      amount: prevAmount + additions.toBigInt() - removals.toBigInt(),
+      amount: BigInt(0), // Updated below
     });
   } else {
-    const additionsDiff = additions.toBigInt() - eraRewards.additions;
-    const removalsDiff = removals.toBigInt() - eraRewards.removals;
-
-    eraRewards.amount = eraRewards.amount + additionsDiff - removalsDiff;
-
     eraRewards.additions = additions.toBigInt();
     eraRewards.removals = removals.toBigInt();
   }
+
+  eraRewards.amount = prevAmount + additions.toBigInt() - removals.toBigInt();
 
   await eraRewards.save();
 
@@ -189,7 +185,7 @@ async function updateFutureRewards(
 
       eraRewards.push(eraReward);
     } else {
-      prev.amount + eraReward.additions - eraReward.removals;
+      eraReward.amount = prev.amount + eraReward.additions - eraReward.removals;
 
       await eraReward.save();
     }
