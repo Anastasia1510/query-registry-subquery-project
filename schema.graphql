@@ -68,6 +68,9 @@ type Indexer @entity {
   totalStake: EraValue!
 
   delegations: [Delegation] @derivedFrom(field: "indexer")
+  rewards: [IndexerReward] @derivedFrom(field: "indexer")
+
+  lastRewardedEra: String # hex encoding
 }
 
 type Delegator @entity {
@@ -152,7 +155,7 @@ type IndexerReward @entity {
 
   indexer: Indexer!
 
-  # era: Era #Doesn't work as optional
+  # era: Era
   eraIdx: String!
 
   amount: BigInt!

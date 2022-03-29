@@ -2,7 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import assert from 'assert';
-import { Delegation, IndexerReward, Reward, UnclaimedReward } from '../types';
+import {
+  Delegation,
+  IndexerReward,
+  Indexer,
+  Reward,
+  UnclaimedReward,
+} from '../types';
 import { RewardsDistributer__factory } from '@subql/contract-sdk';
 import FrontierEthProvider from './ethProvider';
 import {
@@ -124,26 +130,73 @@ export async function handleRewardsUpdated(
 
   await eraRewards.save();
 
+  const lastEraIdx = await upsertIndexerLastRewardEra(indexer, eraIdx);
+
   /* Rewards changed events don't come in in order and may not be the latest set era */
-  await reapplyRewardAmount(indexer, eraIdx.add(1), eraRewards);
+  await updateFutureRewards(indexer, lastEraIdx, eraRewards);
 }
 
-/* Recalculates reward amounts for later eras */
-async function reapplyRewardAmount(
+async function upsertIndexerLastRewardEra(
+  indexerAddress: string,
+  eraIdx: BigNumber
+): Promise<BigNumber> {
+  const indexer = await Indexer.get(indexerAddress);
+
+  assert(indexer, "Indexer Doesn't exist");
+
+  const lastRewardedEra = indexer.lastRewardedEra
+    ? BigNumber.from(indexer.lastRewardedEra)
+    : undefined;
+
+  if (!lastRewardedEra || lastRewardedEra.lt(eraIdx)) {
+    indexer.lastRewardedEra = eraIdx.toHexString();
+
+    await indexer.save();
+
+    return eraIdx;
+  } else {
+    return lastRewardedEra;
+  }
+}
+
+async function updateFutureRewards(
   indexer: string,
-  eraIdx: BigNumber,
+  lastRewardedEra: BigNumber,
   prevEraRewards: Readonly<IndexerReward>
-): Promise<void> {
-  const id = getIndexerRewardId(indexer, eraIdx);
-  const eraRewards = await IndexerReward.get(id);
+) {
+  const eraRewards: IndexerReward[] = [];
 
-  // Theres no future eras with rewards
-  if (!eraRewards) return;
+  let prev = prevEraRewards;
+  let prevEraId = BigNumber.from(prevEraRewards.eraIdx);
 
-  eraRewards.amount =
-    prevEraRewards.amount + eraRewards.additions - eraRewards.removals;
+  // Recalc all rewards until we get to the lastRewardedEra
+  while (prevEraId.lte(lastRewardedEra)) {
+    const eraId = BigNumber.from(prev.eraIdx).add(1);
+    const id = getIndexerRewardId(indexer, eraId);
 
-  await eraRewards.save();
+    let eraReward = await IndexerReward.get(id);
 
-  return reapplyRewardAmount(indexer, eraIdx.add(1), eraRewards);
+    if (!eraReward) {
+      eraReward = IndexerReward.create({
+        id,
+        indexerId: indexer,
+        // eraId: eraId.toHexString(),
+        eraIdx: eraId.toHexString(),
+        additions: BigInt(0),
+        removals: BigInt(0),
+        amount: prev.amount,
+      });
+
+      eraRewards.push(eraReward);
+    } else {
+      prev.amount + eraReward.additions - eraReward.removals;
+
+      await eraReward.save();
+    }
+
+    prev = eraReward;
+    prevEraId = eraId;
+  }
+
+  await store.bulkCreate('IndexerReward', eraRewards);
 }
