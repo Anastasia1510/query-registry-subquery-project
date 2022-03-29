@@ -51,16 +51,16 @@ export async function handleRewardsDistributed(
     delegators.map(async (delegator) => {
       const rewards = await rewardsDistributor.userRewards(
         indexer,
-        delegator.id
+        delegator.delegatorId
       );
-      const id = buildRewardId(indexer, delegator.id);
+      const id = buildRewardId(indexer, delegator.delegatorId);
 
       let reward = await UnclaimedReward.get(id);
 
       if (!reward) {
         reward = UnclaimedReward.create({
           id,
-          delegatorAddress: delegator.id,
+          delegatorAddress: delegator.delegatorId,
           indexerAddress: indexer,
           amount: rewards.toBigInt(),
         });

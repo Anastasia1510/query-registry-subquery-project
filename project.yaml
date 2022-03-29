@@ -223,7 +223,7 @@ dataSources:
           kind: substrate/FrontierEvmEvent
           filter:
             topics:
-              - DistributeRewards(address indexed indexer)
+              - DistributeRewards(address indexed indexer, uint256 indexed eraIdx)
         - handler: handleRewardsClaimed
           kind: substrate/FrontierEvmEvent
           filter:

@@ -157,66 +157,66 @@ export default class FrontierEthProvider extends Provider {
   }
 
   getBlock(blockHashOrBlockTag: BlockTag | Promise<BlockTag>): Promise<Block> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getBlock` not supported.');
   }
   getTransaction(transactionHash: string): Promise<TransactionResponse> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getTransaction` not supported.');
   }
   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getTransactionReceipt` not supported.');
   }
   getLogs(filter: Filter): Promise<Log[]> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getLogs` not supported.');
   }
   getBlockNumber(): Promise<number> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getBlockNumber` not supported.');
   }
   getNetwork(): Promise<Network> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getNetwork` not supported.');
   }
   getGasPrice(): Promise<BigNumber> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `getGasPrice` not supported.');
   }
   estimateGas(transaction: Deferrable<TransactionRequest>): Promise<BigNumber> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `estimateGas` not supported.');
   }
   sendTransaction(
     signedTransaction: string | Promise<string>
   ): Promise<TransactionResponse> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `sendTransaction` not supported.');
   }
   resolveName(name: string | Promise<string>): Promise<string | null> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `resolveName` not supported.');
   }
   lookupAddress(address: string | Promise<string>): Promise<string | null> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `lookupAddress` not supported.');
   }
   on(eventName: EventType, listener: Listener): Provider {
-    throw new Error('Method not supported.');
+    throw new Error('Method `on` not supported.');
   }
   once(eventName: EventType, listener: Listener): Provider {
-    throw new Error('Method not supported.');
+    throw new Error('Method `once` not supported.');
   }
   emit(eventName: EventType, ...args: any[]): boolean {
-    throw new Error('Method not supported.');
+    throw new Error('Method `emit` not supported.');
   }
   listenerCount(eventName?: EventType): number {
-    throw new Error('Method not supported.');
+    throw new Error('Method `listenerCount` not supported.');
   }
   listeners(eventName?: EventType): Listener[] {
-    throw new Error('Method not supported.');
+    throw new Error('Method `listeners` not supported.');
   }
   off(eventName: EventType, listener?: Listener): Provider {
-    throw new Error('Method not supported.');
+    throw new Error('Method `off` not supported.');
   }
   removeAllListeners(eventName?: EventType): Provider {
-    throw new Error('Method not supported.');
+    throw new Error('Method `removeAllListeners` not supported.');
   }
   waitForTransaction(
     transactionHash: string,
     confirmations?: number,
     timeout?: number
   ): Promise<TransactionReceipt> {
-    throw new Error('Method not supported.');
+    throw new Error('Method `waitForTransaction` not supported.');
   }
 }
