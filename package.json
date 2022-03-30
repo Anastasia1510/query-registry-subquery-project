@@ -4,11 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "./node_modules/.bin/subql build",
+    "build": "yarn check-filters && npx subql build",
     "prepack": "rm -rf dist && npm build",
     "test": "jest",
     "codegen": "./node_modules/.bin/subql codegen",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "check-filters": "node -r ts-node/register/transpile-only ./scripts/checkFilters.ts"
   },
   "homepage": "https://github.com/subquery/subql-starter",
   "repository": "github:subquery/subql-starter",
@@ -24,14 +25,17 @@
     "@subql/cli": "^0.19.1-6",
     "@subql/types": "latest",
     "@types/bs58": "^4.0.1",
+    "@types/js-yaml": "^4.0.5",
     "@typescript-eslint/eslint-plugin": "4",
     "@typescript-eslint/parser": "4",
     "eslint": "7",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-import": "^2.25.4",
     "husky": ">=6",
+    "js-yaml": "^4.1.0",
     "lint-staged": ">=10",
     "prettier": "2.5.1",
+    "ts-node": "^10.7.0",
     "typescript": "^4.1.3"
   },
   "dependencies": {

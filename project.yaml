@@ -180,7 +180,7 @@ dataSources:
           kind: substrate/FrontierEvmEvent
           filter:
             topics:
-              - PlanTemplateMetadataChanged(uint256 indexed planTemplateId, bool active)
+              - PlanTemplateMetadataChanged(uint256 indexed planTemplateId, bytes32 metadata)
         - handler: handlePlanTemplateStatusUpdated
           kind: substrate/FrontierEvmEvent
           filter:
