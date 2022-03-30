@@ -12,10 +12,10 @@ import {
 
 const file = path.resolve(__dirname, '../project.yaml');
 
-function buildInterface(abiPath: string): Interface | undefined {
+function buildInterface(abiPath: string): Interface {
   const abi = fs.readFileSync(abiPath, 'utf8');
   if (!abi) {
-    return;
+    throw new Error('Abi not found');
   }
 
   let abiObj = JSON.parse(abi) as string[];
@@ -63,7 +63,7 @@ function checkFilters() {
       .forEach((handler) => {
         // Check event filters
         const topics: string[] | undefined = handler?.filter?.topics;
-        if (topics.length) {
+        if (topics?.[0] && ds.assets && ds.processor?.options) {
           const topic = topics[0];
 
           const iface = buildInterface(
