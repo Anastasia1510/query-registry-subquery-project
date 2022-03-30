@@ -10,6 +10,7 @@ network:
   genesisHash: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
   # endpoint: 'https://node-6901336963938430976.jm.onfinality.io/rpc?apikey=65f0a4da-7861-429b-a21d-fd42209f4d2f'
   endpoint: 'wss://sqtn.api.onfinality.io/public-ws'
+  dictionary: https://api.subquery.network/sq/subquery/subquery-testnet-dictionary
 
   chaintypes:
     file: ./dist/chaintypes.js
