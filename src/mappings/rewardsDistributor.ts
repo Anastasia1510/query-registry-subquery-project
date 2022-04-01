@@ -64,6 +64,8 @@ export async function handleRewardsDistributed(
           indexerAddress: indexer,
           amount: rewards.toBigInt(),
         });
+      } else {
+        reward.amount = rewards.toBigInt();
       }
 
       await reward.save();
@@ -79,6 +81,14 @@ export async function handleRewardsClaimed(
 
   const id = buildRewardId(event.args.indexer, event.args.delegator);
 
+  const unclaimed = await UnclaimedReward.get(id);
+
+  assert(
+    event.args.rewards.isZero() ||
+      unclaimed?.amount === event.args.rewards.toBigInt(),
+    `unclaimed reward doesn't match claimed reward`
+  );
+
   await UnclaimedReward.remove(id);
 
   const reward = Reward.create({
@@ -90,6 +100,8 @@ export async function handleRewardsClaimed(
   });
 
   await reward.save();
+
+  // throw new Error('DONE')
 }
 
 export async function handleRewardsUpdated(
