@@ -126,6 +126,7 @@ type ServiceAgreement @entity {
   deployment: Deployment!
   period: BigInt!
   startTime: Date!
+  endTime: Date!
 
   value: BigInt!
 }

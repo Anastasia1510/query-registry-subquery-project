@@ -25,6 +25,10 @@ export async function handleServiceAgreementCreated(
     saContract.value(),
   ]);
 
+  const endTime = new Date(event.blockTimestamp);
+
+  endTime.setSeconds(endTime.getSeconds() + period.toNumber());
+
   const sa = ServiceAgreement.create({
     id: event.args.serviceAgreement,
     indexerAddress: event.args.indexer,
@@ -33,6 +37,7 @@ export async function handleServiceAgreementCreated(
     period: period.toBigInt(),
     value: value.toBigInt(),
     startTime: event.blockTimestamp,
+    endTime,
   });
 
   await sa.save();
