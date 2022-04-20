@@ -22,19 +22,19 @@ x-frontier: &frontier
     file: './dist/frontierEvm.js'
   assets:
     eraManager:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/EraManager.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/EraManager.sol/EraManager.json
     staking:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/Staking.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/Staking.sol/Staking.json
     indexerRegistry:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/IndexerRegistry.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/IndexerRegistry.sol/IndexerRegistry.json
     queryRegistry:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/QueryRegistry.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/QueryRegistry.sol/QueryRegistry.json
     planManager:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/PlanManager.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/PlanManager.sol/PlanManager.json
     serviceAgreementRegistry:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/ServiceAgreementRegistry.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/ServiceAgreementRegistry.sol/ServiceAgreementRegistry.json
     rewardsDistributor:
-      file: ./node_modules/@subql/contract-sdk/publish/contracts/RewardsDistributer.json
+      file: ./node_modules/@subql/contract-sdk/artifacts/contracts/RewardsDistributer.sol/RewardsDistributer.json
 
 dataSources:
   - <<: *frontier
