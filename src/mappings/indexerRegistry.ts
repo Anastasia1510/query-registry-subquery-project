@@ -32,23 +32,28 @@ export async function handleRegisterIndexer(
     new FrontierEthProvider()
   );
 
-  assert(!indexer, `Indexer (${indexerAddress}) already exists`);
+  // assert(!indexer, `Indexer (${indexerAddress}) already exists`);
+
+  if (indexer) {
+    indexer.metadata = bytesToIpfsCid(metadata);
+  } else {
+    // Should not occurr. AddDelegation, SetCommissionRate events should happen first
+    indexer = Indexer.create({
+      id: indexerAddress,
+      metadata: bytesToIpfsCid(metadata),
+      totalStake: await upsertEraValue(eraManager, undefined, BigInt(0)),
+      // Set era to -1 as indicator to apply instantly in handleSectCommissionRate
+      commission: {
+        era: -1,
+        value: BigInt(0).toJSONType(),
+        valueAfter: BigInt(0).toJSONType(),
+      }, //await upsertEraValue(eraManager, undefined, BigInt(0)),
+    });
+  }
 
   /* WARNING, other events are emitted before this handler (AddDelegation, SetCommissionRate),
    * their handlers are used to set their relevant values.
    */
-
-  indexer = Indexer.create({
-    id: indexerAddress,
-    metadata: bytesToIpfsCid(metadata),
-    totalStake: await upsertEraValue(eraManager, undefined, BigInt(0)),
-    // Set era to -1 as indicator to apply instantly in handleSectCommissionRate
-    commission: {
-      era: -1,
-      value: BigInt(0).toJSONType(),
-      valueAfter: BigInt(0).toJSONType(),
-    }, //await upsertEraValue(eraManager, undefined, BigInt(0)),
-  });
 
   await indexer.save();
 }

@@ -175,8 +175,28 @@ export async function handleSetCommissionRate(
     new FrontierEthProvider()
   );
 
-  const indexer = await Indexer.get(address);
-  assert(indexer, `Expected indexer (${address}) to exist`);
+  let indexer = await Indexer.get(address);
+
+  if (!indexer) {
+    indexer = Indexer.create({
+      id: address,
+      metadata: '',
+      totalStake: {
+        era: -1,
+        value: BigInt(0).toJSONType(),
+        valueAfter: BigInt(0).toJSONType(),
+      },
+      commission: {
+        era: -1,
+        value: BigInt(0).toJSONType(),
+        valueAfter: BigInt(0).toJSONType(),
+      },
+    });
+
+    indexer;
+  }
+
+  // assert(indexer, `Expected indexer (${address}) to exist`);
 
   indexer.commission = await upsertEraValue(
     eraManager,
