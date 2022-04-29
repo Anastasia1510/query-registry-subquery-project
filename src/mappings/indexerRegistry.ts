@@ -57,7 +57,7 @@ export async function handleUnregisterIndexer(
   assert(event.args, 'No event args');
 
   // TODO does this take effect next era?
-  await Indexer.remove(event.args.indexer);
+  // await Indexer.remove(event.args.indexer);
 }
 
 export async function handleUpdateIndexerMetadata(
