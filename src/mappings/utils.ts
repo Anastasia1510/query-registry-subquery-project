@@ -96,7 +96,7 @@ export async function upsertEraValue(
 
   const newValue = applyInstantly
     ? applyOperation(eraValue.valueAfter)
-    : eraValue.valueAfter;
+    : eraValue.value;
 
   return {
     era: currentEra,
