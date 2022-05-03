@@ -43,16 +43,15 @@ export async function handleAddDelegation(
   );
 
   const amountBn = amount.toBigInt();
+  let delegation = await Delegation.get(id);
 
   await updateTotalDelegation(
     eraManager,
     source,
     amountBn,
-    'add'
-    // indexer === source
+    'add',
+    indexer === source && !delegation
   );
-
-  let delegation = await Delegation.get(id);
 
   if (!delegation) {
     // Indexers first stake is effective immediately
