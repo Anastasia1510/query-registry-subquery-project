@@ -48,8 +48,8 @@ export async function handleAddDelegation(
     eraManager,
     source,
     amountBn,
-    'add',
-    indexer === source
+    'add'
+    // indexer === source
   );
 
   let delegation = await Delegation.get(id);
