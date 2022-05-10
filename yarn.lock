@@ -37,6 +37,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.17.9":
+  version "7.17.9"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.9.tgz#d19fbf802d01a8cb6cf053a64e472d42c434ba72"
+  integrity sha512-lSiBBvodq29uShpWGNbgFdKYNiFDo5/HIYsaCEY9ff4sb10x9jizo2+pRrSyF4jKZCXqgzuqBOQKbUm90gQwJg==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@cspotcode/source-map-consumer@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-consumer/-/source-map-consumer-0.8.0.tgz#33bf4b7b39c178821606f669bbc447a6a629786b"
@@ -1243,6 +1250,20 @@
     bn.js "^5.2.0"
     ip-regex "^4.3.0"
 
+"@polkadot/util@^9":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-9.1.1.tgz#7b6eda0130fd578f7fa14821ed9b82e1e48efcdb"
+  integrity sha512-eJzyrM0+b+DLo1hD+y4Al1DOEdF0UEUVnWqWZNIx2fuKsgG72gFosJM0EOjbVoxq8B1Hx3KOCNc0fl3Mpc9oYQ==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
+    "@polkadot/x-bigint" "9.1.1"
+    "@polkadot/x-global" "9.1.1"
+    "@polkadot/x-textdecoder" "9.1.1"
+    "@polkadot/x-textencoder" "9.1.1"
+    "@types/bn.js" "^5.1.0"
+    bn.js "^5.2.0"
+    ip-regex "^4.3.0"
+
 "@polkadot/wasm-crypto-asmjs@^4.5.1":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@polkadot/wasm-crypto-asmjs/-/wasm-crypto-asmjs-4.5.1.tgz#e1025a49e106db11d1187caf65f56c960ea2ad2b"
@@ -1274,6 +1295,14 @@
     "@babel/runtime" "^7.17.2"
     "@polkadot/x-global" "8.4.1"
 
+"@polkadot/x-bigint@9.1.1":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-bigint/-/x-bigint-9.1.1.tgz#d435a23013f2a7d3e107c8705241ea7fbdf0f3c5"
+  integrity sha512-1At5Gut4Wzep59vKTATCMWwm6EG0h+vq/qftou5kvt8u0QI2+YGJ5LAXzHk3n0/OOn8cvuAzS2kYQ4duE7YA+g==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
+    "@polkadot/x-global" "9.1.1"
+
 "@polkadot/x-fetch@^8.1.2", "@polkadot/x-fetch@^8.4.1":
   version "8.4.1"
   resolved "https://registry.yarnpkg.com/@polkadot/x-fetch/-/x-fetch-8.4.1.tgz#7254cdb70b61aea79debd7d0c9ae5e126f78d90d"
@@ -1297,6 +1326,13 @@
   integrity sha512-MQs89LKQrJwiXjV7dY2kDOPNaiWrwaQ/Fzg93ycB2xMCclRV1jRFRhnhTPJ8Ao79lhCCoazd7pXIyFgfifxdqg==
   dependencies:
     "@babel/runtime" "^7.17.2"
+
+"@polkadot/x-global@9.1.1":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-global/-/x-global-9.1.1.tgz#6f3baf150b4e489312068b84a3fc9a77efb1c8d2"
+  integrity sha512-2aP6edHMPE14mQUFA8ipiB74PKoS6/wFWjTSbGqVOkGN0B7/kvX0/bW2fb6jPcfQlutPeqGN6dZnraoqzTzv6w==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
 
 "@polkadot/x-randomvalues@7.9.2":
   version "7.9.2"
@@ -1330,6 +1366,14 @@
     "@babel/runtime" "^7.17.2"
     "@polkadot/x-global" "8.4.1"
 
+"@polkadot/x-textdecoder@9.1.1":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-textdecoder/-/x-textdecoder-9.1.1.tgz#080aedf20e1d317da0bf350cba59793e37bca4a1"
+  integrity sha512-0eQPesYOfpdetHMIzTUiXcMOPzjX2hzgdSC9Q64iGWoRKwly1clUQ9SPlwEmkRF7ulPcq1pZv2kgHdKNj+lL8g==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
+    "@polkadot/x-global" "9.1.1"
+
 "@polkadot/x-textencoder@7.9.2":
   version "7.9.2"
   resolved "https://registry.yarnpkg.com/@polkadot/x-textencoder/-/x-textencoder-7.9.2.tgz#b32bfd6fbff8587c56452f58252a52d62bbcd5b9"
@@ -1345,6 +1389,14 @@
   dependencies:
     "@babel/runtime" "^7.17.2"
     "@polkadot/x-global" "8.4.1"
+
+"@polkadot/x-textencoder@9.1.1":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/x-textencoder/-/x-textencoder-9.1.1.tgz#d735f4fc8384b7748d83f6b8ea814f5c0a9f13ee"
+  integrity sha512-DyemF56si5xgXLS+l9yl3YivC2cLFlGSUarKyrP+MRVAqVKlLc9h3KXDxwnVxNeLVTg2gxSLpxo6pGqLydtFaQ==
+  dependencies:
+    "@babel/runtime" "^7.17.9"
+    "@polkadot/x-global" "9.1.1"
 
 "@polkadot/x-ws@^8.1.2", "@polkadot/x-ws@^8.4.1":
   version "8.4.1"
@@ -1414,17 +1466,20 @@
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.0.0.tgz#109fb595021de285f05a7db6806f2f48296fcee7"
   integrity sha512-gIVaYhUsy+9s58m/ETjSJVKHhKTBMmcRb9cEV5/5dwvfDlfORjKrFsDeDHWRrm6RjcPvCLZFwGJjAjLj1gg4HA==
 
-"@subql/cli@^0.19.1-6":
-  version "0.19.1-9"
-  resolved "https://registry.yarnpkg.com/@subql/cli/-/cli-0.19.1-9.tgz#17eaf3d1b0a1168e3ff7fdb76d4b6ce44cb9ad04"
-  integrity sha512-P1lglunLjyP1l0TogFaJkQcPl1Iz0YWA8qA7M2M5EMoK3zCwdl5e7zPzgq4GpN/ahrJGJ7eWwC1Ju7pmVRUK9g==
+"@subql/cli@^0.28.0":
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/@subql/cli/-/cli-0.28.0.tgz#a8288ce1a3bcdcc720da0bdb4e0406380c256763"
+  integrity sha512-+4TI2utMa8xaXUa6C07ML1oA2TvCISSrUUXoZRoqor2167tRMOccy+dX/AXQwYgEBHCXmmEe4PVJgSC0IVhG9Q==
   dependencies:
     "@oclif/command" "^1.8.16"
     "@oclif/config" "^1.18.3"
     "@oclif/core" "^1.3.3"
     "@oclif/plugin-help" "^3.2.3"
-    "@subql/common" "0.16.1-3"
-    "@subql/validator" "0.4.3-4"
+    "@subql/common" "0.22.0"
+    "@subql/common-substrate" "0.4.0"
+    "@subql/common-terra" "0.5.0"
+    "@subql/utils" "0.1.0"
+    "@subql/validator" "0.6.0"
     "@types/ejs" "^3.1.0"
     "@types/inquirer" "^8.2.0"
     cli-ux "^6.0.9"
@@ -1443,14 +1498,54 @@
     websocket "^1.0.34"
     yaml-loader "^0.6.0"
 
-"@subql/common@0.16.1-3":
-  version "0.16.1-3"
-  resolved "https://registry.yarnpkg.com/@subql/common/-/common-0.16.1-3.tgz#1fc78cd2d09461912a8c5556b42b6f1ac044108d"
-  integrity sha512-c4JD8l8au2bw/pbJLPC8X9Ga1Nap/U2O6GrgRvoLmqUV+dyQbp6+mb/IzTfy+pTt7sCcf/JHci8Mdagwrm4B2Q==
+"@subql/common-substrate@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@subql/common-substrate/-/common-substrate-0.3.0.tgz#33df5c48438fb55475f10b23df12b5b59e43d8ae"
+  integrity sha512-+J/m8JUqPz/tX7sjzUQVfaWv5JeCU9GGYdK3ktVTAL6mVHozHgLS45JTITpnwfVBeqGEO8/SILyniVQv9Kv/8Q==
   dependencies:
     "@polkadot/util" "^8"
-    "@subql/types" "0.13.1-0"
-    "@subql/x-vm2" "^3.9.3-0.1.0"
+    "@subql/common" "0.21.0"
+    "@subql/types" "0.14.0"
+    bn.js "4.11.6"
+    class-transformer "0.4.0"
+    class-validator "^0.13.2"
+    flatted "^3.2.2"
+    graphql "^15.7.2"
+    graphql-tag "^2.12.5"
+    js-yaml "^4.1.0"
+    pino "^6.13.3"
+    reflect-metadata "^0.1.13"
+    sequelize "^6.6.2"
+
+"@subql/common-substrate@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@subql/common-substrate/-/common-substrate-0.4.0.tgz#246145e58bb27e2d4f22b0d3fed7d2e196165cd8"
+  integrity sha512-cLTNNlbmIicc44N5031vADQxL7cQjCXUlmttssBbaf5wzqPOD+IX2on8YpEr6Dn++evgyX3tf9xtCbxS5gYMEg==
+  dependencies:
+    "@subql/common" "0.22.0"
+    "@subql/types" "0.15.0"
+    class-transformer "0.4.0"
+    class-validator "^0.13.2"
+    js-yaml "^4.1.0"
+    reflect-metadata "^0.1.13"
+
+"@subql/common-terra@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@subql/common-terra/-/common-terra-0.5.0.tgz#142c61f08e12198ab282e9194f255894be590975"
+  integrity sha512-KwbmDG/nyLv7ryRWPjU/o6ES1Z6A9JvQ+vkqlw9V61iK1SA686dz4QNTY8H9uSH28b1SMNYbZ6hsluQN5OSEmQ==
+  dependencies:
+    "@subql/types-terra" "0.4.0"
+    class-transformer "0.4.0"
+    class-validator "^0.13.2"
+    js-yaml "^4.1.0"
+    reflect-metadata "^0.1.13"
+
+"@subql/common@0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@subql/common/-/common-0.21.0.tgz#4687289daa83fe2ef6d5e158edc74696721cd3b6"
+  integrity sha512-s/8GaV7jpQGetRH/v2a+B1dE6okzO20u3ePgEZnSs4ZyRe8/VFnPMgU7jbzSpl//TO1+hx5W2f/xA0wxtlMdKQ==
+  dependencies:
+    "@polkadot/util" "^8"
     ansi-styles "^6.1.0"
     bn.js "5.2.0"
     chalk "^4.1.2"
@@ -1465,8 +1560,22 @@
     pino "^6.13.3"
     reflect-metadata "^0.1.13"
     rotating-file-stream "^3.0.2"
+    semver "^7.3.5"
     sequelize "^6.15.0"
     tar "^6.1.11"
+    vm2 "3.9.9"
+
+"@subql/common@0.22.0":
+  version "0.22.0"
+  resolved "https://registry.yarnpkg.com/@subql/common/-/common-0.22.0.tgz#219460bcfe5a5091aeb0b3ced2aae7110640f55d"
+  integrity sha512-bX6kQ/bR9IS8kysygCm3/Q3T5sNFrUdCty5FHw23560NmkcXAedWZNWA9X6z03LJgZ1cjGjPcD7NTYoNk7mnzA==
+  dependencies:
+    axios "^0.27.2"
+    class-transformer "0.5.1"
+    class-validator "^0.13.2"
+    js-yaml "^4.1.0"
+    reflect-metadata "^0.1.13"
+    semver "^7.3.5"
 
 "@subql/contract-processors@^0.5.3":
   version "0.5.3"
@@ -1485,31 +1594,52 @@
   dependencies:
     "@openzeppelin/contracts-upgradeable" "^4.5.2"
 
-"@subql/types@0.13.1-0":
-  version "0.13.1-0"
-  resolved "https://registry.yarnpkg.com/@subql/types/-/types-0.13.1-0.tgz#24ffde5eca91fc3ed31154b6307064331e8f8d89"
-  integrity sha512-quelLoFrIVlY7cN1Y+s5dFK+w8Bn3KF63cpGoPGXXtf+JFRVTkJ7DEfc1arDiJEZS/1lZCh8dzf7xpTyBi/2xg==
+"@subql/types-terra@0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@subql/types-terra/-/types-terra-0.4.0.tgz#09f70e6b8820fa98b9bf2f6807cde4476a179d5f"
+  integrity sha512-+Qx9tPCAQpIF0u4jSnW5GbjZoVdpt4GJpkIp4hDao3uUS6Vs68ZbtNQCl+EMP0eU7WTHJjwWmTflPvf665SYaw==
 
 "@subql/types@0.14.0", "@subql/types@latest":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@subql/types/-/types-0.14.0.tgz#a736b27aa5f0b40f92befc871b56d115d64bf442"
   integrity sha512-J9GsAJ/Q7SH7HWV1DI3ORsi2T5+gFWm665iOpCNFOmsfuLNzrjjlyqoQhAaf45D8F8DeK/WooNnWFNPze8g1NQ==
 
-"@subql/validator@0.4.3-4":
-  version "0.4.3-4"
-  resolved "https://registry.yarnpkg.com/@subql/validator/-/validator-0.4.3-4.tgz#abb908fb879179eaf6142bd34b78ac09b9700ec4"
-  integrity sha512-KPrgoI465RBvM/gpWX5lZu7PYDcMyMpu4JO6uAlMXa+TYyFEnU2xRkOyVMDXP7xNB9BLslD31Os+UnbZ2ApbYw==
+"@subql/types@0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@subql/types/-/types-0.15.0.tgz#6d5ab13c99a5a5f6898558c4ac6c8a753d9f12e6"
+  integrity sha512-53VWQaBqVnUGGXwQewkDHVFwD3JUZ/FlNd+MUwn+AKDxhLeBjcLrynfIJFZUmsAqMXYrgN66jTJO5XZuVPqAFw==
+
+"@subql/utils@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@subql/utils/-/utils-0.1.0.tgz#486b3388c91e06f3d38d752bc355f2dd0fc3f679"
+  integrity sha512-JbyFoH27A7RapDMs47X+uPEu6F5XaKmn3awFE7aA0lPSjXY7Al/zf0pXBTfsgxqrC4AmU34kJ3LOekzac9Px1g==
   dependencies:
-    "@subql/common" "0.16.1-3"
+    "@polkadot/util" "^9"
+    ansi-styles "^6.1.0"
+    axios "^0.27.1"
+    chalk "^4.1.2"
+    detect-port "^1.3.0"
+    flatted "^3.2.5"
+    graphql "^15.8.0"
+    graphql-tag "^2.12.6"
+    ipfs-http-client "^52.0.3"
+    pino "^6.13.3"
+    rotating-file-stream "^3.0.2"
+    semver "^7.3.7"
+    sequelize "^6.15.0"
+    tar "^6.1.11"
+
+"@subql/validator@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@subql/validator/-/validator-0.6.0.tgz#7e768325f728c45d49fc742ab81ae121bf74fbeb"
+  integrity sha512-JmT5x4iyo+v9qEIixqUrBRUJbUhSHNc4NPUzonx8hGm6jcsteAFkRlmfJ7omzOPtpPEQI1F7+RwoazFkTp6Zhw==
+  dependencies:
+    "@subql/common" "0.21.0"
+    "@subql/common-substrate" "0.3.0"
     axios "^0.24.0"
     ipfs-http-client "^52.0.3"
     js-yaml "^4.1.0"
     package-json-type "^1.0.3"
-
-"@subql/x-vm2@^3.9.3-0.1.0":
-  version "3.9.3-0.1.0"
-  resolved "https://registry.yarnpkg.com/@subql/x-vm2/-/x-vm2-3.9.3-0.1.0.tgz#6fd289b5737db008cb0c875c1d9f545eeea5f70c"
-  integrity sha512-v9KPGmG3f/vHHmgzctz46xwTa0bOhGvWem6KKFo9MJToDYj522D6LJIJ+v1zI6+urBXy0eUeC3HxTFYSaOnxDQ==
 
 "@substrate/ss58-registry@^1.14.0":
   version "1.15.0"
@@ -1931,7 +2061,7 @@ acorn-jsx@^5.3.1:
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-5.3.2.tgz#7ed5bb55908b3b2f1bc55c6af1653bada7f07937"
   integrity sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==
 
-acorn-walk@^8.1.1:
+acorn-walk@^8.1.1, acorn-walk@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.2.0.tgz#741210f2e2426454508853a2f44d0ab83b7f69c1"
   integrity sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==
@@ -1945,6 +2075,11 @@ acorn@^8.4.1, acorn@^8.5.0:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.0.tgz#90951fde0f8f09df93549481e5fc141445b791cf"
   integrity sha512-V/LGr1APy+PXIwKebEWrkZPwoeoF+w1jiOBUmuxuiUIaOHtob8Qc9BTrYo7VuI5fR8tqsy+buA2WFooR5olqvQ==
+
+acorn@^8.7.0:
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.1.tgz#0197122c843d1bf6d0a5e83220a788f278f63c30"
+  integrity sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==
 
 address@^1.0.1:
   version "1.1.2"
@@ -2204,6 +2339,14 @@ axios@^0.24.0:
   dependencies:
     follow-redirects "^1.14.4"
 
+axios@^0.27.1, axios@^0.27.2:
+  version "0.27.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
+  integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
+  dependencies:
+    follow-redirects "^1.14.9"
+    form-data "^4.0.0"
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
@@ -2273,6 +2416,11 @@ blob-to-it@^1.0.1:
   integrity sha512-iCmk0W4NdbrWgRRuxOriU8aM5ijeVLI61Zulsmg/lUHNr7pYjoj+U77opLefNagevtrrbMt3JQ5Qip7ar178kA==
   dependencies:
     browser-readablestream-to-it "^1.0.3"
+
+bn.js@4.11.6:
+  version "4.11.6"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.6.tgz#53344adb14617a13f6e8dd2ce28905d1c0ba3215"
+  integrity sha1-UzRK2xRhehP26N0s4okF0cC6MhU=
 
 bn.js@5.2.0, bn.js@^5.2.0:
   version "5.2.0"
@@ -3597,7 +3745,7 @@ flatstr@^1.0.12:
   resolved "https://registry.yarnpkg.com/flatstr/-/flatstr-1.0.12.tgz#c2ba6a08173edbb6c9640e3055b95e287ceb5931"
   integrity sha512-4zPxDyhCyiN2wIAtSLI6gc82/EjqZc1onI4Mz/l0pWrAlsSfYH/2ZIcU+e3oA2wDwbzIWNKwa23F8rh6+DRWkw==
 
-flatted@^3.1.0, flatted@^3.2.5:
+flatted@^3.1.0, flatted@^3.2.2, flatted@^3.2.5:
   version "3.2.5"
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.5.tgz#76c8584f4fc843db64702a6bd04ab7a8bd666da3"
   integrity sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==
@@ -3606,6 +3754,11 @@ follow-redirects@^1.14.4:
   version "1.14.9"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
   integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
+
+follow-redirects@^1.14.9:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.0.tgz#06441868281c86d0dda4ad8bdaead2d02dca89d4"
+  integrity sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==
 
 form-data@^3.0.0:
   version "3.0.1"
@@ -3843,14 +3996,14 @@ graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.5, graceful-fs@^4.1.6,
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
   integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
 
-graphql-tag@^2.12.6:
+graphql-tag@^2.12.5, graphql-tag@^2.12.6:
   version "2.12.6"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.12.6.tgz#d441a569c1d2537ef10ca3d1633b48725329b5f1"
   integrity sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==
   dependencies:
     tslib "^2.1.0"
 
-graphql@^15.8.0:
+graphql@^15.7.2, graphql@^15.8.0:
   version "15.8.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.8.0.tgz#33410e96b012fa3bdb1091cc99a94769db212b38"
   integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
@@ -6278,6 +6431,13 @@ semver@^7.1.1, semver@^7.1.3, semver@^7.2.1, semver@^7.3.2, semver@^7.3.4, semve
   dependencies:
     lru-cache "^6.0.0"
 
+semver@^7.3.7:
+  version "7.3.7"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.7.tgz#12c5b649afdbf9049707796e22a4028814ce523f"
+  integrity sha512-QlYTucUYOews+WeEujDoEGziz4K6c47V/Bd+LjSSYcA94p+DmINdf7ncaUinThfvZyu13lN9OY1XDxt8C0Tw0g==
+  dependencies:
+    lru-cache "^6.0.0"
+
 sequelize-pool@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-7.1.0.tgz#210b391af4002762f823188fd6ecfc7413020768"
@@ -6287,6 +6447,28 @@ sequelize@^6.15.0:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.17.0.tgz#78a21f39b8a7548c65c0cc2055e8231137c679a3"
   integrity sha512-AZus+0YZDq91Zg0hzDaO5atTzHgJruI23V8nBlAhkLuI81Z53nSRdAe/4R1A6vGOZ/RfCLP9idF4tfQnoAsM5A==
+  dependencies:
+    "@types/debug" "^4.1.7"
+    "@types/validator" "^13.7.1"
+    debug "^4.3.3"
+    dottie "^2.0.2"
+    inflection "^1.13.2"
+    lodash "^4.17.21"
+    moment "^2.29.1"
+    moment-timezone "^0.5.34"
+    pg-connection-string "^2.5.0"
+    retry-as-promised "^5.0.0"
+    semver "^7.3.5"
+    sequelize-pool "^7.1.0"
+    toposort-class "^1.0.1"
+    uuid "^8.3.2"
+    validator "^13.7.0"
+    wkx "^0.5.0"
+
+sequelize@^6.6.2:
+  version "6.19.0"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-6.19.0.tgz#bea0ac091d89cbbc94cabe0797b8c1359734e2e6"
+  integrity sha512-B3oGIdpYBERDjRDm74h7Ky67f6ZLcmBXOA7HscYObiOSo4pD7VBc9mtm44wNV7unc0uk8I1d30nbZBTQCE377A==
   dependencies:
     "@types/debug" "^4.1.7"
     "@types/validator" "^13.7.1"
@@ -7141,6 +7323,14 @@ vinyl@^2.0.1:
     cloneable-readable "^1.0.0"
     remove-trailing-separator "^1.0.1"
     replace-ext "^1.0.0"
+
+vm2@3.9.9:
+  version "3.9.9"
+  resolved "https://registry.yarnpkg.com/vm2/-/vm2-3.9.9.tgz#c0507bc5fbb99388fad837d228badaaeb499ddc5"
+  integrity sha512-xwTm7NLh/uOjARRBs8/95H0e8fT3Ukw5D/JJWhxMbhKzNh1Nu981jQKvkep9iKYNxzlVrdzD0mlBGkDKZWprlw==
+  dependencies:
+    acorn "^8.7.0"
+    acorn-walk "^8.2.0"
 
 walk-up-path@^1.0.0:
   version "1.0.0"

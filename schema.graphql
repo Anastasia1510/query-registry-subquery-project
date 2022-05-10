@@ -83,7 +83,7 @@ type Delegator @entity {
 type Delegation @entity {
   id: ID! # nominator + indexer addresses
   delegator: Delegator!
-  indexer: Indexer # optional, indexer can be remove
+  indexer: Indexer # optional, indexer can be removed
 
   amount: EraValue!
 }
