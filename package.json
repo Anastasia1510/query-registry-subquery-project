@@ -22,7 +22,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@polkadot/api": "^7",
-    "@subql/cli": "^0.19.1-6",
+    "@subql/cli": "^0.28.0",
     "@subql/types": "latest",
     "@types/bs58": "^4.0.1",
     "@types/js-yaml": "^4.0.5",

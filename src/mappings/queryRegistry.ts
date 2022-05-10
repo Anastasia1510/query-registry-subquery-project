@@ -116,7 +116,7 @@ export async function handleStartIndexing(
 export async function handleIndexingUpdate(
   event: FrontierEvmEvent<UpdateDeploymentStatusEvent['args']>
 ): Promise<void> {
-  logger.info('handleIndexingUpdate');
+  // logger.info('handleIndexingUpdate');
   assert(event.args, 'No event args');
   const deploymentId = bytesToIpfsCid(event.args.deploymentId);
   const id = getDeploymentIndexerId(event.args.indexer, deploymentId);
