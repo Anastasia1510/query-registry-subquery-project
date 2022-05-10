@@ -29,7 +29,7 @@ type Deployment @entity {
 
 type DeploymentIndexer @entity {
   id: ID! # indexer adderss + deployment id
-  indexer: Indexer!
+  indexer: Indexer # optional, indexer can unregister
   deployment: Deployment!
 
   blockHeight: BigInt!
@@ -83,7 +83,7 @@ type Delegator @entity {
 type Delegation @entity {
   id: ID! # nominator + indexer addresses
   delegator: Delegator!
-  indexer: Indexer # optional, indexer can be removed
+  indexer: Indexer # optional, indexer can unregister
 
   amount: EraValue!
 }

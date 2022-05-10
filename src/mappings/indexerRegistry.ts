@@ -65,14 +65,14 @@ export async function handleUnregisterIndexer(
   assert(event.args, 'No event args');
 
   // Remove indexerDeployments relationship
-  const deployments = await DeploymentIndexer.getByIndexerId(
-    event.args.indexer
-  );
-  await Promise.all(
-    (deployments ?? []).map((deployment) =>
-      DeploymentIndexer.remove(deployment.id)
-    )
-  );
+  // const deployments = await DeploymentIndexer.getByIndexerId(
+  //   event.args.indexer
+  // );
+  // await Promise.all(
+  //   (deployments ?? []).map((deployment) =>
+  //     DeploymentIndexer.remove(deployment.id)
+  //   )
+  // );
 
   // TODO does this take effect next era?
   await Indexer.remove(event.args.indexer);
