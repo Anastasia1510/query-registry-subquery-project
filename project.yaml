@@ -16,7 +16,8 @@ network:
   chainId: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
   endpoint: wss://sqtn.api.onfinality.io/public-ws
   dictionary: https://api.subquery.network/sq/subquery/subquery-testnet-dictionary
-
+  chainTypes:
+    file: ./dist/chaintypes.js
 
 x-frontier: &frontier
   kind: substrate/FrontierEvm
