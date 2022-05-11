@@ -138,22 +138,23 @@ export default class FrontierEthProvider extends Provider {
     return r.toHex();
   }
 
-  async getBlockWithTransactions(
+  /*async*/ getBlockWithTransactions(
     blockHashOrBlockTag: BlockTag | Promise<BlockTag>
   ): Promise<BlockWithTransactions> {
-    const raw = await this.eth.getBlockByHash(
-      blockHashOrBlockTag.toString(),
-      true
-    );
+    throw new Error('Not implemented');
+    // const raw = await this.eth.getBlockByHash(
+    //   blockHashOrBlockTag.toString(),
+    //   true
+    // );
 
-    const b = raw.unwrap();
+    // const b = raw.unwrap();
 
-    return {
-      ...ethRichBlockToBlock(b),
-      transactions: b.transactions
-        .toArray()
-        .map(ethTransactionToTransactionResponse),
-    };
+    // return {
+    //   ...ethRichBlockToBlock(b),
+    //   transactions: b.transactions
+    //     .toArray()
+    //     .map(ethTransactionToTransactionResponse),
+    // };
   }
 
   getBlock(blockHashOrBlockTag: BlockTag | Promise<BlockTag>): Promise<Block> {

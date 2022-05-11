@@ -1,4 +1,5 @@
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
 import { NewEraStartEvent } from '@subql/contract-sdk/typechain/EraManager';
 import assert from 'assert';
 
@@ -6,7 +7,7 @@ import { Era } from '../types';
 
 /* Era Handlers */
 export async function handleNewEra(
-  event: FrontierEvmEvent<NewEraStartEvent['args']>
+  event: AcalaEvmEvent<NewEraStartEvent['args']>
 ): Promise<void> {
   logger.info('handleNewEra');
   assert(event.args, 'No event args');

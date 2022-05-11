@@ -19,7 +19,8 @@ import {
   updateTotalDelegation,
 } from './utils';
 import { BigNumber } from '@ethersproject/bignumber';
-import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+// import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
 
 function getDelegationId(delegator: string, indexer: string): string {
   return `${delegator}:${indexer}`;
@@ -30,7 +31,7 @@ function getWithdrawlId(delegator: string, index: BigNumber): string {
 }
 
 export async function handleAddDelegation(
-  event: FrontierEvmEvent<DelegationAddedEvent['args']>
+  event: AcalaEvmEvent<DelegationAddedEvent['args']>
 ): Promise<void> {
   logger.info('handleAddDelegation');
   assert(event.args, 'No event args');
@@ -91,7 +92,7 @@ export async function handleAddDelegation(
 }
 
 export async function handleRemoveDelegation(
-  event: FrontierEvmEvent<DelegationRemovedEvent['args']>
+  event: AcalaEvmEvent<DelegationRemovedEvent['args']>
 ): Promise<void> {
   logger.info('handleRemoveDelegation');
   assert(event.args, 'No event args');
@@ -125,7 +126,7 @@ export async function handleRemoveDelegation(
 
 /* TODO wait for new contracts */
 export async function handleWithdrawRequested(
-  event: FrontierEvmEvent<UnbondRequestedEvent['args']>
+  event: AcalaEvmEvent<UnbondRequestedEvent['args']>
 ): Promise<void> {
   logger.info('handleWithdrawRequested');
   assert(event.args, 'No event args');
@@ -147,7 +148,7 @@ export async function handleWithdrawRequested(
 }
 
 export async function handleWithdrawClaimed(
-  event: FrontierEvmEvent<UnbondWithdrawnEvent['args']>
+  event: AcalaEvmEvent<UnbondWithdrawnEvent['args']>
 ): Promise<void> {
   logger.info('handleWithdrawClaimed');
   assert(event.args, 'No event args');
@@ -164,7 +165,7 @@ export async function handleWithdrawClaimed(
 }
 
 export async function handleSetCommissionRate(
-  event: FrontierEvmEvent<SetCommissionRateEvent['args']>
+  event: AcalaEvmEvent<SetCommissionRateEvent['args']>
 ): Promise<void> {
   logger.info('handleSetCommissionRate');
   assert(event.args, 'No event args');

@@ -7,10 +7,11 @@ import { ServiceAgreement } from '../types';
 import { bytesToIpfsCid } from './utils';
 import { IServiceAgreement__factory } from '@subql/contract-sdk';
 import FrontierEthProvider from './ethProvider';
-import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+// import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
 
 export async function handleServiceAgreementCreated(
-  event: FrontierEvmEvent<ServiceAgreementCreatedEvent['args']>
+  event: AcalaEvmEvent<ServiceAgreementCreatedEvent['args']>
 ): Promise<void> {
   logger.info('handleServiceAgreementCreated');
   assert(event.args, 'No event args');

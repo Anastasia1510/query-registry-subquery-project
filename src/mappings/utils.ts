@@ -3,7 +3,8 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';
 import { Delegator, Indexer, EraValue, JSONBigInt } from '../types';
 
-import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
+// import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
+import testnetAddresses from '../../mandala.json';
 
 export const ERA_MANAGER_ADDRESS = testnetAddresses.EraManager.address;
 export const PLAN_MANAGER_ADDRESS = testnetAddresses.PlanManager.address;
