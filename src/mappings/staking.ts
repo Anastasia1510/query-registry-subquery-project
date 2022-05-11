@@ -191,6 +191,7 @@ export async function handleSetCommissionRate(
         value: BigInt(0).toJSONType(),
         valueAfter: BigInt(0).toJSONType(),
       },
+      active: true,
     });
 
     indexer;
