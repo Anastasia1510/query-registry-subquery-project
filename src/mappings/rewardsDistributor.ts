@@ -86,7 +86,9 @@ export async function handleRewardsClaimed(
   assert(
     event.args.rewards.isZero() ||
       unclaimed?.amount === event.args.rewards.toBigInt(),
-    `unclaimed reward doesn't match claimed reward`
+    `unclaimed reward doesn't match claimed reward ${
+      unclaimed?.amount
+    } ${event.args.rewards.toBigInt()}`
   );
 
   await UnclaimedReward.remove(id);

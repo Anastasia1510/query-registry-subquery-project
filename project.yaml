@@ -1,18 +1,22 @@
-specVersion: 0.2.0
+specVersion: 1.0.0
 name: subquery-query-registry-project
 version: 1.0.0
+runner:
+  node:
+    name: '@subql/node'
+    version: '>=0.35.2'
+  query:
+    name: '@subql/query'
+    version: '*'
 description: ''
 repository: ''
 schema:
   file: ./schema.graphql
 network:
-  # SQN testnet
-  genesisHash: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
-  # endpoint: 'https://node-6901336963938430976.jm.onfinality.io/rpc?apikey=65f0a4da-7861-429b-a21d-fd42209f4d2f'
-  endpoint: 'wss://sqtn.api.onfinality.io/public-ws'
+  chainId: '0x6b18138563ba86208d17839ff4f48e2f1fcaddb520de82bb6a731bcb5e801e85'
+  endpoint: wss://sqtn.api.onfinality.io/public-ws
   dictionary: https://api.subquery.network/sq/subquery/subquery-testnet-dictionary
-
-  chaintypes:
+  chainTypes:
     file: ./dist/chaintypes.js
 
 x-frontier: &frontier

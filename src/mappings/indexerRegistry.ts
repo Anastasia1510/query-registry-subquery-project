@@ -2,10 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
-import {
-  EraManager__factory,
-  QueryRegistry__factory,
-} from '@subql/contract-sdk';
+import { EraManager__factory } from '@subql/contract-sdk';
 import {
   RegisterIndexerEvent,
   RemoveControllerAccountEvent,
@@ -14,7 +11,7 @@ import {
   UpdateMetadataEvent,
 } from '@subql/contract-sdk/typechain/IndexerRegistry';
 import assert from 'assert';
-import { DeploymentIndexer, Indexer } from '../types';
+import { Indexer } from '../types';
 import FrontierEthProvider from './ethProvider';
 import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 
@@ -32,23 +29,30 @@ export async function handleRegisterIndexer(
     new FrontierEthProvider()
   );
 
-  assert(!indexer, `Indexer (${indexerAddress}) already exists`);
+  // assert(!indexer, `Indexer (${indexerAddress}) already exists`);
+
+  if (indexer) {
+    indexer.metadata = bytesToIpfsCid(metadata);
+    indexer.active = true;
+  } else {
+    // Should not occurr. AddDelegation, SetCommissionRate events should happen first
+    indexer = Indexer.create({
+      id: indexerAddress,
+      metadata: bytesToIpfsCid(metadata),
+      totalStake: await upsertEraValue(eraManager, undefined, BigInt(0)),
+      // Set era to -1 as indicator to apply instantly in handleSectCommissionRate
+      commission: {
+        era: -1,
+        value: BigInt(0).toJSONType(),
+        valueAfter: BigInt(0).toJSONType(),
+      }, //await upsertEraValue(eraManager, undefined, BigInt(0)),
+      active: true,
+    });
+  }
 
   /* WARNING, other events are emitted before this handler (AddDelegation, SetCommissionRate),
    * their handlers are used to set their relevant values.
    */
-
-  indexer = Indexer.create({
-    id: indexerAddress,
-    metadata: bytesToIpfsCid(metadata),
-    totalStake: await upsertEraValue(eraManager, undefined, BigInt(0)),
-    // Set era to -1 as indicator to apply instantly in handleSectCommissionRate
-    commission: {
-      era: -1,
-      value: BigInt(0).toJSONType(),
-      valueAfter: BigInt(0).toJSONType(),
-    }, //await upsertEraValue(eraManager, undefined, BigInt(0)),
-  });
 
   await indexer.save();
 }
@@ -59,18 +63,11 @@ export async function handleUnregisterIndexer(
   logger.info('handleUnregisterIndexer');
   assert(event.args, 'No event args');
 
-  // Remove indexerDeployments relationship
-  const deployments = await DeploymentIndexer.getByIndexerId(
-    event.args.indexer
-  );
-  await Promise.all(
-    (deployments ?? []).map((deployment) =>
-      DeploymentIndexer.remove(deployment.id)
-    )
-  );
+  const indexer = await Indexer.get(event.args.indexer);
+  assert(indexer, `Expected indexer to exist: ${event.args.indexer}`);
 
-  // TODO does this take effect next era?
-  await Indexer.remove(event.args.indexer);
+  indexer.active = false;
+  await indexer.save();
 }
 
 export async function handleUpdateIndexerMetadata(

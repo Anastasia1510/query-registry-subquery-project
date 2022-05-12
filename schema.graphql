@@ -36,8 +36,6 @@ type DeploymentIndexer @entity {
   mmrRoot: String
   timestamp: Date
   status: Status!
-
-  # endpoint: String! # TODO need updated contract
 }
 
 type Era @entity {
@@ -71,6 +69,8 @@ type Indexer @entity {
   rewards: [IndexerReward] @derivedFrom(field: "indexer")
 
   lastRewardedEra: String # hex encoding
+
+  active: Boolean!
 }
 
 type Delegator @entity {

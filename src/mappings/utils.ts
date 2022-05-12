@@ -131,6 +131,7 @@ export async function updateTotalStake(
         operation,
         applyInstantly
       ),
+      active: true,
     });
   } else {
     indexer.totalStake = await upsertEraValue(
