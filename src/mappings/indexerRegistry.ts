@@ -1,8 +1,7 @@
 // Copyright 2020-2022 OnFinality Limited authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-// import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
-import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
+import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 import { EraManager__factory } from '@subql/contract-sdk';
 import {
   RegisterIndexerEvent,

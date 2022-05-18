@@ -19,8 +19,7 @@ import {
   updateTotalDelegation,
 } from './utils';
 import { BigNumber } from '@ethersproject/bignumber';
-// import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
-import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
+import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 
 function getDelegationId(delegator: string, indexer: string): string {
   return `${delegator}:${indexer}`;

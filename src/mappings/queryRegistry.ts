@@ -14,8 +14,7 @@ import {
   UpdateIndexingStatusToReadyEvent,
 } from '@subql/contract-sdk/typechain/QueryRegistry';
 import { bnToDate, bytesToIpfsCid } from './utils';
-// import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
-import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
+import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 
 function getDeploymentIndexerId(indexer: string, deploymentId: string): string {
   return `${indexer}:${deploymentId}`;

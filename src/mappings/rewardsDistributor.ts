@@ -17,8 +17,7 @@ import {
   RewardsChangedEvent,
 } from '@subql/contract-sdk/typechain/RewardsDistributer';
 import { REWARD_DIST_ADDRESS } from './utils';
-// import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
-import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
+import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 import { BigNumber } from '@ethersproject/bignumber';
 
 function buildRewardId(indexer: string, delegator: string): string {

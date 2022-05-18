@@ -1,5 +1,4 @@
-import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
-import { AcalaEvmEvent } from '@subql/contract-processors/dist/acalaEvm';
+import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 import { NewEraStartEvent } from '@subql/contract-sdk/typechain/EraManager';
 import assert from 'assert';
 
