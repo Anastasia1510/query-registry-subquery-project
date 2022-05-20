@@ -2228,11 +2228,13 @@
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.0.0.tgz#109fb595021de285f05a7db6806f2f48296fcee7"
   integrity sha512-gIVaYhUsy+9s58m/ETjSJVKHhKTBMmcRb9cEV5/5dwvfDlfORjKrFsDeDHWRrm6RjcPvCLZFwGJjAjLj1gg4HA==
 
-"@subql/acala-evm-processor@file:.yalc/@subql/acala-evm-processor":
-  version "1.0.0"
+"@subql/acala-evm-processor@^0.0.1-0":
+  version "0.0.1-0"
+  resolved "https://registry.yarnpkg.com/@subql/acala-evm-processor/-/acala-evm-processor-0.0.1-0.tgz#49674d80bcece8ebffadf8fb404fff490357ed03"
+  integrity sha512-FXhv9NrRRrMkp185cnw186mc5Hn8pX/qiaJYWDkwHEhNPFndW4JGxsbQMujEfJoPyywKPcyIh2WyEKr+7Dl8bw==
   dependencies:
     "@acala-network/eth-providers" "^2.4.10"
-    "@subql/types" "file:../../Library/Caches/Yarn/v6/npm-@subql-acala-evm-processor-1.0.0-f3fe237d-343b-451c-9c7c-b5cec7e9fb45-1652914715395/node_modules/.yalc/@subql/types"
+    "@subql/types" "^1.0.1-0"
     class-transformer "^0.5.1"
     class-validator "^0.13.2"
     ethers "^5.6.5"
@@ -2316,8 +2318,15 @@
   resolved "https://registry.yarnpkg.com/@subql/types-terra/-/types-terra-0.4.0.tgz#09f70e6b8820fa98b9bf2f6807cde4476a179d5f"
   integrity sha512-+Qx9tPCAQpIF0u4jSnW5GbjZoVdpt4GJpkIp4hDao3uUS6Vs68ZbtNQCl+EMP0eU7WTHJjwWmTflPvf665SYaw==
 
-"@subql/types@1.0.0", "@subql/types@file:.yalc/.yalc/@subql/types", "@subql/types@file:.yalc/@subql/types":
+"@subql/types@1.0.0":
   version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@subql/types/-/types-1.0.0.tgz#1f6d29f552effba474b35e3e83d41e27b1becac0"
+  integrity sha512-UU6bvJp2JWfSTLArkl10fFIvJCZC3I+0/Swk8wn0Mnh+qNjhxPudS9FA7+qV2WIGZ9WNABqNq7KSpomGCiqeow==
+
+"@subql/types@^1.0.1-0":
+  version "1.0.1-0"
+  resolved "https://registry.yarnpkg.com/@subql/types/-/types-1.0.1-0.tgz#a4873ba702f59887ab05f1da39c89cb5fa5bf176"
+  integrity sha512-Hs5yn88nCFEErQItrOMLicmrdlN2zUbErRksUSr9xbHRpfu50DN6c2l6Gg+lgaTHTgz5lrOhVxQ+4JbQdWxwZw==
 
 "@subql/utils@1.0.0":
   version "1.0.0"
