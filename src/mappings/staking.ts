@@ -11,7 +11,6 @@ import {
 } from '@subql/contract-sdk/typechain/Staking';
 import assert from 'assert';
 import { Delegation, Withdrawl, Indexer } from '../types';
-import FrontierEthProvider from './ethProvider';
 import {
   ERA_MANAGER_ADDRESS,
   updateTotalStake,
@@ -19,7 +18,10 @@ import {
   updateTotalDelegation,
 } from './utils';
 import { BigNumber } from '@ethersproject/bignumber';
-import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import {
+  FrontierEvmEvent,
+  FrontierEthProvider,
+} from '@subql/frontier-evm-processor';
 
 function getDelegationId(delegator: string, indexer: string): string {
   return `${delegator}:${indexer}`;

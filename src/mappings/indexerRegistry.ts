@@ -1,7 +1,10 @@
 // Copyright 2020-2022 OnFinality Limited authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import {
+  FrontierEvmEvent,
+  FrontierEthProvider,
+} from '@subql/frontier-evm-processor';
 import { EraManager__factory } from '@subql/contract-sdk';
 import {
   RegisterIndexerEvent,
@@ -12,7 +15,6 @@ import {
 } from '@subql/contract-sdk/typechain/IndexerRegistry';
 import assert from 'assert';
 import { Indexer } from '../types';
-import FrontierEthProvider from './ethProvider';
 import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 
 /* Indexer Registry Handlers */

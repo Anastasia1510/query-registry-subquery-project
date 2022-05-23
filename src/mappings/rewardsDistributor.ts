@@ -10,14 +10,16 @@ import {
   UnclaimedReward,
 } from '../types';
 import { RewardsDistributer__factory } from '@subql/contract-sdk';
-import FrontierEthProvider from './ethProvider';
 import {
   ClaimRewardsEvent,
   DistributeRewardsEvent,
   RewardsChangedEvent,
 } from '@subql/contract-sdk/typechain/RewardsDistributer';
 import { REWARD_DIST_ADDRESS } from './utils';
-import { FrontierEvmEvent } from '@subql/contract-processors/dist/frontierEvm';
+import {
+  FrontierEvmEvent,
+  FrontierEthProvider,
+} from '@subql/frontier-evm-processor';
 import { BigNumber } from '@ethersproject/bignumber';
 
 function buildRewardId(indexer: string, delegator: string): string {
