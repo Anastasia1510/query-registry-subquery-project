@@ -21,7 +21,7 @@ network:
 
 x-frontier: &frontier
   kind: substrate/AcalaEvm
-  startBlock: 1066661
+  startBlock: 1186931
   processor: &frontier-processor
     file: './dist/acalaEvm.js'
   assets:
@@ -46,7 +46,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: eraManager
-        address: '0x09eda5f3D448A02bF21B51223bB3aD5c5c8DA151'
+        address: '0x63edE3b9164112f50fbCD68EbFC47FD2c4E60c2E'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -60,7 +60,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: indexerRegistry
-        address: '0xe5B4EA276e1030F55790bB8695bC1f8362241bb9'
+        address: '0xC3A8760dDf3d619362cFD9cdEad73977dAa7f3d6'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -94,7 +94,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: staking
-        address: '0x2F50025987C58549018841e007c61759d8Fb9BeD'
+        address: '0xC6e01e052e88fF9dA90FaB88C1f8C360E86F6B2b'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -128,7 +128,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: queryRegistry
-        address: '0xD85888D978e014ad9dA7cf011E726B04FBf0c63c'
+        address: '0x2F6dF506009dBeef2C3a72cA0Ea70738980CA286'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -172,7 +172,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: planManager
-        address: '0xA913e483B6B6f9607CcC1E083928342b2d5d36aF'
+        address: '0xF9ab873a6726F21801a5222197b7c8195bb529dE'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -206,7 +206,7 @@ dataSources:
       <<: *frontier-processor
       options:
         abi: serviceAgreementRegistry
-        address: '0xd098AaCe6495745496428085be2976391C6A5bC4'
+        address: '0x306f9F363213E7a323C659736e6D5DCa63eF844A'
     mapping:
       file: ./dist/index.js
       handlers:
@@ -214,13 +214,13 @@ dataSources:
           kind: substrate/AcalaEvmEvent
           filter:
             topics:
-              - ServiceAgreementCreated(address indexed consumer, address indexed indexer, bytes32 indexed deploymentId, address serviceAgreement)
+              - ClosedAgreementCreated(address indexed consumer, address indexed indexer, bytes32 indexed deploymentId, address serviceAgreement)
   - <<: *frontier
     processor:
       <<: *frontier-processor
       options:
         abi: rewardsDistributor
-        address: '0xA500a3ad54223B7E18D7d73da34f2EF06aCa77eC'
+        address: '0x23873a106fd7297B408B0286132DAeEb555CbE28'
     mapping:
       file: ./dist/index.js
       handlers:

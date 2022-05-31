@@ -1,10 +1,9 @@
 import bs58 from 'bs58';
 import { BigNumber } from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';
-import { Delegator, Indexer, EraValue, JSONBigInt } from '../types';
+import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
 
-// import testnetAddresses from '@subql/contract-sdk/publish/testnet.json';
-import testnetAddresses from '../../mandala.json';
+import { Delegator, Indexer, EraValue, JSONBigInt } from '../types';
 
 export const ERA_MANAGER_ADDRESS = testnetAddresses.EraManager.address;
 export const PLAN_MANAGER_ADDRESS = testnetAddresses.PlanManager.address;
