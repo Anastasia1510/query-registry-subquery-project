@@ -38,10 +38,57 @@
     graphql-request "~3.6.1"
     lru-cache "~7.8.2"
 
+"@acala-network/eth-providers@^2.4.12":
+  version "2.4.12"
+  resolved "https://registry.yarnpkg.com/@acala-network/eth-providers/-/eth-providers-2.4.12.tgz#67a5a71e08b993b9e164140936c5d5f05bec1dcf"
+  integrity sha512-NM5TYVXCxNavw0z7FnckekCowbU/5WJDJAFaV4luY/AS/cFxjX4u5e6tBIpd2NKJ16VL137wk7JeqcZbHBPWcg==
+  dependencies:
+    "@acala-network/contracts" "~4.2.0"
+    "@acala-network/eth-transactions" "2.4.12"
+    "@acala-network/types" "~4.1.2-11"
+    "@ethersproject/abstract-provider" "~5.5.0"
+    "@ethersproject/address" "~5.5.0"
+    "@ethersproject/bignumber" "~5.5.0"
+    "@ethersproject/bytes" "~5.5.0"
+    "@ethersproject/contracts" "~5.5.0"
+    "@ethersproject/logger" "~5.5.0"
+    "@ethersproject/networks" "~5.5.0"
+    "@ethersproject/properties" "~5.5.0"
+    "@ethersproject/providers" "~5.5.0"
+    "@ethersproject/transactions" "~5.5.0"
+    "@ethersproject/wallet" "~5.5.0"
+    "@polkadot/api" "8.1.1"
+    "@polkadot/api-augment" "8.1.1"
+    "@polkadot/api-derive" "8.1.1"
+    "@polkadot/keyring" "^9.0.1"
+    "@polkadot/types" "8.1.1"
+    "@polkadot/util" "^9.0.1"
+    "@polkadot/util-crypto" "^9.0.1"
+    ethers "~5.5.0"
+    graphql "~16.0.1"
+    graphql-request "~3.6.1"
+    lru-cache "~7.8.2"
+
 "@acala-network/eth-transactions@2.4.11":
   version "2.4.11"
   resolved "https://registry.yarnpkg.com/@acala-network/eth-transactions/-/eth-transactions-2.4.11.tgz#155f96290c171a2d72b66c2a9e8283c5aa9f9dc3"
   integrity sha512-PK5YRU143/W/VaX9r9wikTIwQzbpGxDyjCl400WKG9vgcUC8z2vw5YMOxTLoJ/ssRdc/PL8sXTg3CCabuRyOuA==
+  dependencies:
+    "@ethersproject/address" "~5.5.0"
+    "@ethersproject/bignumber" "~5.5.0"
+    "@ethersproject/bytes" "~5.5.0"
+    "@ethersproject/constants" "~5.5.0"
+    "@ethersproject/hash" "~5.5.0"
+    "@ethersproject/logger" "~5.5.0"
+    "@ethersproject/rlp" "~5.5.0"
+    "@ethersproject/transactions" "~5.5.0"
+    "@ethersproject/wallet" "~5.5.0"
+    "@polkadot/util-crypto" "^9.0.1"
+
+"@acala-network/eth-transactions@2.4.12":
+  version "2.4.12"
+  resolved "https://registry.yarnpkg.com/@acala-network/eth-transactions/-/eth-transactions-2.4.12.tgz#67852469702528ca10606c6b3bcc7c26fe51f343"
+  integrity sha512-wSK7W6g1zcsKxJMaoBO9xBdg8xqo+VKWRH+fQTWNy8NH5kAfuVF+U8eHfpoZjEyAVMSphlvw06LmHBTC+9N4HA==
   dependencies:
     "@ethersproject/address" "~5.5.0"
     "@ethersproject/bignumber" "~5.5.0"

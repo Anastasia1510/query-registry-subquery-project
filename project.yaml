@@ -64,11 +64,11 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # - handler: handleRegisterIndexer
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - RegisterIndexer(address indexed indexer, uint256 amount, bytes32 metadata)
+        - handler: handleRegisterIndexer
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - RegisterIndexer(address indexed indexer, uint256 amount, bytes32 metadata)
         - handler: handleUpdateIndexerMetadata
           kind: substrate/AcalaEvmEvent
           filter:
@@ -98,16 +98,16 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # - handler: handleAddDelegation
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - DelegationAdded(address indexed source, address indexed indexer, uint256 amount)
-        # - handler: handleRemoveDelegation
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - DelegationRemoved(address indexed source, address indexed indexer, uint256 amount)
+        - handler: handleAddDelegation
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - DelegationAdded(address indexed source, address indexed indexer, uint256 amount)
+        - handler: handleRemoveDelegation
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - DelegationRemoved(address indexed source, address indexed indexer, uint256 amount)
         - handler: handleWithdrawRequested
           kind: substrate/AcalaEvmEvent
           filter:
@@ -118,11 +118,11 @@ dataSources:
           filter:
             topics:
               - UnbondWithdrawn(address indexed source, uint256 amount, uint256 index)
-        # - handler: handleSetCommissionRate
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - SetCommissionRate(address indexed indexer, uint256 amount)
+        - handler: handleSetCommissionRate
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - SetCommissionRate(address indexed indexer, uint256 amount)
   - <<: *frontier
     processor:
       <<: *frontier-processor
@@ -201,20 +201,20 @@ dataSources:
           filter:
             topics:
               - PlanRemoved(address indexed source, uint256 id, bytes32 deploymentId)
-  # - <<: *frontier
-  #   processor:
-  #     <<: *frontier-processor
-  #     options:
-  #       abi: serviceAgreementRegistry
-  #       address: '0x306f9F363213E7a323C659736e6D5DCa63eF844A'
-  #   mapping:
-  #     file: ./dist/index.js
-  #     handlers:
-        # - handler: handleServiceAgreementCreated
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - ClosedAgreementCreated(address indexed consumer, address indexed indexer, bytes32 indexed deploymentId, address serviceAgreement)
+  - <<: *frontier
+    processor:
+      <<: *frontier-processor
+      options:
+        abi: serviceAgreementRegistry
+        address: '0x306f9F363213E7a323C659736e6D5DCa63eF844A'
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        - handler: handleServiceAgreementCreated
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - ClosedAgreementCreated(address indexed consumer, address indexed indexer, bytes32 indexed deploymentId, address serviceAgreement)
   - <<: *frontier
     processor:
       <<: *frontier-processor
@@ -224,11 +224,11 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # - handler: handleRewardsDistributed
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - DistributeRewards(address indexed indexer, uint256 indexed eraIdx)
+        - handler: handleRewardsDistributed
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - DistributeRewards(address indexed indexer, uint256 indexed eraIdx)
         - handler: handleRewardsClaimed
           kind: substrate/AcalaEvmEvent
           filter:

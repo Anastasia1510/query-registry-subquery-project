@@ -75,6 +75,9 @@ function ethLogToLog(log: EthLog): Log {
   };
 }
 
+// const substrate = 'wss://node-6870830370282213376.rz.onfinality.io/ws?apikey=0f273197-e4d5-45e2-b23e-03b015cb7000';
+// const provider = EvmRpcProvider.from(substrate);
+
 export default class FrontierEthProvider extends Provider {
   private eth = api.rpc.eth;
 
@@ -126,6 +129,10 @@ export default class FrontierEthProvider extends Provider {
     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
 
     const tx = await resolveProperties(transaction);
+
+    logger.warn('call -- api:', api);
+    logger.warn('call -- eth:', this.eth);
+    logger.warn('call -- eth -- call:', this.eth.call);
 
     const r = await this.eth.call({
       ...tx,
