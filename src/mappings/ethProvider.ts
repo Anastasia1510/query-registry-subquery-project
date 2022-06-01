@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Block,
@@ -20,6 +23,8 @@ import {
   EthRichBlock,
   EthTransaction,
 } from '@polkadot/types/interfaces';
+import { Bytes } from '@polkadot/api/node_modules/@polkadot/types';
+import RpcInterface from '@polkadot/rpc-core/types/jsonrpc';
 
 function ethTransactionToTransactionResponse(
   tx: EthTransaction
@@ -130,11 +135,9 @@ export default class FrontierEthProvider extends Provider {
 
     const tx = await resolveProperties(transaction);
 
-    logger.warn('call -- api:', api);
-    logger.warn('call -- eth:', this.eth);
-    logger.warn('call -- eth -- call:', this.eth.call);
-
-    const r = await this.eth.call({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const r = await api.rpc.evm.call({
       ...tx,
       nonce: tx.nonce && BNishToHex(tx.nonce),
       gas: tx.gasLimit && BNishToHex(tx.gasLimit),
@@ -142,7 +145,8 @@ export default class FrontierEthProvider extends Provider {
       value: tx.value && BNishToHex(tx.value),
       data: tx.data,
     });
-    return r.toHex();
+
+    return (r as Bytes).toHex();
   }
 
   /*async*/ getBlockWithTransactions(
