@@ -1,7 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+// Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   Block,
   BlockTag,

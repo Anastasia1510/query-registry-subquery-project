@@ -1,3 +1,6 @@
+// Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import bs58 from 'bs58';
 import { BigNumber } from '@ethersproject/bignumber';
 import { EraManager } from '@subql/contract-sdk';

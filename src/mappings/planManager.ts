@@ -1,3 +1,6 @@
+// Copyright 2020-2022 SubQuery Pte Ltd authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
 import { PlanManager__factory } from '@subql/contract-sdk';
 import {
   PlanCreatedEvent,
