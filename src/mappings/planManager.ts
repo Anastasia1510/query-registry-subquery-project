@@ -8,7 +8,7 @@ import {
 } from '@subql/contract-sdk/typechain/PlanManager';
 import assert from 'assert';
 import { Plan, PlanTemplate } from '../types';
-import FrontierEthProvider from './ethProvider';
+import provider from './ethProvider';
 import { bytesToIpfsCid, PLAN_MANAGER_ADDRESS } from './utils';
 import { constants } from 'ethers';
 import { AcalaEvmEvent } from '@subql/acala-evm-processor';
@@ -24,9 +24,11 @@ export async function handlePlanTemplateCreated(
   logger.info('handlePlanTemplateCreated');
   assert(event.args, 'No event args');
 
+  console.log('>>>planTemplateCreated:', event.args);
+
   const planManager = PlanManager__factory.connect(
     PLAN_MANAGER_ADDRESS,
-    new FrontierEthProvider()
+    provider
   );
 
   const rawPlanTemplate = await planManager.planTemplates(

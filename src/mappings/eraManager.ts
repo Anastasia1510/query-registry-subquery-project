@@ -13,7 +13,8 @@ export async function handleNewEra(
 
   const { era: id } = event.args;
 
-  if (id.gt(1)) {
+  // FIXME: set back to 1
+  if (id.gt(2)) {
     const previousId = id.sub(1);
     const previousEra = await Era.get(previousId.toHexString());
     assert(previousEra, `Era ${previousId.toNumber()} doesn't exist`);

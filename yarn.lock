@@ -38,10 +38,57 @@
     graphql-request "~3.6.1"
     lru-cache "~7.8.2"
 
+"@acala-network/eth-providers@^2.4.12":
+  version "2.4.12"
+  resolved "https://registry.yarnpkg.com/@acala-network/eth-providers/-/eth-providers-2.4.12.tgz#67a5a71e08b993b9e164140936c5d5f05bec1dcf"
+  integrity sha512-NM5TYVXCxNavw0z7FnckekCowbU/5WJDJAFaV4luY/AS/cFxjX4u5e6tBIpd2NKJ16VL137wk7JeqcZbHBPWcg==
+  dependencies:
+    "@acala-network/contracts" "~4.2.0"
+    "@acala-network/eth-transactions" "2.4.12"
+    "@acala-network/types" "~4.1.2-11"
+    "@ethersproject/abstract-provider" "~5.5.0"
+    "@ethersproject/address" "~5.5.0"
+    "@ethersproject/bignumber" "~5.5.0"
+    "@ethersproject/bytes" "~5.5.0"
+    "@ethersproject/contracts" "~5.5.0"
+    "@ethersproject/logger" "~5.5.0"
+    "@ethersproject/networks" "~5.5.0"
+    "@ethersproject/properties" "~5.5.0"
+    "@ethersproject/providers" "~5.5.0"
+    "@ethersproject/transactions" "~5.5.0"
+    "@ethersproject/wallet" "~5.5.0"
+    "@polkadot/api" "8.1.1"
+    "@polkadot/api-augment" "8.1.1"
+    "@polkadot/api-derive" "8.1.1"
+    "@polkadot/keyring" "^9.0.1"
+    "@polkadot/types" "8.1.1"
+    "@polkadot/util" "^9.0.1"
+    "@polkadot/util-crypto" "^9.0.1"
+    ethers "~5.5.0"
+    graphql "~16.0.1"
+    graphql-request "~3.6.1"
+    lru-cache "~7.8.2"
+
 "@acala-network/eth-transactions@2.4.11":
   version "2.4.11"
   resolved "https://registry.yarnpkg.com/@acala-network/eth-transactions/-/eth-transactions-2.4.11.tgz#155f96290c171a2d72b66c2a9e8283c5aa9f9dc3"
   integrity sha512-PK5YRU143/W/VaX9r9wikTIwQzbpGxDyjCl400WKG9vgcUC8z2vw5YMOxTLoJ/ssRdc/PL8sXTg3CCabuRyOuA==
+  dependencies:
+    "@ethersproject/address" "~5.5.0"
+    "@ethersproject/bignumber" "~5.5.0"
+    "@ethersproject/bytes" "~5.5.0"
+    "@ethersproject/constants" "~5.5.0"
+    "@ethersproject/hash" "~5.5.0"
+    "@ethersproject/logger" "~5.5.0"
+    "@ethersproject/rlp" "~5.5.0"
+    "@ethersproject/transactions" "~5.5.0"
+    "@ethersproject/wallet" "~5.5.0"
+    "@polkadot/util-crypto" "^9.0.1"
+
+"@acala-network/eth-transactions@2.4.12":
+  version "2.4.12"
+  resolved "https://registry.yarnpkg.com/@acala-network/eth-transactions/-/eth-transactions-2.4.12.tgz#67852469702528ca10606c6b3bcc7c26fe51f343"
+  integrity sha512-wSK7W6g1zcsKxJMaoBO9xBdg8xqo+VKWRH+fQTWNy8NH5kAfuVF+U8eHfpoZjEyAVMSphlvw06LmHBTC+9N4HA==
   dependencies:
     "@ethersproject/address" "~5.5.0"
     "@ethersproject/bignumber" "~5.5.0"
@@ -2228,13 +2275,13 @@
   resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.0.0.tgz#109fb595021de285f05a7db6806f2f48296fcee7"
   integrity sha512-gIVaYhUsy+9s58m/ETjSJVKHhKTBMmcRb9cEV5/5dwvfDlfORjKrFsDeDHWRrm6RjcPvCLZFwGJjAjLj1gg4HA==
 
-"@subql/acala-evm-processor@^0.0.1-0":
-  version "0.0.1-0"
-  resolved "https://registry.yarnpkg.com/@subql/acala-evm-processor/-/acala-evm-processor-0.0.1-0.tgz#49674d80bcece8ebffadf8fb404fff490357ed03"
-  integrity sha512-FXhv9NrRRrMkp185cnw186mc5Hn8pX/qiaJYWDkwHEhNPFndW4JGxsbQMujEfJoPyywKPcyIh2WyEKr+7Dl8bw==
+"@subql/acala-evm-processor@^0.0.2-0":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@subql/acala-evm-processor/-/acala-evm-processor-0.0.2.tgz#a02e2c842d4d5dd02d5ff72ee7ef1d6d6b8cdde7"
+  integrity sha512-kW0bR/SmaV103/MdP9O85bZs18koBWLwLswR2mDjT+bfptkf2SpsLCP4GUXgsqiBnEaNcVvvOS9Pp+oAI3DlTg==
   dependencies:
     "@acala-network/eth-providers" "^2.4.10"
-    "@subql/types" "^1.0.1-0"
+    "@subql/types" latest
     class-transformer "^0.5.1"
     class-validator "^0.13.2"
     ethers "^5.6.5"
@@ -2327,6 +2374,11 @@
   version "1.0.1-0"
   resolved "https://registry.yarnpkg.com/@subql/types/-/types-1.0.1-0.tgz#a4873ba702f59887ab05f1da39c89cb5fa5bf176"
   integrity sha512-Hs5yn88nCFEErQItrOMLicmrdlN2zUbErRksUSr9xbHRpfu50DN6c2l6Gg+lgaTHTgz5lrOhVxQ+4JbQdWxwZw==
+
+"@subql/types@latest":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@subql/types/-/types-1.1.0.tgz#3e88cdd203a867d07938f5f43c9fc18c26e34aa1"
+  integrity sha512-gvKE5LjMjiZfCTyAIQRWZuCMp9svbDz7+vTx5ZVHxe06hyfFpB5BalVdefeQySyi7nCjVoH4pV22AQK9Eyo58g==
 
 "@subql/utils@1.0.0":
   version "1.0.0"
