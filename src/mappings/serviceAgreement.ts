@@ -6,7 +6,7 @@ import { ClosedAgreementCreatedEvent } from '@subql/contract-sdk/typechain/Servi
 import { ServiceAgreement } from '../types';
 import { bytesToIpfsCid } from './utils';
 import { IServiceAgreement__factory } from '@subql/contract-sdk';
-import provider from './ethProvider';
+import { provider } from './ethProvider';
 import { AcalaEvmEvent } from '@subql/acala-evm-processor';
 
 export async function handleServiceAgreementCreated(

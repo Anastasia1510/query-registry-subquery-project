@@ -11,7 +11,7 @@ import {
 } from '@subql/contract-sdk/typechain/Staking';
 import assert from 'assert';
 import { Delegation, Withdrawl, Indexer } from '../types';
-import provider from './ethProvider';
+import { provider } from './ethProvider';
 import {
   ERA_MANAGER_ADDRESS,
   updateTotalStake,

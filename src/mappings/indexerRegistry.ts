@@ -12,7 +12,7 @@ import {
 } from '@subql/contract-sdk/typechain/IndexerRegistry';
 import assert from 'assert';
 import { Indexer } from '../types';
-import provider from './ethProvider';
+import { provider } from './ethProvider';
 import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 
 /* Indexer Registry Handlers */
@@ -26,8 +26,6 @@ export async function handleRegisterIndexer(
   let indexer = await Indexer.get(indexerAddress);
   const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, provider);
 
-  // assert(!indexer, `Indexer (${indexerAddress}) already exists`);
-
   if (indexer) {
     indexer.metadata = bytesToIpfsCid(metadata);
     indexer.active = true;
@@ -37,7 +35,7 @@ export async function handleRegisterIndexer(
       id: indexerAddress,
       metadata: bytesToIpfsCid(metadata),
       totalStake: await upsertEraValue(eraManager, undefined, BigInt(0)),
-      // Set era to -1 as indicator to apply instantly in handleSectCommissionRate
+      // Set era to -1 as indicator to apply instantly in handleSetCommissionRate
       commission: {
         era: -1,
         value: BigInt(0).toJSONType(),

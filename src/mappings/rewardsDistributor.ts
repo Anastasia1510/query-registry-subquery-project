@@ -10,7 +10,7 @@ import {
   UnclaimedReward,
 } from '../types';
 import { RewardsDistributer__factory } from '@subql/contract-sdk';
-import provider from './ethProvider';
+import { provider } from './ethProvider';
 import {
   ClaimRewardsEvent,
   DistributeRewardsEvent,

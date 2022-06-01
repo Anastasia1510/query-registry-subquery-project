@@ -76,155 +76,153 @@ function ethLogToLog(log: EthLog): Log {
   };
 }
 
-const substrate = '';
-const provider = EvmRpcProvider.from(
-  'wss://node-6870830370282213376.rz.onfinality.io/ws?apikey=0f273197-e4d5-45e2-b23e-03b015cb7000'
-);
-export default provider;
+const substrate =
+  'wss://node-6870830370282213376.rz.onfinality.io/ws?apikey=0f273197-e4d5-45e2-b23e-03b015cb7000';
+export const provider = EvmRpcProvider.from(substrate);
 
-// export default class FrontierEthProvider extends EvmRpcProvider {
-//   private eth = api.rpc.eth;
+export default class FrontierEthProvider extends Provider {
+  private eth = api.rpc.eth;
 
-//   async getBalance(
-//     addressOrName: string | Promise<string>,
-//     blockTag?: BlockTag | Promise<BlockTag>
-//   ): Promise<BigNumber> {
-//     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
-//     const balance = await this.eth.getBalance(await addressOrName);
-//     return BigNumber.from(balance.toHex());
-//   }
+  async getBalance(
+    addressOrName: string | Promise<string>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<BigNumber> {
+    if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
+    const balance = await this.eth.getBalance(await addressOrName);
+    return BigNumber.from(balance.toHex());
+  }
 
-//   async getTransactionCount(
-//     addressOrName: string | Promise<string>,
-//     blockTag?: BlockTag | Promise<BlockTag>
-//   ): Promise<number> {
-//     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
-//     return this.eth
-//       .getTransactionCount(await addressOrName)
-//       .then((r) => r.toNumber());
-//   }
+  async getTransactionCount(
+    addressOrName: string | Promise<string>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<number> {
+    if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
+    return this.eth
+      .getTransactionCount(await addressOrName)
+      .then((r) => r.toNumber());
+  }
 
-//   async getCode(
-//     addressOrName: string | Promise<string>,
-//     blockTag?: BlockTag | Promise<BlockTag>
-//   ): Promise<string> {
-//     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
-//     return this.eth.getCode(await addressOrName).then((r) => r.toHex());
-//   }
+  async getCode(
+    addressOrName: string | Promise<string>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<string> {
+    if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
+    return this.eth.getCode(await addressOrName).then((r) => r.toHex());
+  }
 
-//   async getStorageAt(
-//     addressOrName: string | Promise<string>,
-//     position: BigNumberish | Promise<BigNumberish>,
-//     blockTag?: BlockTag | Promise<BlockTag>
-//   ): Promise<string> {
-//     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
-//     return this.eth
-//       .getStorageAt(
-//         await addressOrName,
-//         BigNumber.from(await position).toBigInt()
-//       )
-//       .then((r) => r.toHex());
-//   }
+  async getStorageAt(
+    addressOrName: string | Promise<string>,
+    position: BigNumberish | Promise<BigNumberish>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<string> {
+    if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
+    return this.eth
+      .getStorageAt(
+        await addressOrName,
+        BigNumber.from(await position).toBigInt()
+      )
+      .then((r) => r.toHex());
+  }
 
-//   async call(
-//     transaction: Deferrable<TransactionRequest>,
-//     blockTag?: BlockTag | Promise<BlockTag>
-//   ): Promise<string> {
-//     if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
+  async call(
+    transaction: Deferrable<TransactionRequest>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<string> {
+    if (blockTag) logger.warn(`Provided parameter 'blockTag' will not be used`);
 
-//     const tx = await resolveProperties(transaction);
+    const tx = await resolveProperties(transaction);
 
-//     const r = await this.eth.call({
-//       ...tx,
-//       nonce: tx.nonce && BNishToHex(tx.nonce),
-//       gas: tx.gasLimit && BNishToHex(tx.gasLimit),
-//       gasPrice: tx.gasPrice && BNishToHex(tx.gasPrice),
-//       value: tx.value && BNishToHex(tx.value),
-//       data: tx.data,
-//     });
-//     return r.toHex();
-//   }
+    const r = await this.eth.call({
+      ...tx,
+      nonce: tx.nonce && BNishToHex(tx.nonce),
+      gas: tx.gasLimit && BNishToHex(tx.gasLimit),
+      gasPrice: tx.gasPrice && BNishToHex(tx.gasPrice),
+      value: tx.value && BNishToHex(tx.value),
+      data: tx.data,
+    });
+    return r.toHex();
+  }
 
-//   /*async*/ getBlockWithTransactions(
-//     blockHashOrBlockTag: BlockTag | Promise<BlockTag>
-//   ): Promise<BlockWithTransactions> {
-//     throw new Error('Not implemented');
-//     // const raw = await this.eth.getBlockByHash(
-//     //   blockHashOrBlockTag.toString(),
-//     //   true
-//     // );
+  /*async*/ getBlockWithTransactions(
+    blockHashOrBlockTag: BlockTag | Promise<BlockTag>
+  ): Promise<BlockWithTransactions> {
+    throw new Error('Not implemented');
+    // const raw = await this.eth.getBlockByHash(
+    //   blockHashOrBlockTag.toString(),
+    //   true
+    // );
 
-//     // const b = raw.unwrap();
+    // const b = raw.unwrap();
 
-//     // return {
-//     //   ...ethRichBlockToBlock(b),
-//     //   transactions: b.transactions
-//     //     .toArray()
-//     //     .map(ethTransactionToTransactionResponse),
-//     // };
-//   }
+    // return {
+    //   ...ethRichBlockToBlock(b),
+    //   transactions: b.transactions
+    //     .toArray()
+    //     .map(ethTransactionToTransactionResponse),
+    // };
+  }
 
-//   getBlock(blockHashOrBlockTag: BlockTag | Promise<BlockTag>): Promise<Block> {
-//     throw new Error('Method `getBlock` not supported.');
-//   }
-//   getTransaction(transactionHash: string): Promise<TransactionResponse> {
-//     throw new Error('Method `getTransaction` not supported.');
-//   }
-//   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
-//     throw new Error('Method `getTransactionReceipt` not supported.');
-//   }
-//   getLogs(filter: Filter): Promise<Log[]> {
-//     throw new Error('Method `getLogs` not supported.');
-//   }
-//   getBlockNumber(): Promise<number> {
-//     throw new Error('Method `getBlockNumber` not supported.');
-//   }
-//   getNetwork(): Promise<Network> {
-//     throw new Error('Method `getNetwork` not supported.');
-//   }
-//   getGasPrice(): Promise<BigNumber> {
-//     throw new Error('Method `getGasPrice` not supported.');
-//   }
-//   estimateGas(transaction: Deferrable<TransactionRequest>): Promise<BigNumber> {
-//     throw new Error('Method `estimateGas` not supported.');
-//   }
-//   sendTransaction(
-//     signedTransaction: string | Promise<string>
-//   ): Promise<TransactionResponse> {
-//     throw new Error('Method `sendTransaction` not supported.');
-//   }
-//   resolveName(name: string | Promise<string>): Promise<string | null> {
-//     throw new Error('Method `resolveName` not supported.');
-//   }
-//   lookupAddress(address: string | Promise<string>): Promise<string | null> {
-//     throw new Error('Method `lookupAddress` not supported.');
-//   }
-//   on(eventName: EventType, listener: Listener): Provider {
-//     throw new Error('Method `on` not supported.');
-//   }
-//   once(eventName: EventType, listener: Listener): Provider {
-//     throw new Error('Method `once` not supported.');
-//   }
-//   emit(eventName: EventType, ...args: any[]): boolean {
-//     throw new Error('Method `emit` not supported.');
-//   }
-//   listenerCount(eventName?: EventType): number {
-//     throw new Error('Method `listenerCount` not supported.');
-//   }
-//   listeners(eventName?: EventType): Listener[] {
-//     throw new Error('Method `listeners` not supported.');
-//   }
-//   off(eventName: EventType, listener?: Listener): Provider {
-//     throw new Error('Method `off` not supported.');
-//   }
-//   removeAllListeners(eventName?: EventType): Provider {
-//     throw new Error('Method `removeAllListeners` not supported.');
-//   }
-//   waitForTransaction(
-//     transactionHash: string,
-//     confirmations?: number,
-//     timeout?: number
-//   ): Promise<TransactionReceipt> {
-//     throw new Error('Method `waitForTransaction` not supported.');
-//   }
-// }
+  getBlock(blockHashOrBlockTag: BlockTag | Promise<BlockTag>): Promise<Block> {
+    throw new Error('Method `getBlock` not supported.');
+  }
+  getTransaction(transactionHash: string): Promise<TransactionResponse> {
+    throw new Error('Method `getTransaction` not supported.');
+  }
+  getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
+    throw new Error('Method `getTransactionReceipt` not supported.');
+  }
+  getLogs(filter: Filter): Promise<Log[]> {
+    throw new Error('Method `getLogs` not supported.');
+  }
+  getBlockNumber(): Promise<number> {
+    throw new Error('Method `getBlockNumber` not supported.');
+  }
+  getNetwork(): Promise<Network> {
+    throw new Error('Method `getNetwork` not supported.');
+  }
+  getGasPrice(): Promise<BigNumber> {
+    throw new Error('Method `getGasPrice` not supported.');
+  }
+  estimateGas(transaction: Deferrable<TransactionRequest>): Promise<BigNumber> {
+    throw new Error('Method `estimateGas` not supported.');
+  }
+  sendTransaction(
+    signedTransaction: string | Promise<string>
+  ): Promise<TransactionResponse> {
+    throw new Error('Method `sendTransaction` not supported.');
+  }
+  resolveName(name: string | Promise<string>): Promise<string | null> {
+    throw new Error('Method `resolveName` not supported.');
+  }
+  lookupAddress(address: string | Promise<string>): Promise<string | null> {
+    throw new Error('Method `lookupAddress` not supported.');
+  }
+  on(eventName: EventType, listener: Listener): Provider {
+    throw new Error('Method `on` not supported.');
+  }
+  once(eventName: EventType, listener: Listener): Provider {
+    throw new Error('Method `once` not supported.');
+  }
+  emit(eventName: EventType, ...args: any[]): boolean {
+    throw new Error('Method `emit` not supported.');
+  }
+  listenerCount(eventName?: EventType): number {
+    throw new Error('Method `listenerCount` not supported.');
+  }
+  listeners(eventName?: EventType): Listener[] {
+    throw new Error('Method `listeners` not supported.');
+  }
+  off(eventName: EventType, listener?: Listener): Provider {
+    throw new Error('Method `off` not supported.');
+  }
+  removeAllListeners(eventName?: EventType): Provider {
+    throw new Error('Method `removeAllListeners` not supported.');
+  }
+  waitForTransaction(
+    transactionHash: string,
+    confirmations?: number,
+    timeout?: number
+  ): Promise<TransactionReceipt> {
+    throw new Error('Method `waitForTransaction` not supported.');
+  }
+}
