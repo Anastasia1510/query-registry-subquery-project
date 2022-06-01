@@ -11,7 +11,7 @@ import {
 } from '@subql/contract-sdk/typechain/Staking';
 import assert from 'assert';
 import { Delegation, Withdrawl, Indexer } from '../types';
-import { provider } from './ethProvider';
+import FrontierEthProvider from './ethProvider';
 import {
   ERA_MANAGER_ADDRESS,
   updateTotalStake,
@@ -37,7 +37,10 @@ export async function handleAddDelegation(
 
   const { source, indexer, amount } = event.args;
   const id = getDelegationId(source, indexer);
-  const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, provider);
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
   const amountBn = amount.toBigInt();
   let delegation = await Delegation.get(id);
@@ -95,7 +98,10 @@ export async function handleRemoveDelegation(
 
   const { source, indexer, amount } = event.args;
   const id = getDelegationId(source, indexer);
-  const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, provider);
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
   const delegation = await Delegation.get(id);
 
@@ -164,7 +170,10 @@ export async function handleSetCommissionRate(
   assert(event.args, 'No event args');
 
   const address = event.args.indexer;
-  const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, provider);
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
   let indexer = await Indexer.get(address);
 

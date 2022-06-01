@@ -10,7 +10,7 @@ import {
   UnclaimedReward,
 } from '../types';
 import { RewardsDistributer__factory } from '@subql/contract-sdk';
-import { provider } from './ethProvider';
+import FrontierEthProvider from './ethProvider';
 import {
   ClaimRewardsEvent,
   DistributeRewardsEvent,
@@ -44,7 +44,7 @@ export async function handleRewardsDistributed(
 
   const rewardsDistributor = RewardsDistributer__factory.connect(
     REWARD_DIST_ADDRESS,
-    provider
+    new FrontierEthProvider()
   );
 
   await Promise.all(

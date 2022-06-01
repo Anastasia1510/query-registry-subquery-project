@@ -15,7 +15,6 @@ import {
 import { Network } from '@ethersproject/networks';
 import { Deferrable, resolveProperties } from '@ethersproject/properties';
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
-import { EvmRpcProvider } from '@acala-network/eth-providers';
 import {
   EthLog,
   EthRichBlock,
@@ -75,10 +74,6 @@ function ethLogToLog(log: EthLog): Log {
     logIndex: log.logIndex.unwrap().toNumber(),
   };
 }
-
-const substrate =
-  'wss://node-6870830370282213376.rz.onfinality.io/ws?apikey=0f273197-e4d5-45e2-b23e-03b015cb7000';
-export const provider = EvmRpcProvider.from(substrate);
 
 export default class FrontierEthProvider extends Provider {
   private eth = api.rpc.eth;

@@ -12,7 +12,7 @@ import {
 } from '@subql/contract-sdk/typechain/IndexerRegistry';
 import assert from 'assert';
 import { Indexer } from '../types';
-import { provider } from './ethProvider';
+import FrontierEthProvider from './ethProvider';
 import { bytesToIpfsCid, upsertEraValue, ERA_MANAGER_ADDRESS } from './utils';
 
 /* Indexer Registry Handlers */
@@ -24,7 +24,10 @@ export async function handleRegisterIndexer(
   const { indexer: indexerAddress, metadata } = event.args;
 
   let indexer = await Indexer.get(indexerAddress);
-  const eraManager = EraManager__factory.connect(ERA_MANAGER_ADDRESS, provider);
+  const eraManager = EraManager__factory.connect(
+    ERA_MANAGER_ADDRESS,
+    new FrontierEthProvider()
+  );
 
   if (indexer) {
     indexer.metadata = bytesToIpfsCid(metadata);

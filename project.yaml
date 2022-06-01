@@ -176,11 +176,11 @@ dataSources:
     mapping:
       file: ./dist/index.js
       handlers:
-        # - handler: handlePlanTemplateCreated
-        #   kind: substrate/AcalaEvmEvent
-        #   filter:
-        #     topics:
-        #       - PlanTemplateCreated(uint256 indexed planTemplateId)
+        - handler: handlePlanTemplateCreated
+          kind: substrate/AcalaEvmEvent
+          filter:
+            topics:
+              - PlanTemplateCreated(uint256 indexed planTemplateId)
         - handler: handlePlanTemplateMetadataUpdated
           kind: substrate/AcalaEvmEvent
           filter:

@@ -39,7 +39,6 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@acala-network/eth-providers": "^2.4.12",
     "@subql/acala-evm-processor": "^0.0.2-0",
     "@subql/contract-sdk": "^0.6.1-2",
     "@types/pino": "^7.0.5",
